@@ -181,7 +181,26 @@ let middleware = compose(logger, cookieParser, loadCurrentUser)
 Server(middleware(handler)).listen(3000)
 ```
 
-## Routing
+## Batteries Included
+
+I've started stubbing out some basic middleware and tools.
+
+### Development Logger (Middleware)
+
+The logger middleware prints basic info about the request and response
+to stdout. Good for development.
+
+``` swift
+let middleware = compose(
+  Batteries.logger
+)
+
+Server(middleware(handler)).listen()
+```
+
+![logger screenshot](https://dl.dropboxusercontent.com/spa/quq37nq1583x0lf/_5c9x02w.png)
+
+### Routing
 
 I cobbled together a basic router that turns a tree into a handler.
 
@@ -213,6 +232,13 @@ let router: Router = .Node("/", [logger, cookieParser], [
 
 Server(router.handler()).listen(3000)
 ```
+
+## Default Middleware
+
+When you give hansel your final handler function, it wraps it with 
+some of its own outer middleware.
+
+- HEAD request handling
 
 ## Thanks
 
