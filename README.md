@@ -18,7 +18,7 @@ let logger: Middleware = { handler in
 }
 
 let handler: Handler = { request in
-  return Response("Hello world")
+  return Response().text("Hello world")
 }
 
 Server(logger(handler)).listen(3000)
@@ -92,17 +92,11 @@ Some initializer examples:
 
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
-Response(status: .Ok, headers: [String: String](), body: "Hello")
-Response("Hello")           //=> text/plain
-Response("<h1>Hello</h1>")  //=> text/html
+Response(status: .Ok, headers: [String: String](), body: .Text("Hello"))
+Response().text("Hello")           //=> text/plain
+Response().html("<h1>Hello</h1>")  //=> text/html
 Response(.NotFound)
-Response(status: .NotFound, body: "File not found :(")
-```
-
-``` swift
-Response()
-  .setBody("Hello world")
-  .setHeader("X-Hello", "World")
+Response(.NotFound).text("File not found :(")
 ```
 
 ## Handler (Request -> Response)
@@ -111,12 +105,12 @@ Because `Handler` is a typealias, these are equivalent:
 
 ``` swift
 func handler (request: Request) -> Response {
-  return Response("Hello world")
+  return Response().text("Hello world")
 }
 
 // Preferred
 let handler: Handler { request in 
-  Response("Hello world")
+  Response().text("Hello world")
 }
 ```
 
@@ -234,8 +228,6 @@ Server(router.handler()).listen(3000)
 ```
 
 ### Static File Serving (Middleware)
-
-Caveats: Only supports utf8 text files
 
 Stubbed out some basic static asset serving middleware that stats the
 file system and serves the file if there is one. Else the request continues
