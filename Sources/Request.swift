@@ -15,6 +15,13 @@ public struct Request {
   public let body: String
   public let store: [String : Any]
   public let address: String
+  public var path: String {
+    get {
+      // TODO: Handle bad paths. 
+      // For example: NSURL(string: "//").path == nil
+      return NSURL(string: self.url)!.path ?? "/"
+    }
+  }
 
   public init (
     method: Method = .Get,
