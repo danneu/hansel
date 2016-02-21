@@ -8,6 +8,11 @@ internal func wrapServeStatic (root: String) -> Middleware {
       var rootPath = Path(root)
       let relativePath = Path(drop1(request.path))
 
+      // Only serve assets to HEAD or GET
+      if request.method != .Head && request.method != .Get {
+        return handler(request)
+      }
+
       // containing NULL bytes is malicious
       if Array(request.path.utf8).indexOf(0) != nil {
         return Response(status: .BadRequest, body: "Malicious path")
