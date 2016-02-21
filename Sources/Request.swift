@@ -55,6 +55,14 @@ public struct Request {
       self.store = store ?? base.store
   }
 
+  // QUERYING
+
+  public func getHeader (key: String) -> String? {
+    return self.headers[key.lowercaseString]
+  }
+
+  // UPDATING
+
   public func setHeader (key: String, value: String) -> Request {
     var headers = self.headers
     headers[key.lowercaseString] = value

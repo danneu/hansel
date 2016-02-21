@@ -1,5 +1,6 @@
 
-*Disclaimer: I started building this yesterday to learn Swift.*
+*Disclaimer: I started building this yesterday to learn Swift. 
+I don't have much experience with statically-typed languages.*
 
 # Hansel
 
@@ -26,9 +27,9 @@ Server(logger(handler)).listen(3000)
 
 Hansel is an experimental Swift web-server that focuses on:
 
-- Simplicity
-- Immutability
-- Middleware
+- **Simplicity**
+- **Immutability**
+- **Middleware**
 
 Your entire application is expressed as a function that
 takes a `Request` and returns a `Response`, i.e. a `Handler`.
@@ -98,6 +99,8 @@ Response().html("<h1>Hello</h1>")  //=> text/html
 Response(.NotFound)
 Response(.NotFound).text("File not found :(")
 ```
+
+Pretty scatterbrained.
 
 ## Handler (Request -> Response)
 
@@ -263,7 +266,7 @@ $ http localhost:3000/../passwords.txt
 HTTP/1.1 403 Forbidden
 ```
 
-## Cookies (Middleware)
+### Cookies (Middleware)
 
 So far, cookies are only parsed on the request. They aren't yet supported
 on the response.
@@ -295,9 +298,9 @@ Message: hello
 ## Default Middleware
 
 When you give hansel your final handler function, it wraps it with 
-some of its own outer middleware.
+some of its own outer middleware:
 
-- HEAD request handling
+- **HEAD request handling**
 
 ## Thanks
 

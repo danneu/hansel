@@ -63,6 +63,16 @@ public struct Response {
     return Response(base: self, headers: headers)
   }
 
+  public func setStatus (status: Status) -> Response {
+    return Response(base: self, status: status)
+  }
+
+  // QUERYING
+
+  public func getHeader (key: String) -> String? {
+    return self.headers[key.lowercaseString]
+  }
+
   // SET RESPONSE BODY (HELPERS)
 
   public func none () -> Response {
@@ -102,6 +112,22 @@ public struct Response {
     return final
       .setHeader("content-type", value: type)
       .setHeader("content-length", value: final.body.length())
+  }
+
+  // REDIRECT
+
+  // TODO: Ensure status is one of the redirect statuses
+  public func redirect (url: String, status: Status = .TempRedirect) -> Response {
+    return self
+      .setHeader("location", value: url)
+      .setStatus(status)
+  }
+
+  // redirectBack(request)
+  // redirectBack(request, "/login")
+  public func redirectBack (request: Request, altUrl: String = "/") -> Response {
+    let url = request.getHeader("referrer") ?? altUrl
+    return self.redirect(url)
   }
 
   // STORE

@@ -3,6 +3,9 @@ import Foundation
 
 // PUBLIC
 
+// TODO: Is there a way to only apply these extensions if the middleware
+// is actually used?
+
 extension Request {
   var cookies: [String: String] {
     return self.store["cookies"] as! [String: String]
