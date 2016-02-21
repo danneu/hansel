@@ -40,6 +40,10 @@ public struct Response {
     return Response(base: self, headers: headers)
   }
 
+  public func setHeader (key: String, value: Int?) -> Response {
+    return self.setHeader(key, value: value == nil ? nil : String(value!))
+  }
+
   public func deleteHeader (key: String) -> Response {
     var headers = self.headers
     headers.removeValueForKey(key)
@@ -53,26 +57,26 @@ public struct Response {
       .deleteHeader("content-type")
       .setHeader("content-length", value: "0")
   }
+
   public func text (str: String) -> Response {
     return Response(base: self, body: .Text(str))
       .setHeader("content-type", value: "text/plain")
   }
+
   public func html (str: String) -> Response {
     return Response(base: self, body: .Html(str))
       .setHeader("content-type", value: "text/html")
   }
+
   public func json (str: String) -> Response {
     return Response(base: self, body: .Json(str))
       .setHeader("content-type", value: "application/json")
   }
+
   public func bytes (arr: [UInt8], type: String? = "application/octet-stream") -> Response {
     return Response(base: self, body: .Bytes(arr))
       .setHeader("content-type", value: type!)
   }
-
-//  public func setBody (newBody: String) -> Response {
-//    return Response(base: self, body: newBody)
-//  }
 
   // This should be called right before the response is ready to
   // be sent. It ties up loose ends.
@@ -85,7 +89,7 @@ public struct Response {
     }
 
     return final
-      .setHeader("content-length", value: String(final.body.length()))
+      .setHeader("content-length", value: final.body.length())
   }
 }
 
