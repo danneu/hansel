@@ -96,7 +96,7 @@ public class SocketServer {
       case .Text (let str): try socket.writeUTF8(str)
       case .Html (let str): try socket.writeUTF8(str)
       case .Json (let str): try socket.writeUTF8(str)
-      case .Bytes (let arr): try socket.writeUInt8(arr)
+      case .Bytes (let arr, _): try socket.writeUInt8(arr)
     }
 
     return true

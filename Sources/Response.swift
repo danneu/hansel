@@ -1,34 +1,40 @@
 import Foundation
 
 public struct Response {
-  public let status: Status
-  public let headers: [String: String]
-  public let body: ResponseBody
+  public var status: Status = .Ok
+  public var headers: [String: String] = [String: String]()
+  public var body: ResponseBody = .None
 
   // INITIALIZERS
 
-  // TODO: Clean up the init repetition. Look up 
-  // convenience initializers or something.
+  public init () {}
 
-  public init (
-    _ status: Status = Status.Ok,
-    body: ResponseBody = .None,
-    headers: [String: String] = [String: String]()
-    ) {
-      self.status = status
-      self.body = body
-      self.headers = headers
+  public init (status: Status, body: ResponseBody, headers: [String: String]) {
+    self.status = status
+    self.body = body
+    self.headers = headers
   }
 
   public init (
     base: Response,
+    status: Status? = nil,
     body: ResponseBody? = nil,
     headers: [String: String]? = nil
-    ) {
-      self.status = base.status
-      self.headers = headers ?? base.headers
-      self.body = body ?? base.body
+  ) {
+    self.status = status ?? base.status
+    self.headers = headers ?? base.headers
+    self.body = body ?? base.body
   }
+
+  public init (_ status: Status) {
+    self.status = status
+  }
+
+  public init (_ body: ResponseBody) {
+    self.body = body
+  }
+
+  // UPDATE RESPONSE
 
   // If value is nil, then no header is set
   public func setHeader (key: String, value: String?) -> Response {
@@ -41,7 +47,11 @@ public struct Response {
   }
 
   public func setHeader (key: String, value: Int?) -> Response {
-    return self.setHeader(key, value: value == nil ? nil : String(value!))
+    if value == nil {
+      return self.deleteHeader(key)
+    } else {
+      return self.setHeader(key, value: String(value!))
+    }
   }
 
   public func deleteHeader (key: String) -> Response {
@@ -50,33 +60,29 @@ public struct Response {
     return Response(base: self, headers: headers)
   }
 
-  // Response body helper inits
+  // SET RESPONSE BODY (HELPERS)
 
   public func none () -> Response {
     return Response(base: self, body: .None)
-      .deleteHeader("content-type")
-      .setHeader("content-length", value: "0")
   }
 
   public func text (str: String) -> Response {
     return Response(base: self, body: .Text(str))
-      .setHeader("content-type", value: "text/plain")
   }
 
   public func html (str: String) -> Response {
     return Response(base: self, body: .Html(str))
-      .setHeader("content-type", value: "text/html")
   }
 
   public func json (str: String) -> Response {
     return Response(base: self, body: .Json(str))
-      .setHeader("content-type", value: "application/json")
   }
 
-  public func bytes (arr: [UInt8], type: String? = "application/octet-stream") -> Response {
-    return Response(base: self, body: .Bytes(arr))
-      .setHeader("content-type", value: type!)
+  public func bytes (arr: [UInt8], type: String?) -> Response {
+    return Response(base: self, body: .Bytes(arr, type))
   }
+
+  // FINALIZE
 
   // This should be called right before the response is ready to
   // be sent. It ties up loose ends.
@@ -88,7 +94,10 @@ public struct Response {
       final = final.none()
     }
 
+    let type = final.body.contentType()
+
     return final
+      .setHeader("content-type", value: type)
       .setHeader("content-length", value: final.body.length())
   }
 }
