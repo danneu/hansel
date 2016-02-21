@@ -70,10 +70,6 @@ public struct Response {
     // If status expects empty body, then clear the body
     if self.status.emptyBody() {
       body = ""
-    } else if body.isEmpty {
-      // Or set body to a default if it is empty on a status
-      // that should have one
-      body = self.status.phrase
     }
 
     let length = body.utf8.count

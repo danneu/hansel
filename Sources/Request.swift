@@ -34,12 +34,13 @@ public struct Request {
 
   public init (
     base: Request,
+    method: Method? = nil,
     body: String? = nil,
     headers: [String: String]? = nil,
     store: [String: Any]? = nil
     ) {
       self.url = base.url
-      self.method = base.method
+      self.method = method ?? base.method
       self.address = base.address
       self.headers = headers ?? base.headers
       self.body = body ?? base.body

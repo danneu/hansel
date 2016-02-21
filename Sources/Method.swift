@@ -8,5 +8,6 @@ public enum Method: String {
   case Post = "POST"
   case Put = "PUT"
   case Delete = "DELETE"
+  case Head = "HEAD"
   case Unknown = "_"
 }

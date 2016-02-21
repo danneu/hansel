@@ -5,7 +5,10 @@ public class Server {
   let socketServer: SocketServer
 
   public init (_ handler: Handler) {
-    self.socketServer = SocketServer(handler: handler)
+    // This is where hansel wraps the user's handler with its
+    // own final outer middleware
+    let middleware = Batteries.head
+    self.socketServer = SocketServer(handler: middleware(handler))
   }
 
   public func listen (port: Int = 3000) {
