@@ -24,7 +24,7 @@ func headRequest (request: Request) -> Request {
 
 func headResponse (request: Request, response: Response) -> Response {
   if request.method == .Head {
-    return response.setBody("")
+    return response.none()
   } else {
     return response
   }

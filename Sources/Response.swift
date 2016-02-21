@@ -3,28 +3,16 @@ import Foundation
 public struct Response {
   public let status: Status
   public let headers: [String: String]
-  public let body: String
+  public let body: ResponseBody
 
   // INITIALIZERS
 
   // TODO: Clean up the init repetition. Look up 
   // convenience initializers or something.
 
-  public init (_ status: Status) {
-    self.body = ""
-    self.status = status
-    self.headers = [String: String]()
-  }
-
-  public init (_ body: String) {
-    self.body = body
-    self.status = .Ok
-    self.headers = [String: String]()
-  }
-
   public init (
-    status: Status = Status.Ok,
-    body: String = "",
+    _ status: Status = Status.Ok,
+    body: ResponseBody = .None,
     headers: [String: String] = [String: String]()
     ) {
       self.status = status
@@ -34,7 +22,7 @@ public struct Response {
 
   public init (
     base: Response,
-    body: String? = nil,
+    body: ResponseBody? = nil,
     headers: [String: String]? = nil
     ) {
       self.status = base.status
@@ -58,30 +46,46 @@ public struct Response {
     return Response(base: self, headers: headers)
   }
 
-  public func setBody (newBody: String) -> Response {
-    return Response(base: self, body: newBody)
+  // Response body helper inits
+
+  public func none () -> Response {
+    return Response(base: self, body: .None)
+      .deleteHeader("content-type")
+      .setHeader("content-length", value: "0")
   }
+  public func text (str: String) -> Response {
+    return Response(base: self, body: .Text(str))
+      .setHeader("content-type", value: "text/plain")
+  }
+  public func html (str: String) -> Response {
+    return Response(base: self, body: .Html(str))
+      .setHeader("content-type", value: "text/html")
+  }
+  public func json (str: String) -> Response {
+    return Response(base: self, body: .Json(str))
+      .setHeader("content-type", value: "application/json")
+  }
+  public func bytes (arr: [UInt8], type: String? = "application/octet-stream") -> Response {
+    return Response(base: self, body: .Bytes(arr))
+      .setHeader("content-type", value: type!)
+  }
+
+//  public func setBody (newBody: String) -> Response {
+//    return Response(base: self, body: newBody)
+//  }
 
   // This should be called right before the response is ready to
   // be sent. It ties up loose ends.
   public func finalize () -> Response {
-    var body = self.body
+    var final = self
 
     // If status expects empty body, then clear the body
-    if self.status.emptyBody() {
-      body = ""
+    if final.status.emptyBody() {
+      final = final.none()
     }
 
-    let length = body.utf8.count
-
-    // Guess content-type if it's not already set
-    let type = self.headers["content-type"]
-      ?? (mightBeHtml(body) ? "text/html" : "text/plain")
-
-    return self
-      .setBody(body)
-      .setHeader("content-length", value: String(length))
-      .setHeader("content-type", value: type)
+    return final
+      .setHeader("content-length", value: String(final.body.length()))
   }
 }
 

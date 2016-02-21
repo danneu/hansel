@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D9195AE21C7A33B6006D553F /* Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9195AE11C7A33B6006D553F /* Mime.swift */; };
 		D92AA2251C79E0840063C79B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2241C79E0840063C79B /* main.swift */; };
 		D92AA2351C79E1000063C79B /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2281C79E1000063C79B /* Server.swift */; };
 		D92AA2361C79E1000063C79B /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2291C79E1000063C79B /* Status.swift */; };
@@ -24,6 +25,7 @@
 		D92AA24A1C79F39E0063C79B /* Batteries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2481C79F39E0063C79B /* Batteries.swift */; };
 		D92AA24D1C79F53A0063C79B /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA24C1C79F53A0063C79B /* Head.swift */; };
 		D93E07F31C7A1D410073F296 /* ServeStatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93E07F21C7A1D410073F296 /* ServeStatic.swift */; };
+		D9AB7BFD1C7A286200112E36 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */; };
 		E9E2226E3AA301228CBF8D08 /* Pods_Hansel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +33,7 @@
 		01A63E7C1D63BEE1E5C919ED /* Pods-Hansel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hansel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hansel/Pods-Hansel.release.xcconfig"; sourceTree = "<group>"; };
 		04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hansel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA3B6037C0ED7555216156BF /* Pods-Hansel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hansel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hansel/Pods-Hansel.debug.xcconfig"; sourceTree = "<group>"; };
+		D9195AE11C7A33B6006D553F /* Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mime.swift; path = Sources/Mime.swift; sourceTree = "<group>"; };
 		D92AA2131C79E05E0063C79B /* Hansel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hansel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92AA21D1C79E05E0063C79B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D92AA2241C79E0840063C79B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/main.swift; sourceTree = "<group>"; };
@@ -50,6 +53,7 @@
 		D92AA2481C79F39E0063C79B /* Batteries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Batteries.swift; path = Sources/Batteries.swift; sourceTree = "<group>"; };
 		D92AA24C1C79F53A0063C79B /* Head.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Head.swift; path = Sources/Head.swift; sourceTree = "<group>"; };
 		D93E07F21C7A1D410073F296 /* ServeStatic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServeStatic.swift; path = Sources/ServeStatic.swift; sourceTree = "<group>"; };
+		D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseBody.swift; path = Sources/ResponseBody.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,14 +121,16 @@
 				D92AA22A1C79E1000063C79B /* Middleware.swift */,
 				D92AA2321C79E1000063C79B /* Request.swift */,
 				D92AA22B1C79E1000063C79B /* Response.swift */,
+				D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */,
 				D92AA22C1C79E1000063C79B /* Router.swift */,
-				D92AA22D1C79E1000063C79B /* SocketServer.swift */,
 				D92AA22E1C79E1000063C79B /* Handler.swift */,
 				D92AA22F1C79E1000063C79B /* Belt.swift */,
 				D92AA2301C79E1000063C79B /* Socket.swift */,
+				D92AA22D1C79E1000063C79B /* SocketServer.swift */,
 				D92AA2311C79E1000063C79B /* SocketParser.swift */,
 				D92AA2331C79E1000063C79B /* Method.swift */,
 				D92AA2241C79E0840063C79B /* main.swift */,
+				D9195AE11C7A33B6006D553F /* Mime.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -269,8 +275,10 @@
 				D92AA23D1C79E1000063C79B /* Socket.swift in Sources */,
 				D92AA24D1C79F53A0063C79B /* Head.swift in Sources */,
 				D92AA2351C79E1000063C79B /* Server.swift in Sources */,
+				D9195AE21C7A33B6006D553F /* Mime.swift in Sources */,
 				D92AA2371C79E1000063C79B /* Middleware.swift in Sources */,
 				D92AA2251C79E0840063C79B /* main.swift in Sources */,
+				D9AB7BFD1C7A286200112E36 /* ResponseBody.swift in Sources */,
 				D92AA2361C79E1000063C79B /* Status.swift in Sources */,
 				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
 				D92AA2491C79F39E0063C79B /* Logger.swift in Sources */,

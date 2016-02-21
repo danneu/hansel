@@ -67,7 +67,7 @@ public enum Router {
       if let h = self.find(request.method, segments: toSegments(request.url), mws: [], router: self) {
         return h(request)
       } else {
-        return Response(status: .NotFound)
+        return Response(.NotFound)
       }
     }
   }

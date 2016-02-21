@@ -89,8 +89,16 @@ public class SocketServer {
       try socket.writeUTF8("\(key): \(value)\r\n")
     }
     try socket.writeUTF8("\r\n")
-    //try socket.writeUInt8([UInt8](response.body.utf8))
-    try socket.writeUTF8(response.body)
+
+    // write body
+    switch response.body {
+      case .None: break
+      case .Text (let str): try socket.writeUTF8(str)
+      case .Html (let str): try socket.writeUTF8(str)
+      case .Json (let str): try socket.writeUTF8(str)
+      case .Bytes (let arr): try socket.writeUInt8(arr)
+    }
+
     return true
   }
 

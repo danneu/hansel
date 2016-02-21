@@ -15,12 +15,12 @@ internal func wrapServeStatic (root: String) -> Middleware {
 
       // containing NULL bytes is malicious
       if Array(request.path.utf8).indexOf(0) != nil {
-        return Response(status: .BadRequest, body: "Malicious path")
+        return Response(.BadRequest).text("Malicious path")
       }
 
       // relative path should not be absolute
       if relativePath.isAbsolute {
-        return Response(status: .BadRequest, body: "Malicious path")
+        return Response(.BadRequest).text("Malicious path")
       }
 
       // relative path outside root
@@ -42,15 +42,15 @@ internal func wrapServeStatic (root: String) -> Middleware {
           return Response(.Error)
         }
 
+        var type: String? = nil
+        if let ext = fullPath.`extension` {
+          type = Mime.exts[ext]
+        }
+
         var bytes = [UInt8](count: fileBody.length, repeatedValue: 0)
         fileBody.getBytes(&bytes, length: fileBody.length)
 
-        if let str = NSString(bytes: bytes, length: bytes.count, encoding: NSUTF8StringEncoding) as? String {
-          return Response(str)
-        } else {
-          // TODO: Support byte array body
-          return Response(status: .Error)
-        }
+        return Response().bytes(bytes, type: type)
       }
 
       return handler(request)
