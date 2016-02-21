@@ -233,6 +233,44 @@ let router: Router = .Node("/", [logger, cookieParser], [
 Server(router.handler()).listen(3000)
 ```
 
+### Static File Serving (Middleware)
+
+Caveats: Only supports utf8 text files
+
+Stubbed out some basic static asset serving middleware that stats the
+file system and serves the file if there is one. Else the request continues
+down the chain.
+
+``` swift
+let middleware = compose(
+  Batteries.serveStatic("Public")
+)
+
+let handler: Handler = { request in 
+  return Response("No file was found")
+}
+
+Server(middleware(handler)).listen()
+```
+
+If we have a `Public` folder in our root with a file `Public/message.txt`,
+then the responses would look like this:
+
+```
+$ http localhost:3000/foo
+HTTP/1.1 404 Not Found
+
+$ http localhost:3000/message.txt
+HTTP/1.1 200 OK
+content-length: 38
+content-type: text/plain
+
+This is a message from the file system
+
+$ http localhost:3000/../passwords.txt
+HTTP/1.1 403 Forbidden
+```
+
 ## Default Middleware
 
 When you give hansel your final handler function, it wraps it with 
@@ -247,3 +285,12 @@ some of its own outer middleware.
 
 [swifter]: https://github.com/glock45/swifter
 [vapor]: https://github.com/tannernelson/vapor
+
+## TODO
+
+- Lock PathKit to minorVersion 6 in Package.swift
+- `swift build` works with PathKit in Package.swift, but even when launching
+XCode with latest-swift (3.0-DEV), it can resolve `import PathKit`. However
+cocoapods PathKit works in XCode, but not with `swift build`.
+So that's why I have both. Sheesh.
+- Support byte array bodies

@@ -1,0 +1,10 @@
+PODS:
+  - PathKit (0.6.0)
+
+DEPENDENCIES:
+  - PathKit (~> 0.6)
+
+SPEC CHECKSUMS:
+  PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
+
+COCOAPODS: 0.39.0

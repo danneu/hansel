@@ -1,7 +1,6 @@
 
 import Foundation
 
-
 internal let wrapLogger: Middleware = { handler in
   return { request in
     logRequest(request)

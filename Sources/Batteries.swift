@@ -7,4 +7,5 @@ import Foundation
 public struct Batteries {
   public static let logger: Middleware = wrapLogger
   public static let head: Middleware = wrapHead
+  public static let serveStatic: String -> Middleware = wrapServeStatic
 }

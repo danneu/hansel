@@ -3,5 +3,7 @@ import PackageDescription
 
 let package = Package(
   name: "Hansel",
-  dependencies: []
+  dependencies: [
+    .Package(url: "https://github.com/kylef/PathKit", majorVersion: 0)
+  ]
 )
