@@ -12,10 +12,10 @@ extension Request {
    // return self.setStore("cookies", value: encode(value))
     return self.updateStore("cookies") { cookies in
       if var dict = cookies as? [String: String] {
-        dict[key] = encode(value)
+        dict[key] = Belt.urlEncode(value)
         return dict
       } else {
-        return [key: encode(value)]
+        return [key: Belt.urlEncode(value)]
       }
     }
   }
@@ -36,10 +36,10 @@ extension Response {
   func setCookie (key: String, value: String) -> Response {
     return self.updateStore("cookies") { cookies in
       if var dict = cookies as? [String: String] {
-        dict[key] = encode(value)
+        dict[key] = Belt.urlEncode(value)
         return dict
       } else {
-        return [key: encode(value)]
+        return [key: Belt.urlEncode(value)]
       }
     }
   }
@@ -93,7 +93,7 @@ func parsePair (s: String) -> (k: String, v: String)? {
   if pair.count != 2 {
     return nil
   }
-  let (k, v) = (pair.first!, decode(unwrapQuotes(pair.last!)))
+  let (k, v) = (pair.first!, Belt.urlDecode(unwrapQuotes(pair.last!)))
   return (k, v)
 }
 
@@ -104,12 +104,4 @@ func trim (s: String) -> String {
 func unwrapQuotes (s: String) -> String {
   let regex = try! NSRegularExpression(pattern: "(^\"|\"$)", options: [])
   return regex.stringByReplacingMatchesInString(s, options: .WithoutAnchoringBounds, range: NSMakeRange(0, s.characters.count), withTemplate: "")
-}
-
-func encode (s: String) -> String {
-  return s.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? s
-}
-
-func decode (s: String) -> String {
-  return s.stringByRemovingPercentEncoding ?? s
 }

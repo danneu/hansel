@@ -5,7 +5,33 @@ import Foundation
 // Utility belt
 //
 
+public struct Belt {}
+
+extension Belt {
+  public static func escapeHtml (html: String) -> String {
+    return html.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
+      .stringByReplacingOccurrencesOfString("\"", withString: "&quot;")
+      .stringByReplacingOccurrencesOfString("'", withString: "&#39;")
+      .stringByReplacingOccurrencesOfString("<", withString: "&lt;")
+      .stringByReplacingOccurrencesOfString(">", withString: "&gt;")
+  }
+}
+
+// PERCENT ENCODING
+
+extension Belt {
+  public static func urlEncode (s: String) -> String {
+    return s.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? s
+  }
+
+  public static func urlDecode (s: String) -> String {
+    return s.stringByRemovingPercentEncoding ?? s
+  }
+}
+
 // FUNCTIONAL HELPERS
+//
+// Generic things things don't get namespaced behind Belt
 
 // f >> g :: f(g(x))
 infix operator >> { associativity left }
