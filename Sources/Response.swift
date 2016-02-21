@@ -4,6 +4,7 @@ public struct Response {
   public var status: Status = .Ok
   public var headers: [String: String] = [String: String]()
   public var body: ResponseBody = .None
+  public var store: [String : Any] = [:]
 
   // INITIALIZERS
 
@@ -19,11 +20,13 @@ public struct Response {
     base: Response,
     status: Status? = nil,
     body: ResponseBody? = nil,
-    headers: [String: String]? = nil
+    headers: [String: String]? = nil,
+    store: [String: Any]? = nil
   ) {
     self.status = status ?? base.status
     self.headers = headers ?? base.headers
     self.body = body ?? base.body
+    self.store = store ?? base.store
   }
 
   public init (_ status: Status) {
@@ -99,6 +102,24 @@ public struct Response {
     return final
       .setHeader("content-type", value: type)
       .setHeader("content-length", value: final.body.length())
+  }
+
+  // STORE
+
+  public func setStore (key: String, value: Any) -> Response {
+    var store = self.store
+    store[key] = value
+    return Response(base: self, store: store)
+  }
+
+  public func updateStore (key: String, fn: Any -> Any) -> Response {
+    var store = self.store
+    store[key] = fn(store[key])
+    return Response(base: self, store: store)
+  }
+
+  public func getStore (key: String) -> Any? {
+    return self.store[key]
   }
 }
 

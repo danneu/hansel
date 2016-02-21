@@ -263,6 +263,35 @@ $ http localhost:3000/../passwords.txt
 HTTP/1.1 403 Forbidden
 ```
 
+## Cookies (Middleware)
+
+So far, cookies are only parsed on the request. They aren't yet supported
+on the response.
+
+``` swift
+let middleware = compose(
+  Batteries.cookies
+)
+
+let handler: Handler = { request in 
+  if let message = request.cookies["message"] {
+    return Response().text("Message: \(message)")
+  } else {
+    return Response().text("No message cookie sent")
+  }
+}
+
+Server(middleware(handler)).listen()
+```
+
+```
+$ http localhost:3000
+No message cookie sent
+
+$ http localhost:3000 'Cookie:message=hello'
+Message: hello
+```
+
 ## Default Middleware
 
 When you give hansel your final handler function, it wraps it with 

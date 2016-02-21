@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D9195AE21C7A33B6006D553F /* Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9195AE11C7A33B6006D553F /* Mime.swift */; };
+		D9195AE41C7A435D006D553F /* Cookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9195AE31C7A435D006D553F /* Cookie.swift */; };
 		D92AA2251C79E0840063C79B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2241C79E0840063C79B /* main.swift */; };
 		D92AA2351C79E1000063C79B /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2281C79E1000063C79B /* Server.swift */; };
 		D92AA2361C79E1000063C79B /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2291C79E1000063C79B /* Status.swift */; };
@@ -34,6 +35,7 @@
 		04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hansel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA3B6037C0ED7555216156BF /* Pods-Hansel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hansel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hansel/Pods-Hansel.debug.xcconfig"; sourceTree = "<group>"; };
 		D9195AE11C7A33B6006D553F /* Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mime.swift; path = Sources/Mime.swift; sourceTree = "<group>"; };
+		D9195AE31C7A435D006D553F /* Cookie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cookie.swift; path = Sources/Cookie.swift; sourceTree = "<group>"; };
 		D92AA2131C79E05E0063C79B /* Hansel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hansel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92AA21D1C79E05E0063C79B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D92AA2241C79E0840063C79B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/main.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		D92AA24B1C79F3A60063C79B /* Batteries */ = {
 			isa = PBXGroup;
 			children = (
+				D9195AE31C7A435D006D553F /* Cookie.swift */,
 				D93E07F21C7A1D410073F296 /* ServeStatic.swift */,
 				D92AA2471C79F39E0063C79B /* Logger.swift */,
 				D92AA2481C79F39E0063C79B /* Batteries.swift */,
@@ -282,6 +285,7 @@
 				D92AA2361C79E1000063C79B /* Status.swift in Sources */,
 				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
 				D92AA2491C79F39E0063C79B /* Logger.swift in Sources */,
+				D9195AE41C7A435D006D553F /* Cookie.swift in Sources */,
 				D92AA23B1C79E1000063C79B /* Handler.swift in Sources */,
 				D92AA2381C79E1000063C79B /* Response.swift in Sources */,
 			);

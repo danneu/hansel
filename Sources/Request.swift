@@ -39,6 +39,7 @@ public struct Request {
       self.address = address
   }
 
+  // merge into an existing base request
   public init (
     base: Request,
     method: Method? = nil,
@@ -63,6 +64,12 @@ public struct Request {
   public func setStore (key: String, value: Any) -> Request {
     var store = self.store
     store[key] = value
+    return Request(base: self, store: store)
+  }
+
+  public func updateStore (key: String, fn: Any -> Any) -> Request {
+    var store = self.store
+    store[key] = fn(store[key])
     return Request(base: self, store: store)
   }
 
