@@ -1,0 +1,313 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D92AA2251C79E0840063C79B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2241C79E0840063C79B /* main.swift */; };
+		D92AA2351C79E1000063C79B /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2281C79E1000063C79B /* Server.swift */; };
+		D92AA2361C79E1000063C79B /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2291C79E1000063C79B /* Status.swift */; };
+		D92AA2371C79E1000063C79B /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22A1C79E1000063C79B /* Middleware.swift */; };
+		D92AA2381C79E1000063C79B /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22B1C79E1000063C79B /* Response.swift */; };
+		D92AA2391C79E1000063C79B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22C1C79E1000063C79B /* Router.swift */; };
+		D92AA23A1C79E1000063C79B /* SocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22D1C79E1000063C79B /* SocketServer.swift */; };
+		D92AA23B1C79E1000063C79B /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22E1C79E1000063C79B /* Handler.swift */; };
+		D92AA23C1C79E1000063C79B /* Belt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22F1C79E1000063C79B /* Belt.swift */; };
+		D92AA23D1C79E1000063C79B /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2301C79E1000063C79B /* Socket.swift */; };
+		D92AA23E1C79E1000063C79B /* SocketParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2311C79E1000063C79B /* SocketParser.swift */; };
+		D92AA23F1C79E1000063C79B /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2321C79E1000063C79B /* Request.swift */; };
+		D92AA2401C79E1000063C79B /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2331C79E1000063C79B /* Method.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D92AA2131C79E05E0063C79B /* Hansel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hansel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D92AA21D1C79E05E0063C79B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D92AA2241C79E0840063C79B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/main.swift; sourceTree = "<group>"; };
+		D92AA2281C79E1000063C79B /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Server.swift; path = Sources/Server.swift; sourceTree = "<group>"; };
+		D92AA2291C79E1000063C79B /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Status.swift; path = Sources/Status.swift; sourceTree = "<group>"; };
+		D92AA22A1C79E1000063C79B /* Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Middleware.swift; path = Sources/Middleware.swift; sourceTree = "<group>"; };
+		D92AA22B1C79E1000063C79B /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Response.swift; path = Sources/Response.swift; sourceTree = "<group>"; };
+		D92AA22C1C79E1000063C79B /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Router.swift; path = Sources/Router.swift; sourceTree = "<group>"; };
+		D92AA22D1C79E1000063C79B /* SocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketServer.swift; path = Sources/SocketServer.swift; sourceTree = "<group>"; };
+		D92AA22E1C79E1000063C79B /* Handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Handler.swift; path = Sources/Handler.swift; sourceTree = "<group>"; };
+		D92AA22F1C79E1000063C79B /* Belt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Belt.swift; path = Sources/Belt.swift; sourceTree = "<group>"; };
+		D92AA2301C79E1000063C79B /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Socket.swift; path = Sources/Socket.swift; sourceTree = "<group>"; };
+		D92AA2311C79E1000063C79B /* SocketParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketParser.swift; path = Sources/SocketParser.swift; sourceTree = "<group>"; };
+		D92AA2321C79E1000063C79B /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Request.swift; path = Sources/Request.swift; sourceTree = "<group>"; };
+		D92AA2331C79E1000063C79B /* Method.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Method.swift; path = Sources/Method.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D92AA2101C79E05E0063C79B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D92AA20A1C79E05E0063C79B = {
+			isa = PBXGroup;
+			children = (
+				D92AA2231C79E0750063C79B /* Sources */,
+				D92AA2151C79E05E0063C79B /* Hansel */,
+				D92AA2141C79E05E0063C79B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D92AA2141C79E05E0063C79B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D92AA2131C79E05E0063C79B /* Hansel.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D92AA2151C79E05E0063C79B /* Hansel */ = {
+			isa = PBXGroup;
+			children = (
+				D92AA21D1C79E05E0063C79B /* Info.plist */,
+			);
+			path = Hansel;
+			sourceTree = "<group>";
+		};
+		D92AA2231C79E0750063C79B /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D92AA2281C79E1000063C79B /* Server.swift */,
+				D92AA2291C79E1000063C79B /* Status.swift */,
+				D92AA22A1C79E1000063C79B /* Middleware.swift */,
+				D92AA2321C79E1000063C79B /* Request.swift */,
+				D92AA22B1C79E1000063C79B /* Response.swift */,
+				D92AA22C1C79E1000063C79B /* Router.swift */,
+				D92AA22D1C79E1000063C79B /* SocketServer.swift */,
+				D92AA22E1C79E1000063C79B /* Handler.swift */,
+				D92AA22F1C79E1000063C79B /* Belt.swift */,
+				D92AA2301C79E1000063C79B /* Socket.swift */,
+				D92AA2311C79E1000063C79B /* SocketParser.swift */,
+				D92AA2331C79E1000063C79B /* Method.swift */,
+				D92AA2241C79E0840063C79B /* main.swift */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D92AA2121C79E05E0063C79B /* Hansel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D92AA2201C79E05E0063C79B /* Build configuration list for PBXNativeTarget "Hansel" */;
+			buildPhases = (
+				D92AA20F1C79E05E0063C79B /* Sources */,
+				D92AA2101C79E05E0063C79B /* Frameworks */,
+				D92AA2111C79E05E0063C79B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hansel;
+			productName = Hansel;
+			productReference = D92AA2131C79E05E0063C79B /* Hansel.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D92AA20B1C79E05E0063C79B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Dan Neumann";
+				TargetAttributes = {
+					D92AA2121C79E05E0063C79B = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = D92AA20E1C79E05E0063C79B /* Build configuration list for PBXProject "Hansel" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D92AA20A1C79E05E0063C79B;
+			productRefGroup = D92AA2141C79E05E0063C79B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D92AA2121C79E05E0063C79B /* Hansel */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D92AA2111C79E05E0063C79B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D92AA20F1C79E05E0063C79B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D92AA23E1C79E1000063C79B /* SocketParser.swift in Sources */,
+				D92AA2401C79E1000063C79B /* Method.swift in Sources */,
+				D92AA23F1C79E1000063C79B /* Request.swift in Sources */,
+				D92AA23A1C79E1000063C79B /* SocketServer.swift in Sources */,
+				D92AA23C1C79E1000063C79B /* Belt.swift in Sources */,
+				D92AA23D1C79E1000063C79B /* Socket.swift in Sources */,
+				D92AA2351C79E1000063C79B /* Server.swift in Sources */,
+				D92AA2371C79E1000063C79B /* Middleware.swift in Sources */,
+				D92AA2251C79E0840063C79B /* main.swift in Sources */,
+				D92AA2361C79E1000063C79B /* Status.swift in Sources */,
+				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
+				D92AA23B1C79E1000063C79B /* Handler.swift in Sources */,
+				D92AA2381C79E1000063C79B /* Response.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D92AA21E1C79E05E0063C79B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D92AA21F1C79E05E0063C79B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D92AA2211C79E05E0063C79B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Hansel/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.danneu.Hansel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D92AA2221C79E05E0063C79B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Hansel/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.danneu.Hansel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D92AA20E1C79E05E0063C79B /* Build configuration list for PBXProject "Hansel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D92AA21E1C79E05E0063C79B /* Debug */,
+				D92AA21F1C79E05E0063C79B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D92AA2201C79E05E0063C79B /* Build configuration list for PBXNativeTarget "Hansel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D92AA2211C79E05E0063C79B /* Debug */,
+				D92AA2221C79E05E0063C79B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D92AA20B1C79E05E0063C79B /* Project object */;
+}
