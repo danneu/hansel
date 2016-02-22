@@ -1,13 +1,13 @@
 import Foundation
 
-public struct Response {
+public struct Response: Storable, HasHeaders, Tappable {
   public var status: Status = .Ok
-  public var headers: [String: String] = [String: String]()
+  var headers: Headers = Headers()
   // multiHeaders is a place to put headers that can have multiple
   // values like Set-Cookie instead of overloading .headers
   public var multiHeaders: [String: [String]] = [:]
   public var body: ResponseBody = .None
-  public var store: [String : Any] = [:]
+  var store: Store = [:]
 
   // TODO: Any good ways to DRY up common logic between req and res?
 
@@ -46,22 +46,14 @@ public struct Response {
 
   // UPDATE RESPONSE
 
-  // If value is nil, then no header is set
+  // If value is nil, delete header
   public func setHeader (key: String, value: String?) -> Response {
     if value == nil {
-      return self
+      return self.deleteHeader(key)
     }
     var headers = self.headers
     headers[key.lowercaseString] = value
     return Response(base: self, headers: headers)
-  }
-
-  public func setHeader (key: String, value: Int?) -> Response {
-    if value == nil {
-      return self.deleteHeader(key)
-    } else {
-      return self.setHeader(key, value: String(value!))
-    }
   }
 
   public func deleteHeader (key: String) -> Response {
@@ -88,12 +80,6 @@ public struct Response {
 
   public func updateMultiHeader (key: String, fn: [String] -> [String]) -> Response {
     return self.setMultiHeader(key, value: fn(self.getMultiHeader(key)))
-  }
-
-  // QUERYING
-
-  public func getHeader (key: String) -> String? {
-    return self.headers[key.lowercaseString]
   }
 
   // SET RESPONSE BODY (HELPERS)
@@ -134,7 +120,7 @@ public struct Response {
 
     return final
       .setHeader("content-type", value: type)
-      .setHeader("content-length", value: final.body.length())
+      .setHeader("content-length", value: String(final.body.length()))
   }
 
   // REDIRECT
@@ -166,30 +152,4 @@ public struct Response {
     store[key] = fn(store[key])
     return Response(base: self, store: store)
   }
-
-  public func getStore (key: String) -> Any? {
-    return self.store[key]
-  }
-
-  // INSTANCE HELPERS
-
-  public func tap (f: Response -> Response) -> Response {
-    return f(self)
-  }
 }
-
-// HELPERS
-
-// FIXME: Is there a simpler way to do a regex check?
-func mightBeHtml (str: String) -> Bool {
-  let regex = try! NSRegularExpression(pattern: "^\\s*<", options: [])
-
-  let match = regex.numberOfMatchesInString(
-    str,
-    options: [],
-    range: NSRange(location: 0, length: str.characters.count)
-  )
-
-  return match > 0
-}
-

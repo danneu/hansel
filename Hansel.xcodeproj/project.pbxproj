@@ -26,6 +26,8 @@
 		D92AA24A1C79F39E0063C79B /* Batteries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2481C79F39E0063C79B /* Batteries.swift */; };
 		D92AA24D1C79F53A0063C79B /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA24C1C79F53A0063C79B /* Head.swift */; };
 		D93E07F31C7A1D410073F296 /* ServeStatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93E07F21C7A1D410073F296 /* ServeStatic.swift */; };
+		D9944FF71C7A9B18001666EB /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9944FF61C7A9B18001666EB /* RequestBody.swift */; };
+		D99FFDF91C7A9EFF00B91771 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99FFDF81C7A9EFF00B91771 /* Protocol.swift */; };
 		D9AB7BFD1C7A286200112E36 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */; };
 		E9E2226E3AA301228CBF8D08 /* Pods_Hansel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */; };
 /* End PBXBuildFile section */
@@ -55,6 +57,8 @@
 		D92AA2481C79F39E0063C79B /* Batteries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Batteries.swift; path = Sources/Batteries.swift; sourceTree = "<group>"; };
 		D92AA24C1C79F53A0063C79B /* Head.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Head.swift; path = Sources/Head.swift; sourceTree = "<group>"; };
 		D93E07F21C7A1D410073F296 /* ServeStatic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServeStatic.swift; path = Sources/ServeStatic.swift; sourceTree = "<group>"; };
+		D9944FF61C7A9B18001666EB /* RequestBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestBody.swift; path = Sources/RequestBody.swift; sourceTree = "<group>"; };
+		D99FFDF81C7A9EFF00B91771 /* Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Protocol.swift; path = Sources/Protocol.swift; sourceTree = "<group>"; };
 		D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseBody.swift; path = Sources/ResponseBody.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,6 +126,8 @@
 				D92AA2291C79E1000063C79B /* Status.swift */,
 				D92AA22A1C79E1000063C79B /* Middleware.swift */,
 				D92AA2321C79E1000063C79B /* Request.swift */,
+				D99FFDF81C7A9EFF00B91771 /* Protocol.swift */,
+				D9944FF61C7A9B18001666EB /* RequestBody.swift */,
 				D92AA22B1C79E1000063C79B /* Response.swift */,
 				D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */,
 				D92AA22C1C79E1000063C79B /* Router.swift */,
@@ -273,6 +279,7 @@
 				D92AA23F1C79E1000063C79B /* Request.swift in Sources */,
 				D92AA23A1C79E1000063C79B /* SocketServer.swift in Sources */,
 				D92AA23C1C79E1000063C79B /* Belt.swift in Sources */,
+				D99FFDF91C7A9EFF00B91771 /* Protocol.swift in Sources */,
 				D93E07F31C7A1D410073F296 /* ServeStatic.swift in Sources */,
 				D92AA24A1C79F39E0063C79B /* Batteries.swift in Sources */,
 				D92AA23D1C79E1000063C79B /* Socket.swift in Sources */,
@@ -288,6 +295,7 @@
 				D9195AE41C7A435D006D553F /* Cookie.swift in Sources */,
 				D92AA23B1C79E1000063C79B /* Handler.swift in Sources */,
 				D92AA2381C79E1000063C79B /* Response.swift in Sources */,
+				D9944FF71C7A9B18001666EB /* RequestBody.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

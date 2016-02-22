@@ -8,12 +8,14 @@ import Foundation
 
 // TODO: Clean up init spam
 
-public struct Request {
+// TODO: Support byte array
+
+public struct Request: Storable, HasHeaders, Tappable {
   public let url: String
   public let method: Method
-  public let headers: [String: String]
-  public let body: String
-  public let store: [String : Any]
+  let headers: Headers
+  public let body: RequestBody
+  let store: Store
   public let address: String
   public var path: String {
     get {
@@ -26,7 +28,7 @@ public struct Request {
   public init (
     method: Method = .Get,
     url: String = "/",
-    body: String = "",
+    body: RequestBody = .None,
     headers: [String: String] = [String: String](),
     store: [String: Any] = [String: Any](),
     address: String = ""
@@ -43,7 +45,7 @@ public struct Request {
   public init (
     base: Request,
     method: Method? = nil,
-    body: String? = nil,
+    body: RequestBody? = nil,
     headers: [String: String]? = nil,
     store: [String: Any]? = nil
     ) {
@@ -55,19 +57,24 @@ public struct Request {
       self.store = store ?? base.store
   }
 
-  // QUERYING
-
-  public func getHeader (key: String) -> String? {
-    return self.headers[key.lowercaseString]
-  }
-
   // UPDATING
 
-  public func setHeader (key: String, value: String) -> Request {
+  public func setHeader (key: String, value: String?) -> Request {
+    if value == nil {
+      return self
+    }
     var headers = self.headers
     headers[key.lowercaseString] = value
     return Request(base: self, headers: headers)
   }
+
+  public func deleteHeader (key: String) -> Request {
+    var headers = self.headers
+    headers.removeValueForKey(key)
+    return Request(base: self, headers: headers)
+  }
+
+  // STORABLE
 
   public func setStore (key: String, value: Any) -> Request {
     var store = self.store
@@ -81,7 +88,4 @@ public struct Request {
     return Request(base: self, store: store)
   }
 
-  public func getStore (key: String) -> Any? {
-    return self.store[key]
-  }
 }
