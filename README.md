@@ -322,4 +322,3 @@ some of its own outer middleware:
 XCode with latest-swift (3.0-DEV), it can resolve `import PathKit`. However
 cocoapods PathKit works in XCode, but not with `swift build`.
 So that's why I have both. Sheesh.
-- Support byte array bodies
