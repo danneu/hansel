@@ -12,7 +12,6 @@ extension Request {
   }
 
   func setCookie (key: String, value: String) -> Request {
-   // return self.setStore("cookies", value: encode(value))
     return self.updateStore("cookies") { cookies in
       if var dict = cookies as? [String: String] {
         dict[key] = Belt.urlEncode(value)
@@ -24,12 +23,28 @@ extension Request {
   }
 }
 
-// TODO: Response cookies aren't just k/v anymore despite this code.
-// They are configurable records, options objects.
+typealias Seconds = Int
+
+struct ResponseCookie {
+  var key: String
+  var value: String
+  var path: String? = nil
+  var expires: NSDate? = nil
+  var maxAge: Seconds? = nil
+  var domain: String? = nil
+  var secure: Bool? = nil
+  var httpOnly: Bool? = nil
+  var firstPartyOnly: Bool? = nil
+
+  init (_ key: String, value: String) {
+    self.key = key
+    self.value = value
+  }
+}
 
 extension Response {
-  var cookies: [String: String] {
-    if let value = self.store["cookies"] as? [String: String] {
+  var cookies: [String: ResponseCookie] {
+    if let value = self.store["cookies"] as? [String: ResponseCookie] {
       return value
     } else {
       return [:]
@@ -37,12 +52,16 @@ extension Response {
   }
 
   func setCookie (key: String, value: String) -> Response {
+    return self.setCookie(key, opts: ResponseCookie(key, value: value))
+  }
+
+  func setCookie (key: String, opts: ResponseCookie) -> Response {
     return self.updateStore("cookies") { cookies in
-      if var dict = cookies as? [String: String] {
-        dict[key] = Belt.urlEncode(value)
+      if var dict = cookies as? [String: ResponseCookie] {
+        dict[key] = opts
         return dict
       } else {
-        return [key: Belt.urlEncode(value)]
+        return [key: opts]
       }
     }
   }
@@ -52,8 +71,7 @@ internal struct Cookie {
   internal static let wrapCookies: Middleware = { handler in
     return { request in
       let response = handler(cookieRequest(request))
-      // TODO: cookieResponse, map cookies to headers
-      return response
+      return cookieResponse(response)
     }
   }
 }
@@ -68,12 +86,22 @@ let cookieRequest: Request -> Request = { request in
   return request.setStore("cookies", value: cookies)
 }
 
+let cookieResponse: Response -> Response = { response in
+  var res = response
+  for (k, v) in response.cookies {
+    res = res.updateMultiHeader("set-cookie") { arr in
+      return arr + [serialize(v)]
+    }
+  }
+  return res
+}
+
 // PARSING
 
 func parse (str: String) -> [String: String] {
   let pairs = str.characters.split(";")
     .map(String.init)
-    .map(trim)
+    .map(Belt.trim)
     .map(parsePair)
 
   var out: [String: String] = [:]
@@ -92,7 +120,7 @@ func parse (str: String) -> [String: String] {
 //
 // Returns nil on bad pair
 func parsePair (s: String) -> (k: String, v: String)? {
-  let pair: [String] = s.characters.split("=").map(String.init).map(trim)
+  let pair: [String] = s.characters.split("=").map(String.init).map(Belt.trim)
   if pair.count != 2 {
     return nil
   }
@@ -100,11 +128,52 @@ func parsePair (s: String) -> (k: String, v: String)? {
   return (k, v)
 }
 
-func trim (s: String) -> String {
-  return s.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-}
-
 func unwrapQuotes (s: String) -> String {
   let regex = try! NSRegularExpression(pattern: "(^\"|\"$)", options: [])
   return regex.stringByReplacingMatchesInString(s, options: .WithoutAnchoringBounds, range: NSMakeRange(0, s.characters.count), withTemplate: "")
+}
+
+// SERIALIZE
+
+func serialize (opts: ResponseCookie) -> String {
+  var pairs = [opts.key + "=" + Belt.urlEncode(opts.value)]
+
+  if let maxAge = opts.maxAge {
+    pairs.append("max-age=\(maxAge)")
+  }
+
+  if let domain = opts.domain {
+    pairs.append("domain=\(domain)")
+  }
+
+  if let path = opts.path {
+    pairs.append("path=\(path)")
+  }
+
+  if let expires = opts.expires {
+    pairs.append("expires=\(toUtcString(expires))")
+  }
+
+  if let httpOnly = opts.httpOnly where httpOnly == true {
+    pairs.append("HttpOnly")
+  }
+
+  if let secure = opts.secure where secure == true {
+    pairs.append("Secure")
+  }
+
+  if let firstPartyOnly = opts.firstPartyOnly where firstPartyOnly == true {
+    pairs.append("First-Party-Only")
+  }
+
+  return pairs.joinWithSeparator("; ")
+}
+
+// FIXME: Wrong format but can't be bothered.
+// Try: Mon, 22 Feb 2016 00:47:58 GMT
+func toUtcString (date: NSDate) -> String {
+  let formatter = NSDateFormatter();
+  formatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+  formatter.timeZone = NSTimeZone(abbreviation: "UTC")
+  return formatter.stringFromDate(date)
 }

@@ -15,6 +15,10 @@ extension Belt {
       .stringByReplacingOccurrencesOfString("<", withString: "&lt;")
       .stringByReplacingOccurrencesOfString(">", withString: "&gt;")
   }
+
+  public static func trim (s: String) -> String {
+    return s.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+  }
 }
 
 // PERCENT ENCODING

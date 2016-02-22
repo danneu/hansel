@@ -122,15 +122,6 @@ let handler: Handler { request in
 Middleware functions let you run logic before the request hits the handler
 and after the response leaves the handler.
 
-For example, a cookie-parsing middleware function would parse a request's
-"Cookie" header and attach it as a `.cookies` map on the request for
-downstream middleware/handlers to access.
-
-And once the response is coming back upstream, it would convert the
-response's `.cookies` map to zero or more "Set-Cookie" headers.
-
-All of this logic would be contained in a single function.
-
 Because `Middleware` is a typealias, these are equivalent:
 
 ``` swift
@@ -268,8 +259,13 @@ HTTP/1.1 403 Forbidden
 
 ### Cookies (Middleware)
 
-So far, cookies are only parsed on the request. They aren't yet supported
-on the response.
+Using this middleware will assoc `.cookies` (dictionary) and 
+`.setCookie(k, v)` methods to the request and response.
+
+- On the request, the cookie dictionary is just `[String: String]`
+- On the response, the dictionary is `[String: ResponseCookie]` which is
+a record that lets you configure response cookie settings like expiration
+and http-only.
 
 ``` swift
 let middleware = compose(
@@ -277,22 +273,31 @@ let middleware = compose(
 )
 
 let handler: Handler = { request in 
-  if let message = request.cookies["message"] {
+  var count: Int
+
+  if let viewsStr = request.cookies["views"], let views = Int(viewsStr) {
     return Response().text("Message: \(message)")
+    count = views + 1
   } else {
-    return Response().text("No message cookie sent")
+    count = 1
   }
+
+  return Response()
+    .text("You have viewed this page \(count) times")
+    .setCookie("views", String(count))
+
+  // Or
+
+  return Response()
+    .text("You have viewed this page \(count) times")
+    .setCookie("views", { 
+      value: String(count),
+      maxAge: 86400, // Expire in 24 hours
+      // ... more options
+    })
 }
 
 Server(middleware(handler)).listen()
-```
-
-```
-$ http localhost:3000
-No message cookie sent
-
-$ http localhost:3000 'Cookie:message=hello'
-Message: hello
 ```
 
 ## Default Middleware

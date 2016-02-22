@@ -3,8 +3,13 @@ import Foundation
 public struct Response {
   public var status: Status = .Ok
   public var headers: [String: String] = [String: String]()
+  // multiHeaders is a place to put headers that can have multiple
+  // values like Set-Cookie instead of overloading .headers
+  public var multiHeaders: [String: [String]] = [:]
   public var body: ResponseBody = .None
   public var store: [String : Any] = [:]
+
+  // TODO: Any good ways to DRY up common logic between req and res?
 
   // INITIALIZERS
 
@@ -21,10 +26,12 @@ public struct Response {
     status: Status? = nil,
     body: ResponseBody? = nil,
     headers: [String: String]? = nil,
+    multiHeaders: [String: [String]]? = nil,
     store: [String: Any]? = nil
   ) {
     self.status = status ?? base.status
     self.headers = headers ?? base.headers
+    self.multiHeaders = multiHeaders ?? base.multiHeaders
     self.body = body ?? base.body
     self.store = store ?? base.store
   }
@@ -65,6 +72,22 @@ public struct Response {
 
   public func setStatus (status: Status) -> Response {
     return Response(base: self, status: status)
+  }
+
+  // MULTI-HEADERS
+
+  public func getMultiHeader (key: String) -> [String] {
+    return self.multiHeaders[key.lowercaseString] ?? [String]()
+  }
+
+  public func setMultiHeader (key: String, value: [String]) -> Response {
+    var multiHeaders = self.multiHeaders
+    multiHeaders[key.lowercaseString] = value
+    return Response(base: self, multiHeaders: multiHeaders)
+  }
+
+  public func updateMultiHeader (key: String, fn: [String] -> [String]) -> Response {
+    return self.setMultiHeader(key, value: fn(self.getMultiHeader(key)))
   }
 
   // QUERYING
@@ -146,6 +169,12 @@ public struct Response {
 
   public func getStore (key: String) -> Any? {
     return self.store[key]
+  }
+
+  // INSTANCE HELPERS
+
+  public func tap (f: Response -> Response) -> Response {
+    return f(self)
   }
 }
 

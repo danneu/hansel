@@ -85,9 +85,20 @@ public class SocketServer {
   // TODO: KeepAlive
   private func respond (socket: Socket, response: Response) throws -> Bool {
     try socket.writeUTF8("HTTP/1.1 \(response.status.rawValue) \(response.status.phrase)\r\n")
+
+    // write k=v headers
     for (key, value) in response.headers {
       try socket.writeUTF8("\(key): \(value)\r\n")
     }
+
+    // write k=[v] headers
+    for (key, vs) in response.multiHeaders {
+      for v in vs {
+        try socket.writeUTF8("\(key): \(v)\r\n")
+      }
+    }
+
+    // write boundary
     try socket.writeUTF8("\r\n")
 
     // write body
