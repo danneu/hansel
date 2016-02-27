@@ -1,5 +1,5 @@
 
-*Disclaimer: I started building this yesterday to learn Swift. 
+*Disclaimer: I started building this yesterday to learn Swift and XCode. 
 I don't have much experience with statically-typed languages.*
 
 # Hansel
@@ -103,6 +103,127 @@ Response(.NotFound).text("File not found :(")
 ```
 
 Pretty scatterbrained.
+
+### Reading/Writing Headers
+
+``` swift
+public typealias Header = (String, String)
+```
+
+Headers are represented as string tuples to model the fact that
+duplicate headers can exist (like when setting multiple cookies) and
+for eventual integration with the [Nest protocol][nest].
+
+The Request and Response conform to my [HeaderList protocol][headerlist]
+which implements methods for reading and updating headers:
+
+``` swift
+public typealias Header = (String, String)
+
+protocol HeaderList {
+  var headers: [Header] { get set }
+  func getHeader (key: String) -> String?
+  func setHeader (key: String, val: String?) -> Self
+  func deleteHeader (key: String) -> Self
+  func appendHeader (key: String, val: String) -> Self
+  func updateHeader (key: String, fn: String? -> String?) -> Self
+}
+```
+
+- `getHeader(key)` returns the first matching header.
+- `deleteHeader(key)` deletes all headers with that key.
+- `setHeader(key, val)` deletes all the headers of that key and then sets the
+header.
+- `updateHeader(key, fn(val -> val))` updates the first matching header and
+deletes the rest.
+- `appendHeader(key, val)` appends a header to the array.
+
+[headerlist]: https://github.com/danneu/hansel/blob/19a2012d109ab05eebc4f9362d9d18276b038210/Sources/Protocol.swift#L10-L19
+[nest]: https://github.com/nestproject/Nest/blob/master/Specification.md
+
+Example:
+
+``` swift
+let handler: Handler = { request in
+  return Response()
+    .text("Test")
+    .setHeader("X-Example", "initial")
+    .setHeader("X-Example", "overwritten")
+    .appendHeader("Set-Cookie", "hello=world")
+    .appendHeader("Set-Cookie", "goodbye=world")
+}
+```
+
+Produces this Response:
+
+```
+HTTP/1.1 200 OK
+X-Example: overwritten
+Set-Cookie: hello=world
+Set-Cookie: goodbye=world
+Content-Length: 4
+
+Test
+```
+
+### Storage
+
+Request and Response also implement my [Storable protocol][storable] which
+gives handlers and middleware a dictionary to store arbitrary data.
+
+``` swift
+typealias Store = [String: Any]
+
+protocol Storable {
+  var store: Store { get set }
+  func getStore (key: String) -> Any?
+  func setStore (key: String, val: Any) -> Self
+  func updateStore (key: String, fn: Any -> Any) -> Self
+}
+```
+
+My idea so far is that middleware can use `request.store` and `response.store`
+as generic data slots, and then extend Request and Respond with helper 
+methods that read/manipulate data in those slots.
+
+For example, this is how the Cookie.swift middleware is implemented:
+
+``` swift
+extension Response {
+  var cookies: [String: ResponseCookie] {
+    if let value = self.getStore("cookies") as? [String: ResponseCookie] {
+      return value
+    } else {
+      return [:]
+    }
+  }
+
+  func setCookie (key: String, value: String) -> Response {
+    return self.setCookie(key, opts: ResponseCookie(key, value: value))
+  }
+
+  func setCookie (key: String, opts: ResponseCookie) -> Response {
+    return self.updateStore("cookies") { cookies in
+      if var dict = cookies as? [String: ResponseCookie] {
+        dict[key] = opts
+        return dict
+      } else {
+        return [key: opts]
+      }
+    }
+  }
+}
+```
+
+That way, cookie middleware exposes cookie features as just
+wrappers around the store:
+
+- response.cookies: [String: String]
+- response.setCookie: (String, ResponseCookie) -> Response
+
+Without the end-user having to manipulate the store directly.
+
+[storable]: https://github.com/danneu/hansel/blob/19a2012d109ab05eebc4f9362d9d18276b038210/Sources/Protocol.swift#L57-L64
 
 ## Handler (Request -> Response)
 
@@ -324,3 +445,6 @@ some of its own outer middleware:
 XCode with latest-swift (3.0-DEV), it can resolve `import PathKit`. However
 cocoapods PathKit works in XCode, but not with `swift build`.
 So that's why I have both. Sheesh.
+- Some libs to look at:
+    - https://github.com/krzyzanowskim/CryptoSwift
+    - https://github.com/czechboy0/Jay
