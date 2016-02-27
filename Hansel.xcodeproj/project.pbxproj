@@ -26,6 +26,7 @@
 		D92AA24A1C79F39E0063C79B /* Batteries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2481C79F39E0063C79B /* Batteries.swift */; };
 		D92AA24D1C79F53A0063C79B /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA24C1C79F53A0063C79B /* Head.swift */; };
 		D93E07F31C7A1D410073F296 /* ServeStatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93E07F21C7A1D410073F296 /* ServeStatic.swift */; };
+		D9528B061C82483F0088AC98 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9528B051C82483F0088AC98 /* ContentType.swift */; };
 		D9944FF71C7A9B18001666EB /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9944FF61C7A9B18001666EB /* RequestBody.swift */; };
 		D99FFDF91C7A9EFF00B91771 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99FFDF81C7A9EFF00B91771 /* Protocol.swift */; };
 		D9AB7BFD1C7A286200112E36 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */; };
@@ -57,6 +58,7 @@
 		D92AA2481C79F39E0063C79B /* Batteries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Batteries.swift; path = Sources/Batteries.swift; sourceTree = "<group>"; };
 		D92AA24C1C79F53A0063C79B /* Head.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Head.swift; path = Sources/Head.swift; sourceTree = "<group>"; };
 		D93E07F21C7A1D410073F296 /* ServeStatic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServeStatic.swift; path = Sources/ServeStatic.swift; sourceTree = "<group>"; };
+		D9528B051C82483F0088AC98 /* ContentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentType.swift; path = Sources/ContentType.swift; sourceTree = "<group>"; };
 		D9944FF61C7A9B18001666EB /* RequestBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestBody.swift; path = Sources/RequestBody.swift; sourceTree = "<group>"; };
 		D99FFDF81C7A9EFF00B91771 /* Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Protocol.swift; path = Sources/Protocol.swift; sourceTree = "<group>"; };
 		D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseBody.swift; path = Sources/ResponseBody.swift; sourceTree = "<group>"; };
@@ -137,8 +139,9 @@
 				D92AA22D1C79E1000063C79B /* SocketServer.swift */,
 				D92AA2311C79E1000063C79B /* SocketParser.swift */,
 				D92AA2331C79E1000063C79B /* Method.swift */,
-				D92AA2241C79E0840063C79B /* main.swift */,
 				D9195AE11C7A33B6006D553F /* Mime.swift */,
+				D9528B051C82483F0088AC98 /* ContentType.swift */,
+				D92AA2241C79E0840063C79B /* main.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				D92AA23F1C79E1000063C79B /* Request.swift in Sources */,
 				D92AA23A1C79E1000063C79B /* SocketServer.swift in Sources */,
 				D92AA23C1C79E1000063C79B /* Belt.swift in Sources */,
+				D9528B061C82483F0088AC98 /* ContentType.swift in Sources */,
 				D99FFDF91C7A9EFF00B91771 /* Protocol.swift in Sources */,
 				D93E07F31C7A1D410073F296 /* ServeStatic.swift in Sources */,
 				D92AA24A1C79F39E0063C79B /* Batteries.swift in Sources */,

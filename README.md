@@ -459,6 +459,19 @@ let handler: Handler = { request in
 Server(middleware(handler)).listen()
 ```
 
+## Content-Type Parser
+
+`ContentType.swift` implements a Content-Type header parser according to
+RFC 7231.
+
+``` swift
+try! ContentType.parse("image/svg+xml; charset=utf-8; foo=\"bar\"")
+=> ContentType(
+     type: "image/svg+xml", 
+     params: ["charset": "utf-8", "foo": "bar"]
+   )
+```
+
 ## Default Middleware
 
 When you give hansel your final handler function, it wraps it with 
@@ -470,9 +483,11 @@ some of its own outer middleware:
 
 - Socket implementation from [glock45/swifter][swifter]
 - Some socket glue code from [tannernelson/vapor][vapor]
+- Some HTTP/RFC implementation ported from [jshttp]
 
 [swifter]: https://github.com/glock45/swifter
 [vapor]: https://github.com/tannernelson/vapor
+[jshttp]: https://github.com/jshttp
 
 ## TODO
 
