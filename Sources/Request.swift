@@ -10,12 +10,12 @@ import Foundation
 
 // TODO: Support byte array
 
-public struct Request: Storable, HeaderList, Tappable {
+public struct Request: Storable, HeaderList {
   public let url: String
   public let method: Method
   var headers: [Header]
   public let body: RequestBody
-  let store: Store
+  var store: Store
   public let address: String
   public var path: String {
     get {
@@ -56,19 +56,4 @@ public struct Request: Storable, HeaderList, Tappable {
       self.body = body ?? base.body
       self.store = store ?? base.store
   }
-
-  // STORABLE
-
-  public func setStore (key: String, value: Any) -> Request {
-    var store = self.store
-    store[key] = value
-    return Request(base: self, store: store)
-  }
-
-  public func updateStore (key: String, fn: Any -> Any) -> Request {
-    var store = self.store
-    store[key] = fn(store[key])
-    return Request(base: self, store: store)
-  }
-
 }

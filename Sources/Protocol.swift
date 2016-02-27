@@ -57,26 +57,29 @@ extension HeaderList {
 typealias Store = [String: Any]
 
 protocol Storable {
-  var store: Store { get }
+  var store: Store { get set }
   func getStore (key: String) -> Any?
-  func setStore (key: String, value: Any) -> Self
+  func setStore (key: String, val: Any) -> Self
   func updateStore (key: String, fn: Any -> Any) -> Self
 }
 
 extension Storable {
-  func getStore (key: String) -> Any? {
-    return self.store[key.lowercaseString]
+  var store: Store {
+    get { return self.store }
+    set (newStore) { self.store = store }
   }
-}
 
-// TAPPABLE
+  func getStore (key: String) -> Any? {
+    return self.store[key]
+  }
 
-protocol Tappable {
-  func tap (f: Self -> Self) -> Self
-}
+  func setStore (key: String, val: Any) -> Self {
+    var new = self
+    new.store[key] = val
+    return new
+  }
 
-extension Tappable {
-  func tap (f: Self -> Self) -> Self {
-    return f(self)
+  func updateStore (key: String, fn: Any -> Any) -> Self {
+    return self.setStore(key, val: fn(self.getStore(key)))
   }
 }

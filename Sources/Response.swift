@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Response: Storable, HeaderList, Tappable {
+public struct Response: Storable, HeaderList {
   public var status: Status = .Ok
   var headers: [Header] = []
   public var body: ResponseBody = .None
@@ -107,19 +107,5 @@ public struct Response: Storable, HeaderList, Tappable {
   public func redirectBack (request: Request, altUrl: String = "/") -> Response {
     let url = request.getHeader("referrer") ?? altUrl
     return self.redirect(url)
-  }
-
-  // STORE
-
-  public func setStore (key: String, value: Any) -> Response {
-    var store = self.store
-    store[key] = value
-    return Response(base: self, store: store)
-  }
-
-  public func updateStore (key: String, fn: Any -> Any) -> Response {
-    var store = self.store
-    store[key] = fn(store[key])
-    return Response(base: self, store: store)
   }
 }

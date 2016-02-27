@@ -83,7 +83,7 @@ let cookieRequest: Request -> Request = { request in
   if let val = request.getHeader("cookie") {
     cookies = parse(val)
   }
-  return request.setStore("cookies", value: cookies)
+  return request.setStore("cookies", val: cookies)
 }
 
 let cookieResponse: Response -> Response = { response in
