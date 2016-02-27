@@ -34,7 +34,7 @@ class SocketParser {
 
     var bodyBytes: [UInt8] = []
     if
-      let lengthStr = headers["content-length"],
+      let lengthStr = (headers.filter { $0.0.lowercaseString == "content-length" }.first?.1),
       let length = Int(lengthStr) {
         bodyBytes = try readBody(socket, size: length)
     }
@@ -69,8 +69,8 @@ class SocketParser {
     return body
   }
 
-  private func readHeaders(socket: Socket) throws -> [String: String] {
-    var headers = [String: String]()
+  private func readHeaders(socket: Socket) throws -> [(String, String)] {
+    var headers: [(String, String)] = []
 
     while true {
       let headerLine = try socket.readLine()
@@ -82,8 +82,8 @@ class SocketParser {
         .split(":", maxSplit: 1, allowEmptySlices: true)
         .map(String.init)
 
-      if let key = tokens.first, value = tokens.last {
-        headers[key.lowercaseString] = value
+      if let key = tokens.first, val = tokens.last {
+        headers.append((key, val))
       }
     }
   }

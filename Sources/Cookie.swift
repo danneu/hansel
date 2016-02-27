@@ -80,7 +80,7 @@ internal struct Cookie {
 
 let cookieRequest: Request -> Request = { request in
   var cookies: [String: String] = [:]
-  if let val = request.headers["cookie"] {
+  if let val = request.getHeader("cookie") {
     cookies = parse(val)
   }
   return request.setStore("cookies", value: cookies)
@@ -89,9 +89,7 @@ let cookieRequest: Request -> Request = { request in
 let cookieResponse: Response -> Response = { response in
   var res = response
   for (k, v) in response.cookies {
-    res = res.updateMultiHeader("set-cookie") { arr in
-      return arr + [serialize(v)]
-    }
+    res = res.appendHeader("set-cookie", val: serialize(v))
   }
   return res
 }

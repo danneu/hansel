@@ -91,13 +91,6 @@ public class SocketServer {
       try socket.writeUTF8("\(key): \(value)\r\n")
     }
 
-    // write k=[v] headers
-    for (key, vs) in response.multiHeaders {
-      for v in vs {
-        try socket.writeUTF8("\(key): \(v)\r\n")
-      }
-    }
-
     // write boundary
     try socket.writeUTF8("\r\n")
 

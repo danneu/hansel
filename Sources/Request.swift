@@ -10,10 +10,10 @@ import Foundation
 
 // TODO: Support byte array
 
-public struct Request: Storable, HasHeaders, Tappable {
+public struct Request: Storable, HeaderList, Tappable {
   public let url: String
   public let method: Method
-  let headers: Headers
+  var headers: [Header]
   public let body: RequestBody
   let store: Store
   public let address: String
@@ -29,7 +29,7 @@ public struct Request: Storable, HasHeaders, Tappable {
     method: Method = .Get,
     url: String = "/",
     body: RequestBody = .None,
-    headers: [String: String] = [String: String](),
+    headers: [Header] = [],
     store: [String: Any] = [String: Any](),
     address: String = ""
     ) {
@@ -46,7 +46,7 @@ public struct Request: Storable, HasHeaders, Tappable {
     base: Request,
     method: Method? = nil,
     body: RequestBody? = nil,
-    headers: [String: String]? = nil,
+    headers: [Header]? = nil,
     store: [String: Any]? = nil
     ) {
       self.url = base.url
@@ -55,23 +55,6 @@ public struct Request: Storable, HasHeaders, Tappable {
       self.headers = headers ?? base.headers
       self.body = body ?? base.body
       self.store = store ?? base.store
-  }
-
-  // UPDATING
-
-  public func setHeader (key: String, value: String?) -> Request {
-    if value == nil {
-      return self
-    }
-    var headers = self.headers
-    headers[key.lowercaseString] = value
-    return Request(base: self, headers: headers)
-  }
-
-  public func deleteHeader (key: String) -> Request {
-    var headers = self.headers
-    headers.removeValueForKey(key)
-    return Request(base: self, headers: headers)
   }
 
   // STORABLE

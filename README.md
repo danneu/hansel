@@ -64,16 +64,18 @@ enum Method: String {
   // ...
 }
 
+typealias Header = (String, String)
+
 struct Request {
   let url: String
-  let headers: [String: String]
+  let headers: [Header]
   let method: Method
   // ...
 }
 
 struct Response {
   let status: Status
-  let headers: [String: String]
+  let headers: [Header]
   let body: String
   // ...
 }
@@ -93,7 +95,7 @@ Some initializer examples:
 
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
-Response(status: .Ok, headers: [String: String](), body: .Text("Hello"))
+Response(status: .Ok, headers: [], body: .Text("Hello"))
 Response().text("Hello")           //=> text/plain
 Response().html("<h1>Hello</h1>")  //=> text/html
 Response(.NotFound)
