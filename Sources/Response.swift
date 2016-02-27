@@ -21,6 +21,14 @@ public struct Response: Storable, HasHeaders, Tappable {
     self.headers = headers
   }
 
+  init (status: Status, body: ResponseBody, headers: Headers, multiHeaders: [String: [String]], store: Store) {
+    self.status = status
+    self.body = body
+    self.headers = headers
+    self.multiHeaders = multiHeaders
+    self.store = store
+  }
+
   public init (
     base: Response,
     status: Status? = nil,
