@@ -19,6 +19,8 @@ import Foundation
 enum ContentTypeError: ErrorType {
   case InvalidMediaType
   case InvalidParamFormat
+  case InvalidParamKey
+  case InvalidParamValue
 }
 
 //
@@ -75,9 +77,29 @@ public struct ContentType {
   // e.g. ["charset": "utf-8"]
   let params: [String: String]
 
+  // Note: type and params are not validated until calling
+  // the format() method
   init (_ type: String, params: [String: String] = [:]) {
     self.type = type
     self.params = params
+  }
+
+  // Serialize struct into string for the Content-Type header
+  func format () throws -> String {
+    guard typeRe.test(self.type) else {
+      throw ContentTypeError.InvalidMediaType
+    }
+    let sortedKeys = Array(self.params.keys).sort { $0 < $1 }
+    var output: String = self.type
+    for key in sortedKeys {
+      guard tokenRe.test(key) else {
+        throw ContentTypeError.InvalidParamKey
+      }
+      let quotedVal = try quoteValue(self.params[key]!)
+      output += "; \(key)=\(quotedVal)"
+    }
+
+    return output
   }
 
   static func parse (input: String) throws -> ContentType {
@@ -118,7 +140,10 @@ public struct ContentType {
 
     var params: [String: String] = [:]
     for (key, val) in pairs {
-      params[key.lowercaseString] = val
+      // only consider params with valid values
+      if (tokenRe.test(val)) {
+        params[key.lowercaseString] = val
+      }
     }
 
     return ContentType(type, params: params)
@@ -139,6 +164,21 @@ private func getCapturedPair (fullString: String) -> NSTextCheckingResult -> (St
 
     return (key, val)
   }
+}
+
+// Quote a param value if necessary
+private func quoteValue (input: String) throws -> String {
+  // no need
+  if (tokenRe.test(input)) {
+    return input
+  }
+
+  if (input.characters.count > 0 && !textRe.test(input)) {
+    throw ContentTypeError.InvalidParamValue
+  }
+
+  let quoted = quoteRe.internalExpression.stringByReplacingMatchesInString(input, options: [], range: NSMakeRange(0, input.characters.count), withTemplate: "\\\\$1")
+  return "\"\(quoted)\""
 }
 
 // Stubbed out a helper class for regular expressions to extend as needed

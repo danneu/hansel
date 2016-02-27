@@ -471,6 +471,15 @@ try! ContentType.parse("image/svg+xml; charset=utf-8; foo=\"bar\"")
    )
 ```
 
+`ContentType` structs can serialize back into strings for use in the
+Content-Type header:
+
+``` swift
+let type = try! ContentType.parse("image/svg+xml; charset=utf-8; foo=\"bar\"")
+type.format()
+=> "image/svg+xml; charset=utf-8; foo=bar"
+```
+
 ## Default Middleware
 
 When you give hansel your final handler function, it wraps it with 
