@@ -8,7 +8,7 @@ import Foundation
 
 extension Request {
   var cookies: [String: String] {
-    return self.store["cookies"] as! [String: String]
+    return self.getStore("cookies") as! [String: String]
   }
 
   func setCookie (key: String, value: String) -> Request {

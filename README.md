@@ -223,6 +223,42 @@ wrappers around the store:
 
 Without the end-user having to manipulate the store directly.
 
+Another example is authentication middleware that
+attaches `request.currentUser: User?` to every request so that downstream
+middleware and handlers can access the current logged-in user:
+
+``` swift
+struct User {
+  var id: Int
+  var uname: String
+}
+
+protocol HasCurrentUser {
+  var currentUser: User? { get set }
+}
+
+extension Request: HasCurrentUser {
+  var currentUser: User? {
+    get { 
+      return self.store["current_user"] as! User
+    }
+    set (user) {
+      self.setStore("current_user", user)
+    }
+  }
+}
+
+let wrapCurrentUser: Middleware = { handler in
+  return { request in
+    let sessionId: String? = request.cookies["session_id"]
+    if sessionId == nil { return handler(request) }
+    let user: User? = database.getUserBySessionId(sessionId!)
+    if user == nil { return handler(request) }
+    return handler(request.setCurrentUser(user))
+  }
+}
+```
+
 [storable]: https://github.com/danneu/hansel/blob/19a2012d109ab05eebc4f9362d9d18276b038210/Sources/Protocol.swift#L57-L64
 
 ## Handler (Request -> Response)
@@ -448,3 +484,6 @@ So that's why I have both. Sheesh.
 - Some libs to look at:
     - https://github.com/krzyzanowskim/CryptoSwift
     - https://github.com/czechboy0/Jay
+- Figure out how to add protocol constraints to types so that middleware
+can ensure that Request/Response implement dependency protocols. For example,
+session middleware ensuring that the Request implements cookies.
