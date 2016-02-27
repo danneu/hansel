@@ -1,6 +1,5 @@
 
-*Disclaimer: I started building this yesterday to learn Swift and XCode. 
-I don't have much experience with statically-typed languages.*
+*Disclaimer: I'm new to Swift and XCode*
 
 # Hansel
 
