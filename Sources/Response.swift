@@ -82,7 +82,7 @@ public struct Response: Storable, HeaderList {
     var final = self
 
     // If status expects empty body, then clear the body
-    if final.status.emptyBody() {
+    if final.status.empty() {
       final = final.none()
     }
 
@@ -95,11 +95,10 @@ public struct Response: Storable, HeaderList {
 
   // REDIRECT
 
-  // TODO: Ensure status is one of the redirect statuses
-  public func redirect (url: String, status: Status = .TempRedirect) -> Response {
+  public func redirect (url: String, status: Status = .Found) -> Response {
     return self
       .setHeader("location", val: url)
-      .setStatus(status)
+      .setStatus(status.redirect() ? status : .Found)
   }
 
   // redirectBack(request)
