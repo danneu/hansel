@@ -458,7 +458,7 @@ let handler: Handler = { request in
 Server(middleware(handler)).listen()
 ```
 
-## Content-Type Parser
+### Content-Type Parser
 
 `ContentType.swift` implements a Content-Type header parser according to
 RFC 7231.
@@ -479,6 +479,21 @@ let type = try! ContentType.parse("image/svg+xml; charset=utf-8; foo=\"bar\"")
 type.format()
 => "image/svg+xml; charset=utf-8; foo=bar"
 ```
+
+### ETag
+
+I have a basic ETag generator in `ETag.swift` that works on byte arrays.
+
+``` swift
+let bytes: [UInt8] = Array("foo".utf8)
+
+ETag.generate(bytes)
+=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
+```
+
+**TODO:** Once I figure out a streaming abstraction, the ETag generator
+will be extended to create weak ETags based on file-system state
+data (mtime and size).
 
 ## Default Middleware
 
