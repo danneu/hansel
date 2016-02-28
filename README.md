@@ -17,8 +17,16 @@ let logger: Middleware = { handler in
   }
 }
 
+// a silly router
 let handler: Handler = { request in
-  return Response().text("Hello world")
+  switch (request.method, request.path) {
+  case (.Get, "/"): 
+    return Response().html("<h1>Homepage</h1>")
+  case (.Get, "/json"): 
+    return Response().json(["Hello": "world"])
+  default: 
+    return Response(.NotFound)
+  }
 }
 
 Server(logger(handler)).listen(3000)
@@ -126,14 +134,13 @@ Some initializer examples:
 
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
-Response(status: .Ok, headers: [], body: .Text("Hello"))
-Response().text("Hello")           //=> text/plain
-Response().html("<h1>Hello</h1>")  //=> text/html
+Response(status: .Ok, headers: [])
+Response().text("Hello")                //=> text/plain
+Response().html("<h1>Hello</h1>")       //=> text/html
+Response().json(["favoriteNumber": 42]) //=> application/json
 Response(.NotFound)
 Response(.NotFound).text("File not found :(")
 ```
-
-Pretty scatterbrained.
 
 ### Reading/Writing Headers
 
