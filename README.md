@@ -45,38 +45,6 @@ Inspired by Clojure's [ring](https://github.com/ring-clojure/ring), hansel
 aims to make systems slower and easier to reason about by modeling
 the request/response cycle as a succession of immutable transformations.
 
-What makes Ring so pleasant is (1) Clojure's immutable-by-default API for
-transforming maps and (2) middleware aren't special constructs, just
-functions.
-
-``` clojure
-(require '[[ring.util.response :refer [response status header]]])
-
-(defn handler [request]
-  (-> response
-      (assoc :body "<h1>Hello world</h1>")
-      (header "X-Test", "foo")
-      (status 418)))
-
-(def app (-> handler logger (serve-static "./public")))
-```
-
-In Swift, I find that chainable, non-destructive methods recreate most
-of the pleasure. And it's statically-typed.
-
-``` swift
-import Hansel
-
-let handler: Handler = { request in
-  return Response()
-    .html('<h1>Hello world</h1>')
-    .setHeader('X-Test', 'foo')
-    .setStatus(.ImATeapot)
-}
-
-let app: Handler = handler |> logger << serveStatic("./Public")
-```
-
 ## Concepts
 
 Hansel boils down to these concepts:
@@ -87,22 +55,7 @@ Hansel boils down to these concepts:
 
 It's just functions.
 
-In fact, here are the type signatures:
-
 ``` swift
-enum Status: Int {
-  case Ok = 200
-  case NotFound = 404
-  case Error = 500
-  // ...
-}
-
-enum Method: String {
-  case Get = "GET"
-  case Post = "POST"
-  // ...
-}
-
 typealias Header = (String, String)
 
 struct Request {
