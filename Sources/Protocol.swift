@@ -40,6 +40,8 @@ extension HeaderList {
     return new
   }
 
+  // No-ops if val is nil. 
+  // Must use deleteHeader to actually delete one.
   func setHeader (key: String, val: String?) -> Self {
     if val == nil {
       return self
@@ -47,6 +49,7 @@ extension HeaderList {
     return self.deleteHeader(key).appendHeader(key, val: val!)
   }
 
+  // No-ops if fn(val) is nil. 
   func updateHeader (key: String, fn: String? -> String?) -> Self {
     return self.setHeader(key, val: fn(self.getHeader(key)))
   }

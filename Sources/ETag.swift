@@ -16,12 +16,18 @@ struct ETag {
       return "\"0-1B2M2Y8AsgTpgAmY7PhCfg\""
     }
 
-    let hash64 = (padless << base64)(CryptoSwift.Hash.md5(bytes).calculate())
+    let hash64 = padless << base64 <| Hash.md5(bytes).calculate()
     let len = bytes.count
 
     return "\"\(base16(len))-\(hash64)\""
   }
+
+  static func generate (input: String) -> String {
+    return generate([UInt8](input.utf8))
+  }
 }
+
+// HELPERS
 
 private func base16 (n: Int) -> String {
   return String(n, radix: 16, uppercase: false)
