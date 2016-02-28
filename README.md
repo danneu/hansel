@@ -309,10 +309,10 @@ let middleware: Middleware = { handler in
 Since middleware are just functions, it's trivial to compose them:
 
 ``` swift
-// f << g :: g(f(x))
+// f << g :: f(g(x))
 infix operator << { associativity left }
-public func << <A, B, C>(f: A -> B, g: B -> C) -> A -> C {
-  return { x in g(f(x)) }
+public func << <A, B, C>(f: B -> C, g: A -> B) -> A -> C {
+  return { x in f(g(x)) }
 }
 
 // `logger` will touch the request first and the response last

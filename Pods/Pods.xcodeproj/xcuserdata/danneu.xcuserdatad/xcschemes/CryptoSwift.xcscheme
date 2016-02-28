@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '04E9BC4785445584064EC508'
-               BlueprintName = 'PathKit'
+               BlueprintIdentifier = '385B531E5091AD56FAA41605'
+               BlueprintName = 'CryptoSwift'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'PathKit.framework'>
+               BuildableName = 'CryptoSwift.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
