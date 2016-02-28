@@ -62,13 +62,14 @@ struct Request {
   let url: String
   let headers: [Header]
   let method: Method
+  let body: [UInt8]
   // ...
 }
 
 struct Response {
   let status: Status
   let headers: [Header]
-  let body: String
+  let body: [UInt8]
   // ...
 }
 
@@ -83,7 +84,7 @@ Everything else in hansel is just convenience functions on top of that.
 The `Request` and `Response` are immutable structs. Their API lets you
 chain together transformations.
 
-Some initializer examples:
+Some random quick-start examples:
 
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
@@ -93,6 +94,19 @@ Response().html("<h1>Hello</h1>")       //=> text/html
 Response().json(["favoriteNumber": 42]) //=> application/json
 Response(.NotFound)
 Response(.NotFound).text("File not found :(")
+```
+
+``` swift
+// GET http://example.com/users?sort=created {"foo": "bar"}
+request.url                //  "http://example.com/users?sort=created"
+request.query              // ["sort": "created"]
+request.path               // "/users"
+request.method             // Method.Get
+request.body.json()        // ["foo": "bar"]
+request.body.utf8()        // "{\"foo\":\"bar\"}"
+request.headers            // [("host", "example.com"), ...]
+request.getHeader("host")  // "example.com"
+request.getHeader("xxxxx") // nil
 ```
 
 ### Reading/Writing Headers
@@ -254,6 +268,8 @@ let wrapCurrentUser: Middleware = { handler in
 
 ## Handler (Request -> Response)
 
+Your application is a function that takes a `Request` and returns a `Response`.
+
 Because `Handler` is a typealias, these are equivalent:
 
 ``` swift
@@ -301,21 +317,10 @@ let middleware: Middleware = { handler in
 Since middleware are just functions, it's trivial to compose them:
 
 ``` swift
-// f << g :: f(g(x))
-infix operator << { associativity left }
-public func << <A, B, C>(f: B -> C, g: A -> B) -> A -> C {
-  return { x in f(g(x)) }
-}
-
 // `logger` will touch the request first and the response last
-let middleware = logger << cookieParser << loadCurrentUser
-Server(middleware(handler)).listen(3000)
-```
-
-Though hansel exposes a global `compose` function:
-
-``` swift
 let middleware = compose(logger, cookieParser, loadCurrentUser)
+// or use my composition operator (<<)
+let middleware = logger << cookieParser << loadCurrentUser
 Server(middleware(handler)).listen(3000)
 ```
 
