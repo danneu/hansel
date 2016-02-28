@@ -465,10 +465,7 @@ RFC 7231.
 
 ``` swift
 try! ContentType.parse("image/svg+xml; charset=utf-8; foo=\"bar\"")
-=> ContentType(
-     type: "image/svg+xml", 
-     params: ["charset": "utf-8", "foo": "bar"]
-   )
+//=> ContentType( type: "image/svg+xml", params: ["charset": "utf-8", "foo": "bar"])
 ```
 
 `ContentType` structs can serialize back into strings for use in the
@@ -476,8 +473,7 @@ Content-Type header:
 
 ``` swift
 let type = try! ContentType.parse("image/svg+xml; charset=utf-8; foo=\"bar\"")
-type.format()
-=> "image/svg+xml; charset=utf-8; foo=bar"
+type.format() //=> "image/svg+xml; charset=utf-8; foo=bar"
 ```
 
 ### ETag
