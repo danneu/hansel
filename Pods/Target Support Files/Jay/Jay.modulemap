@@ -1,0 +1,6 @@
+framework module Jay {
+  umbrella header "Jay-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -13,7 +13,7 @@ public class SocketServer {
 
   private let handler: Handler
 
-  init (handler: Handler) {
+  init (_ handler: Handler) {
     self.handler = handler
   }
 

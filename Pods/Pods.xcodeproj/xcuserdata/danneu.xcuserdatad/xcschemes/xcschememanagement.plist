@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Jay.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>PathKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,12 +27,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>D7A1BEC792292CD59DA83CED91062106</key>
+		<key>5D5ED13DC28B88D617B1601FEAD01C4A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EB4EEB805300B86BF390299EB71A5490</key>
+		<key>B54E3D7D6D98740CFF4731FEF907B935</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D7A1BEC792292CD59DA83CED91062106</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -32,6 +32,7 @@
 		D9944FF71C7A9B18001666EB /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9944FF61C7A9B18001666EB /* RequestBody.swift */; };
 		D99FFDF91C7A9EFF00B91771 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99FFDF81C7A9EFF00B91771 /* Protocol.swift */; };
 		D9AB7BFD1C7A286200112E36 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */; };
+		D9AD1BFD1C8399AC006BF478 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AD1BFC1C8399AC006BF478 /* Query.swift */; };
 		E9E2226E3AA301228CBF8D08 /* Pods_Hansel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		D9944FF61C7A9B18001666EB /* RequestBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestBody.swift; path = Sources/RequestBody.swift; sourceTree = "<group>"; };
 		D99FFDF81C7A9EFF00B91771 /* Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Protocol.swift; path = Sources/Protocol.swift; sourceTree = "<group>"; };
 		D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseBody.swift; path = Sources/ResponseBody.swift; sourceTree = "<group>"; };
+		D9AD1BFC1C8399AC006BF478 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Query.swift; path = Sources/Query.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,17 +130,17 @@
 			isa = PBXGroup;
 			children = (
 				D92AA24B1C79F3A60063C79B /* Batteries */,
-				D92AA2281C79E1000063C79B /* Server.swift */,
 				D92AA22A1C79E1000063C79B /* Middleware.swift */,
 				D92AA2321C79E1000063C79B /* Request.swift */,
+				D9944FF61C7A9B18001666EB /* RequestBody.swift */,
+				D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */,
 				D92AA22B1C79E1000063C79B /* Response.swift */,
 				D92AA2291C79E1000063C79B /* Status.swift */,
 				D99FFDF81C7A9EFF00B91771 /* Protocol.swift */,
-				D9944FF61C7A9B18001666EB /* RequestBody.swift */,
-				D9AB7BFC1C7A286200112E36 /* ResponseBody.swift */,
 				D92AA22C1C79E1000063C79B /* Router.swift */,
 				D92AA22E1C79E1000063C79B /* Handler.swift */,
 				D92AA22F1C79E1000063C79B /* Belt.swift */,
+				D92AA2281C79E1000063C79B /* Server.swift */,
 				D92AA2301C79E1000063C79B /* Socket.swift */,
 				D92AA22D1C79E1000063C79B /* SocketServer.swift */,
 				D92AA2311C79E1000063C79B /* SocketParser.swift */,
@@ -146,8 +148,9 @@
 				D9195AE11C7A33B6006D553F /* Mime.swift */,
 				D9528B051C82483F0088AC98 /* ContentType.swift */,
 				D9528B081C827BD10088AC98 /* ETag.swift */,
-				D92AA2241C79E0840063C79B /* main.swift */,
 				D9436DDC1C82ACB80009D244 /* RegExp.swift */,
+				D9AD1BFC1C8399AC006BF478 /* Query.swift */,
+				D92AA2241C79E0840063C79B /* main.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				D9AB7BFD1C7A286200112E36 /* ResponseBody.swift in Sources */,
 				D92AA2361C79E1000063C79B /* Status.swift in Sources */,
 				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
+				D9AD1BFD1C8399AC006BF478 /* Query.swift in Sources */,
 				D92AA2491C79F39E0063C79B /* Logger.swift in Sources */,
 				D9195AE41C7A435D006D553F /* Cookie.swift in Sources */,
 				D92AA23B1C79E1000063C79B /* Handler.swift in Sources */,

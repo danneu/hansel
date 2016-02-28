@@ -39,20 +39,10 @@ class SocketParser {
         bodyBytes = try readBody(socket, size: length)
     }
 
-//    let body = NSString(
-//      bytes: bodyBytes,
-//      length: bodyBytes.count,
-//      encoding: NSUTF8StringEncoding
-//    ) as? String
-
-//    if body == nil {
-//      throw Error.InvalidRequest
-//    }
-
-    return Request(
+    return try Request(
       method: requestLine.method,
       url: requestLine.path,
-      body: .Bytes(bodyBytes),
+      body: bodyBytes,
       headers: headers,
       address: address ?? "" // TODO: Can address be unset?
     )

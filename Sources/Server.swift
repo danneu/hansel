@@ -4,11 +4,14 @@ import Foundation
 public class Server {
   let socketServer: SocketServer
 
-  public init (_ handler: Handler) {
+  public init (_ handler: Handler, trustProxy: Bool = false) {
     // This is where hansel wraps the user's handler with its
     // own final outer middleware
-    let middleware = Batteries.head
-    self.socketServer = SocketServer(handler: middleware(handler))
+    let middleware = compose(
+      wrapRequestOptions(trustProxy: trustProxy),
+      Batteries.head
+    )
+    self.socketServer = SocketServer(middleware(handler))
   }
 
   public func listen (port: Int = 3000) {
@@ -29,5 +32,15 @@ public class Server {
     #else
       NSRunLoop.mainRunLoop().run()
     #endif
+  }
+}
+
+func wrapRequestOptions (trustProxy trustProxy: Bool) -> Middleware {
+  return { handler in
+    return { request in
+      var copy = request
+      copy.trustProxy = trustProxy
+      return handler(copy)
+    }
   }
 }

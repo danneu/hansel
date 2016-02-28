@@ -1,13 +1,16 @@
 PODS:
   - CryptoSwift (0.2.3)
+  - Jay (0.1.2)
   - PathKit (0.6.0)
 
 DEPENDENCIES:
   - CryptoSwift
+  - Jay
   - PathKit (~> 0.6)
 
 SPEC CHECKSUMS:
   CryptoSwift: b2bf37b8e7cc6d682ef3365cb966bc5ae5174aa5
+  Jay: 476810e82a59fc95612364e0206c972bc9af4c91
   PathKit: b224b6d2c4e75b87f08f45e1c0c610a3195c94e5
 
 COCOAPODS: 0.39.0
