@@ -483,8 +483,7 @@ I have a basic ETag generator in `ETag.swift` that works on byte arrays.
 ``` swift
 let bytes: [UInt8] = Array("foo".utf8)
 
-ETag.generate(bytes)
-=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
+ETag.generate(bytes) //=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
 ```
 
 **TODO:** Once I figure out a streaming abstraction, the ETag generator
