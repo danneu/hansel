@@ -14,7 +14,7 @@ func toSegments (url: String) -> [String] {
 // I was getting fatal crash with `return compose(mws)`
 public func composeArr (mws: [Middleware]) -> Middleware {
   let noop: Middleware = identity // tell swift how to infer
-  return mws.reduce(noop, combine: { accum, next in accum >> next })
+  return mws.reduce(noop, combine: { accum, next in accum << next })
 }
 
 // TODO: /:param capture

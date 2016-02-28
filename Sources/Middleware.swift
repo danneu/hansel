@@ -6,5 +6,5 @@ public typealias Middleware = Handler -> Handler
 
 public func compose (mws: Middleware...) -> Middleware {
   let noop: Middleware = identity // tell swift how to infer
-  return mws.reduce(noop, combine: { accum, next in accum >> next })
+  return mws.reduce(noop, combine: { accum, next in accum << next })
 }
