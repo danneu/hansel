@@ -37,40 +37,36 @@ extension Belt {
 //
 // Generic things things don't get namespaced behind Belt
 
-// Function composition
-//
+public func identity <T> (a: T) -> T { return a }
+
+// Composition
+
 // f >> g == g(f(x))
 infix operator >> { associativity left }
-public func >> <A, B, C>(f: A -> B, g: B -> C) -> A -> C {
+public func >> <A, B, C> (f: A -> B, g: B -> C) -> A -> C {
   return { x in g(f(x)) }
 }
 
-// Function composition
-//
 // f << g == f(g(x))
 infix operator << { associativity left }
-public func << <A, B, C>(f: B -> C, g: A -> B) -> A -> C {
+public func << <A, B, C> (f: B -> C, g: A -> B) -> A -> C {
   return { x in f(g(x)) }
 }
 
-public func identity<T> (a: T) -> T { return a }
+// Application
 
-// Function application
-//
 // x |> f == f(x)
 //
 // Ex: 8 |> toString << add42  //=> "50"
 infix operator |> { associativity left }
-public func |> <A, B>(x: A, f: A -> B) -> B {
+public func |> <A, B> (x: A, f: A -> B) -> B {
   return f(x)
 }
 
-// Function application
-//
 // f <| x == f(x)
 //
 // Ex: toString << add42 <| 8  //=> "50"
 infix operator <| { associativity left }
-public func <| <A, B>(f: A -> B, x: A) -> B {
+public func <| <A, B> (f: A -> B, x: A) -> B {
   return f(x)
 }

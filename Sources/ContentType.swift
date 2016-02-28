@@ -192,10 +192,14 @@ private class RegExp {
     self.internalExpression = try! NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
   }
 
-  // TODO: Short-circuit on first match
   func test (input: String) -> Bool {
-    let matches = self.internalExpression.matchesInString(input, options: [], range: NSMakeRange(0, input.characters.count))
-    return matches.count > 0
+    return self.findFirst(input) != nil
+  }
+
+  // Returns first match
+  func findFirst (input: String, start: Int = 0) -> NSTextCheckingResult? {
+    let range = NSMakeRange(start, input.characters.count - start)
+    return self.internalExpression.firstMatchInString(input, options: [], range: range)
   }
 
   // Returns all matches
