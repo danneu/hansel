@@ -30,26 +30,30 @@ public struct Response: Storable, HeaderList {
     var copy = self; copy.status = status; return copy
   }
 
+  public func setBody (body: ResponseBody) -> Response {
+    var copy = self; copy.body = body; return copy
+  }
+
   // SET RESPONSE BODY (HELPERS)
 
   public func none () -> Response {
-    var copy = self; copy.body = .None; return copy
+    return self.setBody(.None)
   }
 
   public func text (str: String) -> Response {
-    var copy = self; copy.body = .Text(str); return copy
+    return self.setBody(.Text(str))
   }
 
   public func html (str: String) -> Response {
-    var copy = self; copy.body = .Html(str); return copy
+    return self.setBody(.Html(str))
   }
 
   public func json (str: String) -> Response {
-    var copy = self; copy.body = .Json(str); return copy
+    return self.setBody(.Json(str))
   }
 
   public func bytes (arr: [UInt8], type: String?) -> Response {
-    var copy = self; copy.body = .Bytes(arr, type); return copy
+    return self.setBody(.Bytes(arr, type))
   }
 
   // FINALIZE
