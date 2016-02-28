@@ -73,13 +73,5 @@ func drop1 (str: String) -> String {
 // something was lost in translation when I ported it to Swift and it
 // didn't protect the endpoint.
 func isUpPath (str: String) -> Bool {
-  let regex = try! NSRegularExpression(pattern: "\\.{2,}", options: [])
-
-  let match = regex.numberOfMatchesInString(
-    str,
-    options: [],
-    range: NSRange(location: 0, length: str.characters.count)
-  )
-
-  return match > 0
+  return RegExp("\\.{2,}").test(str)
 }
