@@ -40,6 +40,9 @@ extension Belt {
 public func identity <T> (a: T) -> T { return a }
 
 // Composition
+//
+// TODO: Setting correct associativity and precedence on
+// <</>>/<|/|> operators seems to mess up inference
 
 // f >> g == g(f(x))
 infix operator >> { associativity left }
