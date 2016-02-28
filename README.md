@@ -501,14 +501,10 @@ some of its own outer middleware:
 
 ## TODO
 
-- Lock PathKit to minorVersion 6 in Package.swift
 - `swift build` works with PathKit in Package.swift, but even when launching
 XCode with latest-swift (3.0-DEV), it can resolve `import PathKit`. However
 cocoapods PathKit works in XCode, but not with `swift build`.
 So that's why I have both. Sheesh.
-- Some libs to look at:
-    - https://github.com/krzyzanowskim/CryptoSwift
-    - https://github.com/czechboy0/Jay
 - Figure out how to add protocol constraints to types so that middleware
 can ensure that Request/Response implement dependency protocols. For example,
 session middleware ensuring that the Request implements cookies.
