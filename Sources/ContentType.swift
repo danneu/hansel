@@ -159,7 +159,7 @@ private func getCapturedPair (fullString: String) -> NSTextCheckingResult -> (St
     if (val[val.startIndex] == "\"") {
       // e.g. "\"foo\"" -> "foo"
       val = val.substringWithRange(Range(start: val.startIndex.advancedBy(1), end: val.endIndex.advancedBy(-1)))
-      val = qescRe.internalExpression.stringByReplacingMatchesInString(val, options: [], range: NSMakeRange(0, val.characters.count), withTemplate: "$1")
+      val = qescRe.replace(val, template: "$1")
     }
 
     return (key, val)
@@ -177,36 +177,8 @@ private func quoteValue (input: String) throws -> String {
     throw ContentTypeError.InvalidParamValue
   }
 
-  let quoted = quoteRe.internalExpression.stringByReplacingMatchesInString(input, options: [], range: NSMakeRange(0, input.characters.count), withTemplate: "\\\\$1")
+  let quoted = quoteRe.replace(input, template: "\\\\$1")
   return "\"\(quoted)\""
-}
-
-// Stubbed out a helper class for regular expressions to extend as needed
-private class RegExp {
-  let internalExpression: NSRegularExpression
-  let pattern: String
-
-  init (_ pattern: String) {
-    self.pattern = pattern
-    // TODO handle throws / bad patterns
-    self.internalExpression = try! NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
-  }
-
-  func test (input: String) -> Bool {
-    return self.findFirst(input) != nil
-  }
-
-  // Returns first match
-  func findFirst (input: String, start: Int = 0) -> NSTextCheckingResult? {
-    let range = NSMakeRange(start, input.characters.count - start)
-    return self.internalExpression.firstMatchInString(input, options: [], range: range)
-  }
-
-  // Returns all matches
-  func findAll (input: String, start: Int = 0) -> [NSTextCheckingResult] {
-    let range = NSMakeRange(start, input.characters.count - start)
-    return self.internalExpression.matchesInString(input, options: [], range: range)
-  }
 }
 
 //

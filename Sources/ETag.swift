@@ -34,6 +34,5 @@ private func base64 (input: [UInt8]) -> String {
 
 // Strip Base64 string padding
 private func padless (input: String) -> String {
-  let base64PadCharRe = try! NSRegularExpression(pattern: "=+$", options: [])
-  return base64PadCharRe.stringByReplacingMatchesInString(input, options: [], range: NSMakeRange(0, input.characters.count), withTemplate: "")
+  return RegExp("=+$").replace(input, template: "")
 }
