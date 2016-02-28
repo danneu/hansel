@@ -492,7 +492,7 @@ ETag.generate(bytes)
 ```
 
 **TODO:** Once I figure out a streaming abstraction, the ETag generator
-will be extended to create weak ETags based on file-system state
+will be extended to create weak ETags based on fs `stat`
 data (mtime and size).
 
 ## Default Middleware
