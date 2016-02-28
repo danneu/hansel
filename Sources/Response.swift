@@ -6,8 +6,6 @@ public struct Response: Storable, HeaderList {
   public var body: ResponseBody = .None
   var store: Store = [:]
 
-  // TODO: Any good ways to DRY up common logic between req and res?
-
   // INITIALIZERS
 
   public init () {}
@@ -16,26 +14,6 @@ public struct Response: Storable, HeaderList {
     self.status = status
     self.body = body
     self.headers = headers
-  }
-
-  init (status: Status, body: ResponseBody, headers: [Header], store: Store) {
-    self.status = status
-    self.body = body
-    self.headers = headers
-    self.store = store
-  }
-
-  public init (
-    base: Response,
-    status: Status? = nil,
-    body: ResponseBody? = nil,
-    headers: [Header]? = nil,
-    store: [String: Any]? = nil
-  ) {
-    self.status = status ?? base.status
-    self.headers = headers ?? base.headers
-    self.body = body ?? base.body
-    self.store = store ?? base.store
   }
 
   public init (_ status: Status) {
@@ -49,29 +27,29 @@ public struct Response: Storable, HeaderList {
   // UPDATE RESPONSE
 
   public func setStatus (status: Status) -> Response {
-    return Response(base: self, status: status)
+    var copy = self; copy.status = status; return copy
   }
 
   // SET RESPONSE BODY (HELPERS)
 
   public func none () -> Response {
-    return Response(base: self, body: .None)
+    var copy = self; copy.body = .None; return copy
   }
 
   public func text (str: String) -> Response {
-    return Response(base: self, body: .Text(str))
+    var copy = self; copy.body = .Text(str); return copy
   }
 
   public func html (str: String) -> Response {
-    return Response(base: self, body: .Html(str))
+    var copy = self; copy.body = .Html(str); return copy
   }
 
   public func json (str: String) -> Response {
-    return Response(base: self, body: .Json(str))
+    var copy = self; copy.body = .Json(str); return copy
   }
 
   public func bytes (arr: [UInt8], type: String?) -> Response {
-    return Response(base: self, body: .Bytes(arr, type))
+    var copy = self; copy.body = .Bytes(arr, type); return copy
   }
 
   // FINALIZE

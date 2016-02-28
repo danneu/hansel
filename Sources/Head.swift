@@ -17,7 +17,7 @@ internal let wrapHead: Middleware = { handler in
 func headRequest (request: Request) -> Request {
   // Turn HEAD request into GET request
   if request.method == .Head {
-    return Request(base: request, method: .Get)
+    return request.setMethod(.Get)
   }
   return request
 }
