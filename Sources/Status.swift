@@ -46,6 +46,7 @@ public enum Status: Int {
   case UnsupportedMediaType = 415
   case RequestedRangeNotSatisfiable = 416
   case ExpectationFailed = 417
+  case ImATeapot = 418
   case MisdirectedRequest = 421
   case UnprocessableEntity = 422
   case Locked = 423
@@ -153,6 +154,8 @@ public enum Status: Int {
       return "Requested range not satisfiable"
     case .ExpectationFailed:
       return "Expectation Failed"
+    case .ImATeapot:
+      return "I'm a teapot"
     case .MisdirectedRequest:
       return "Misdirected Request"
     case .UnprocessableEntity:
