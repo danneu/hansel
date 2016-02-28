@@ -2,17 +2,16 @@
 import Foundation
 import Jay
 
-typealias Bytes = [UInt8]
-
 enum RequestBodyError: ErrorType {
+  // doesn't convert from byte array into the attempted format
   case Unconvertible
 }
 
 // It's a class so that we aren't copying potentially large bodies
 public class RequestBody: CustomStringConvertible {
-  let bytes: Bytes
+  let bytes: [UInt8]
 
-  init (_ bytes: Bytes = []) {
+  init (_ bytes: [UInt8] = []) {
     self.bytes = bytes
   }
 
