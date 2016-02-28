@@ -83,13 +83,13 @@ let cookieRequest: Request -> Request = { request in
   if let val = request.getHeader("cookie") {
     cookies = parse(val)
   }
-  return request.setStore("cookies", val: cookies)
+  return request.setStore("cookies", cookies)
 }
 
 let cookieResponse: Response -> Response = { response in
   var res = response
   for (k, v) in response.cookies {
-    res = res.appendHeader("set-cookie", val: serialize(v))
+    res = res.appendHeader("set-cookie", serialize(v))
   }
   return res
 }

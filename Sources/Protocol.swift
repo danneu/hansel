@@ -12,10 +12,10 @@ public typealias Header = (String, String)
 protocol HeaderList {
   var headers: [Header] { get set }
   func getHeader (key: String) -> String?
-  func setHeader (key: String, val: String?) -> Self
+  func setHeader (key: String, _: String?) -> Self
   func deleteHeader (key: String) -> Self
-  func appendHeader (key: String, val: String) -> Self
-  func updateHeader (key: String, fn: String? -> String?) -> Self
+  func appendHeader (key: String, _: String) -> Self
+  func updateHeader (key: String, _: String? -> String?) -> Self
 }
 
 extension HeaderList {
@@ -28,7 +28,7 @@ extension HeaderList {
     return self.headers.filter { $0.0.lowercaseString == key.lowercaseString }.first?.1
   }
 
-  func appendHeader (key: String, val: String) -> Self {
+  func appendHeader (key: String, _ val: String) -> Self {
     var new = self
     new.headers.append((key, val))
     return new
@@ -42,16 +42,16 @@ extension HeaderList {
 
   // No-ops if val is nil. 
   // Must use deleteHeader to actually delete one.
-  func setHeader (key: String, val: String?) -> Self {
+  func setHeader (key: String, _ val: String?) -> Self {
     if val == nil {
       return self
     }
-    return self.deleteHeader(key).appendHeader(key, val: val!)
+    return self.deleteHeader(key).appendHeader(key, val!)
   }
 
   // No-ops if fn(val) is nil. 
-  func updateHeader (key: String, fn: String? -> String?) -> Self {
-    return self.setHeader(key, val: fn(self.getHeader(key)))
+  func updateHeader (key: String, _ fn: String? -> String?) -> Self {
+    return self.setHeader(key, fn(self.getHeader(key)))
   }
 }
 
@@ -62,8 +62,8 @@ typealias Store = [String: Any]
 protocol Storable {
   var store: Store { get set }
   func getStore (key: String) -> Any?
-  func setStore (key: String, val: Any) -> Self
-  func updateStore (key: String, fn: Any -> Any) -> Self
+  func setStore (key: String, _: Any) -> Self
+  func updateStore (key: String, _: Any -> Any) -> Self
 }
 
 extension Storable {
@@ -76,13 +76,13 @@ extension Storable {
     return self.store[key]
   }
 
-  func setStore (key: String, val: Any) -> Self {
+  func setStore (key: String, _ val: Any) -> Self {
     var new = self
     new.store[key] = val
     return new
   }
 
-  func updateStore (key: String, fn: Any -> Any) -> Self {
-    return self.setStore(key, val: fn(self.getStore(key)))
+  func updateStore (key: String, _ fn: Any -> Any) -> Self {
+    return self.setStore(key, fn(self.getStore(key)))
   }
 }

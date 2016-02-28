@@ -71,15 +71,15 @@ public struct Response: Storable, HeaderList {
     let type = final.body.contentType()
 
     return final
-      .setHeader("content-type", val: type)
-      .setHeader("content-length", val: String(final.body.length()))
+      .setHeader("content-type", type)
+      .setHeader("content-length", String(final.body.length()))
   }
 
   // REDIRECT
 
   public func redirect (url: String, status: Status = .Found) -> Response {
     return self
-      .setHeader("location", val: url)
+      .setHeader("location", url)
       .setStatus(status.redirect() ? status : .Found)
   }
 
