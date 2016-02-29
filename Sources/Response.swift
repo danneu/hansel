@@ -86,7 +86,7 @@ public struct Response: Storable, HeaderList {
   // redirectBack(request)
   // redirectBack(request, "/login")
   public func redirectBack (request: Request, altUrl: String = "/") -> Response {
-    let url = request.getHeader("referrer") ?? altUrl
+    let url = request.getHeader("referer") ?? altUrl
     return self.redirect(url)
   }
 }

@@ -25,7 +25,11 @@ extension HeaderList {
   }
 
   func getHeader (key: String) -> String? {
-    return self.headers.filter { $0.0.lowercaseString == key.lowercaseString }.first?.1
+    var key = key.lowercaseString
+    if key == "referrer" {
+      key = "referer"
+    }
+    return self.headers.filter { $0.0.lowercaseString == key }.first?.1
   }
 
   func appendHeader (key: String, _ val: String) -> Self {
