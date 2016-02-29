@@ -119,7 +119,7 @@ Headers are represented as string tuples to model the fact that
 duplicate headers can exist (like when setting multiple cookies) and
 for eventual integration with the [Nest protocol][nest].
 
-The Request and Response conform to my [HeaderList protocol][headerlist]
+The Request and Response conform to my HeaderList protocol
 which implements methods for reading and updating headers:
 
 ``` swift
@@ -143,7 +143,6 @@ header.
 deletes the rest.
 - `appendHeader(key, val)` appends a header to the array.
 
-[headerlist]: https://github.com/danneu/hansel/blob/19a2012d109ab05eebc4f9362d9d18276b038210/Sources/Protocol.swift#L10-L19
 [nest]: https://github.com/nestproject/Nest/blob/master/Specification.md
 
 Example:
@@ -173,7 +172,7 @@ Test
 
 ### Storage
 
-Request and Response also implement my [Storable protocol][storable] which
+Request and Response also implement my Storable protocol which
 gives handlers and middleware a dictionary to store arbitrary data.
 
 ``` swift
@@ -263,8 +262,6 @@ let wrapCurrentUser: Middleware = { handler in
   }
 }
 ```
-
-[storable]: https://github.com/danneu/hansel/blob/19a2012d109ab05eebc4f9362d9d18276b038210/Sources/Protocol.swift#L57-L64
 
 ## Handler (Request -> Response)
 
