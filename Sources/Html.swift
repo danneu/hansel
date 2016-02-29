@@ -346,6 +346,42 @@ class abbr: Element {
   }
 }
 
+class address: Element {
+  override var tagName: String {
+    get { return "address" } set { self.tagName = newValue }
+  }
+}
+
+class area: Element {
+  override var tagName: String {
+    get { return "area" } set { self.tagName = newValue }
+  }
+  override var void: Bool {
+    get { return true } set { self.void = newValue }
+  }
+}
+
+class article: Element {
+  override var tagName: String {
+    get { return "article" } set { self.tagName = newValue }
+  }
+}
+
+class audio: Element {
+  override var tagName: String {
+    get { return "audio" } set { self.tagName = newValue }
+  }
+}
+
+class base: Element {
+  override var tagName: String {
+    get { return "base" } set { self.tagName = newValue }
+  }
+  override var void: Bool {
+    get { return true } set { self.void = newValue }
+  }
+}
+
 class blockquote: Element {
   override var tagName: String {
     get { return "blockquote" } set { self.tagName = newValue }
@@ -358,6 +394,24 @@ class body: Element {
   }
 }
 
+class b: Element {
+  override var tagName: String {
+    get { return "b" } set { self.tagName = newValue }
+  }
+}
+
+class bdi: Element {
+  override var tagName: String {
+    get { return "bdi" } set { self.tagName = newValue }
+  }
+}
+
+class bdo: Element {
+  override var tagName: String {
+    get { return "bdo" } set { self.tagName = newValue }
+  }
+}
+
 class br: Element {
   override var tagName: String {
     get { return "br" } set { self.tagName = newValue }
@@ -367,15 +421,15 @@ class br: Element {
   }
 }
 
-class b: Element {
-  override var tagName: String {
-    get { return "b" } set { self.tagName = newValue }
-  }
-}
-
 class button: Element {
   override var tagName: String {
     get { return "button" } set { self.tagName = newValue }
+  }
+}
+
+class canvas: Element {
+  override var tagName: String {
+    get { return "canvas" } set { self.tagName = newValue }
   }
 }
 
@@ -385,9 +439,72 @@ class caption: Element {
   }
 }
 
+class cite: Element {
+  override var tagName: String {
+    get { return "cite" } set { self.tagName = newValue }
+  }
+}
+
 class code: Element {
   override var tagName: String {
     get { return "code" } set { self.tagName = newValue }
+  }
+}
+
+class col: Element {
+  override var tagName: String {
+    get { return "col" } set { self.tagName = newValue }
+  }
+  override var void: Bool {
+    get { return true } set { self.void = newValue }
+  }
+}
+
+class colgroup: Element {
+  override var tagName: String {
+    get { return "colgroup" } set { self.tagName = newValue }
+  }
+}
+
+class data: Element {
+  override var tagName: String {
+    get { return "data" } set { self.tagName = newValue }
+  }
+}
+
+class datalist: Element {
+  override var tagName: String {
+    get { return "datalist" } set { self.tagName = newValue }
+  }
+}
+
+class del: Element {
+  override var tagName: String {
+    get { return "del" } set { self.tagName = newValue }
+  }
+}
+
+class dfn: Element {
+  override var tagName: String {
+    get { return "dfn" } set { self.tagName = newValue }
+  }
+}
+
+class dd: Element {
+  override var tagName: String {
+    get { return "dd" } set { self.tagName = newValue }
+  }
+}
+
+class details: Element {
+  override var tagName: String {
+    get { return "details" } set { self.tagName = newValue }
+  }
+}
+
+class dialog: Element {
+  override var tagName: String {
+    get { return "dialog" } set { self.tagName = newValue }
   }
 }
 
@@ -397,9 +514,60 @@ class div: Element {
   }
 }
 
+class dl: Element {
+  override var tagName: String {
+    get { return "dl" } set { self.tagName = newValue }
+  }
+}
+
+class dt: Element {
+  override var tagName: String {
+    get { return "dt" } set { self.tagName = newValue }
+  }
+}
+
+class element: Element {
+  override var tagName: String {
+    get { return "element" } set { self.tagName = newValue }
+  }
+}
+
 class em: Element {
   override var tagName: String {
     get { return "em" } set { self.tagName = newValue }
+  }
+}
+
+class embed: Element {
+  override var tagName: String {
+    get { return "embed" } set { self.tagName = newValue }
+  }
+  override var void: Bool {
+    get { return true } set { self.void = newValue }
+  }
+}
+
+class fieldset: Element {
+  override var tagName: String {
+    get { return "fieldset" } set { self.tagName = newValue }
+  }
+}
+
+class figcaption: Element {
+  override var tagName: String {
+    get { return "figcaption" } set { self.tagName = newValue }
+  }
+}
+
+class figure: Element {
+  override var tagName: String {
+    get { return "figure" } set { self.tagName = newValue }
+  }
+}
+
+class footer: Element {
+  override var tagName: String {
+    get { return "footer" } set { self.tagName = newValue }
   }
 }
 
@@ -451,6 +619,18 @@ class head: Element {
   }
 }
 
+class header: Element {
+  override var tagName: String {
+    get { return "header" } set { self.tagName = newValue }
+  }
+}
+
+class hgroup: Element {
+  override var tagName: String {
+    get { return "hgroup" } set { self.tagName = newValue }
+  }
+}
+
 class hr: Element {
   override var tagName: String {
     get { return "hr" } set { self.tagName = newValue }
@@ -463,6 +643,12 @@ class hr: Element {
 class html: Element {
   override var tagName: String {
     get { return "html" } set { self.tagName = newValue }
+  }
+}
+
+class i: Element {
+  override var tagName: String {
+    get { return "i" } set { self.tagName = newValue }
   }
 }
 
@@ -484,6 +670,30 @@ class input: Element {
   }
 }
 
+class ins: Element {
+  override var tagName: String {
+    get { return "ins" } set { self.tagName = newValue }
+  }
+}
+
+class kbd: Element {
+  override var tagName: String {
+    get { return "kbd" } set { self.tagName = newValue }
+  }
+}
+
+class label: Element {
+  override var tagName: String {
+    get { return "label" } set { self.tagName = newValue }
+  }
+}
+
+class legend: Element {
+  override var tagName: String {
+    get { return "legend" } set { self.tagName = newValue }
+  }
+}
+
 class link: Element {
   override var tagName: String {
     get { return "link" } set { self.tagName = newValue }
@@ -499,6 +709,36 @@ class li: Element {
   }
 }
 
+class map: Element {
+  override var tagName: String {
+    get { return "map" } set { self.tagName = newValue }
+  }
+}
+
+class mark: Element {
+  override var tagName: String {
+    get { return "mark" } set { self.tagName = newValue }
+  }
+}
+
+class main: Element {
+  override var tagName: String {
+    get { return "main" } set { self.tagName = newValue }
+  }
+}
+
+class menu: Element {
+  override var tagName: String {
+    get { return "menu" } set { self.tagName = newValue }
+  }
+}
+
+class menuitem: Element {
+  override var tagName: String {
+    get { return "menuitem" } set { self.tagName = newValue }
+  }
+}
+
 class meta: Element {
   override var tagName: String {
     get { return "meta" } set { self.tagName = newValue }
@@ -508,15 +748,57 @@ class meta: Element {
   }
 }
 
+class meter: Element {
+  override var tagName: String {
+    get { return "meter" } set { self.tagName = newValue }
+  }
+}
+
+class nav: Element {
+  override var tagName: String {
+    get { return "nav" } set { self.tagName = newValue }
+  }
+}
+
+class noscript: Element {
+  override var tagName: String {
+    get { return "noscript" } set { self.tagName = newValue }
+  }
+}
+
+class object: Element {
+  override var tagName: String {
+    get { return "object" } set { self.tagName = newValue }
+  }
+}
+
+class optgroup: Element {
+  override var tagName: String {
+    get { return "optgroup" } set { self.tagName = newValue }
+  }
+}
+
 class option: Element {
   override var tagName: String {
     get { return "option" } set { self.tagName = newValue }
   }
 }
 
+class output: Element {
+  override var tagName: String {
+    get { return "output" } set { self.tagName = newValue }
+  }
+}
+
 class ol: Element {
   override var tagName: String {
     get { return "ol" } set { self.tagName = newValue }
+  }
+}
+
+class p: Element {
+  override var tagName: String {
+    get { return "p" } set { self.tagName = newValue }
   }
 }
 
@@ -529,9 +811,27 @@ class param: Element {
   }
 }
 
-class p: Element {
+class pre: Element {
   override var tagName: String {
-    get { return "p" } set { self.tagName = newValue }
+    get { return "pre" } set { self.tagName = newValue }
+  }
+}
+
+class progress: Element {
+  override var tagName: String {
+    get { return "progress" } set { self.tagName = newValue }
+  }
+}
+
+class q: Element {
+  override var tagName: String {
+    get { return "q" } set { self.tagName = newValue }
+  }
+}
+
+class s: Element {
+  override var tagName: String {
+    get { return "s" } set { self.tagName = newValue }
   }
 }
 
@@ -541,9 +841,30 @@ class script: Element {
   }
 }
 
+class section: Element {
+  override var tagName: String {
+    get { return "section" } set { self.tagName = newValue }
+  }
+}
+
 class select: Element {
   override var tagName: String {
     get { return "select" } set { self.tagName = newValue }
+  }
+}
+
+class small: Element {
+  override var tagName: String {
+    get { return "small" } set { self.tagName = newValue }
+  }
+}
+
+class source: Element {
+  override var tagName: String {
+    get { return "source" } set { self.tagName = newValue }
+  }
+  override var void: Bool {
+    get { return true } set { self.void = newValue }
   }
 }
 
@@ -565,6 +886,24 @@ class style: Element {
   }
 }
 
+class sub: Element {
+  override var tagName: String {
+    get { return "sub" } set { self.tagName = newValue }
+  }
+}
+
+class summary: Element {
+  override var tagName: String {
+    get { return "summary" } set { self.tagName = newValue }
+  }
+}
+
+class sup: Element {
+  override var tagName: String {
+    get { return "sup" } set { self.tagName = newValue }
+  }
+}
+
 class table: Element {
   override var tagName: String {
     get { return "table" } set { self.tagName = newValue }
@@ -574,6 +913,12 @@ class table: Element {
 class td: Element {
   override var tagName: String {
     get { return "td" } set { self.tagName = newValue }
+  }
+}
+
+class template: Element {
+  override var tagName: String {
+    get { return "template" } set { self.tagName = newValue }
   }
 }
 
@@ -619,6 +964,15 @@ class tr: Element {
   }
 }
 
+class track: Element {
+  override var tagName: String {
+    get { return "track" } set { self.tagName = newValue }
+  }
+  override var void: Bool {
+    get { return true } set { self.void = newValue }
+  }
+}
+
 class ul: Element {
   override var tagName: String {
     get { return "ul" } set { self.tagName = newValue }
@@ -628,6 +982,21 @@ class ul: Element {
 class u: Element {
   override var tagName: String {
     get { return "u" } set { self.tagName = newValue }
+  }
+}
+
+class video: Element {
+  override var tagName: String {
+    get { return "video" } set { self.tagName = newValue }
+  }
+}
+
+class wbr: Element {
+  override var tagName: String {
+    get { return "wbr" } set { self.tagName = newValue }
+  }
+  override var void: Bool {
+    get { return true } set { self.void = newValue }
   }
 }
 
