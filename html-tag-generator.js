@@ -1,7 +1,5 @@
 'use strict'
 
-const fs = require('fs')
-
 // TODO: enumerate all tags, this is incomplete
 const tags = [
   'a',
