@@ -45,7 +45,8 @@ func demoTemplate (ip: String) -> HtmlConvertible {
       li("item c")
     ),
     p("everything is <script>alert('escaped')</script> by default"),
-    p(.Safe("but you can <u><b>bypass</b></u> it") as SafeString)
+    p(.Safe("but you can <u><b>bypass</b></u> it") as SafeString),
+    node("whatever", ["and you can create arbitrary html nodes"])
   )
 }
 
