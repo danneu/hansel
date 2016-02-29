@@ -15,11 +15,8 @@
 		D92AA2371C79E1000063C79B /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22A1C79E1000063C79B /* Middleware.swift */; };
 		D92AA2381C79E1000063C79B /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22B1C79E1000063C79B /* Response.swift */; };
 		D92AA2391C79E1000063C79B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22C1C79E1000063C79B /* Router.swift */; };
-		D92AA23A1C79E1000063C79B /* SocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22D1C79E1000063C79B /* SocketServer.swift */; };
 		D92AA23B1C79E1000063C79B /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22E1C79E1000063C79B /* Handler.swift */; };
 		D92AA23C1C79E1000063C79B /* Belt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22F1C79E1000063C79B /* Belt.swift */; };
-		D92AA23D1C79E1000063C79B /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2301C79E1000063C79B /* Socket.swift */; };
-		D92AA23E1C79E1000063C79B /* SocketParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2311C79E1000063C79B /* SocketParser.swift */; };
 		D92AA23F1C79E1000063C79B /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2321C79E1000063C79B /* Request.swift */; };
 		D92AA2401C79E1000063C79B /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2331C79E1000063C79B /* Method.swift */; };
 		D92AA2491C79F39E0063C79B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2471C79F39E0063C79B /* Logger.swift */; };
@@ -27,6 +24,9 @@
 		D92AA24D1C79F53A0063C79B /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA24C1C79F53A0063C79B /* Head.swift */; };
 		D93D90201C83CB77009A611B /* HeaderList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D901F1C83CB77009A611B /* HeaderList.swift */; };
 		D93D90221C83CC00009A611B /* Storable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D90211C83CC00009A611B /* Storable.swift */; };
+		D93D90271C83CCD9009A611B /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D90241C83CCD9009A611B /* Socket.swift */; };
+		D93D90281C83CCD9009A611B /* SocketParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D90251C83CCD9009A611B /* SocketParser.swift */; };
+		D93D90291C83CCD9009A611B /* SocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D90261C83CCD9009A611B /* SocketServer.swift */; };
 		D93E07F31C7A1D410073F296 /* ServeStatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93E07F21C7A1D410073F296 /* ServeStatic.swift */; };
 		D9436DDD1C82ACB80009D244 /* RegExp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9436DDC1C82ACB80009D244 /* RegExp.swift */; };
 		D9528B061C82483F0088AC98 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9528B051C82483F0088AC98 /* ContentType.swift */; };
@@ -50,11 +50,8 @@
 		D92AA22A1C79E1000063C79B /* Middleware.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Middleware.swift; path = Sources/Middleware.swift; sourceTree = "<group>"; };
 		D92AA22B1C79E1000063C79B /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Response.swift; path = Sources/Response.swift; sourceTree = "<group>"; };
 		D92AA22C1C79E1000063C79B /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Router.swift; path = Sources/Router.swift; sourceTree = "<group>"; };
-		D92AA22D1C79E1000063C79B /* SocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketServer.swift; path = Sources/SocketServer.swift; sourceTree = "<group>"; };
 		D92AA22E1C79E1000063C79B /* Handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Handler.swift; path = Sources/Handler.swift; sourceTree = "<group>"; };
 		D92AA22F1C79E1000063C79B /* Belt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Belt.swift; path = Sources/Belt.swift; sourceTree = "<group>"; };
-		D92AA2301C79E1000063C79B /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Socket.swift; path = Sources/Socket.swift; sourceTree = "<group>"; };
-		D92AA2311C79E1000063C79B /* SocketParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketParser.swift; path = Sources/SocketParser.swift; sourceTree = "<group>"; };
 		D92AA2321C79E1000063C79B /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Request.swift; path = Sources/Request.swift; sourceTree = "<group>"; };
 		D92AA2331C79E1000063C79B /* Method.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Method.swift; path = Sources/Method.swift; sourceTree = "<group>"; };
 		D92AA2471C79F39E0063C79B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Sources/Logger.swift; sourceTree = "<group>"; };
@@ -62,6 +59,9 @@
 		D92AA24C1C79F53A0063C79B /* Head.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Head.swift; path = Sources/Head.swift; sourceTree = "<group>"; };
 		D93D901F1C83CB77009A611B /* HeaderList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderList.swift; sourceTree = "<group>"; };
 		D93D90211C83CC00009A611B /* Storable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storable.swift; sourceTree = "<group>"; };
+		D93D90241C83CCD9009A611B /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
+		D93D90251C83CCD9009A611B /* SocketParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketParser.swift; sourceTree = "<group>"; };
+		D93D90261C83CCD9009A611B /* SocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketServer.swift; sourceTree = "<group>"; };
 		D93E07F21C7A1D410073F296 /* ServeStatic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServeStatic.swift; path = Sources/ServeStatic.swift; sourceTree = "<group>"; };
 		D9436DDC1C82ACB80009D244 /* RegExp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegExp.swift; path = Sources/RegExp.swift; sourceTree = "<group>"; };
 		D9528B051C82483F0088AC98 /* ContentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentType.swift; path = Sources/ContentType.swift; sourceTree = "<group>"; };
@@ -129,6 +129,7 @@
 		D92AA2231C79E0750063C79B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D93D90231C83CCD9009A611B /* Socket */,
 				D93D901E1C83CB77009A611B /* Protocols */,
 				D92AA24B1C79F3A60063C79B /* Batteries */,
 				D92AA22A1C79E1000063C79B /* Middleware.swift */,
@@ -140,9 +141,6 @@
 				D92AA22E1C79E1000063C79B /* Handler.swift */,
 				D92AA22F1C79E1000063C79B /* Belt.swift */,
 				D92AA2281C79E1000063C79B /* Server.swift */,
-				D92AA2301C79E1000063C79B /* Socket.swift */,
-				D92AA22D1C79E1000063C79B /* SocketServer.swift */,
-				D92AA2311C79E1000063C79B /* SocketParser.swift */,
 				D92AA2331C79E1000063C79B /* Method.swift */,
 				D9195AE11C7A33B6006D553F /* Mime.swift */,
 				D9528B051C82483F0088AC98 /* ContentType.swift */,
@@ -174,6 +172,17 @@
 			);
 			name = Protocols;
 			path = Sources/Protocols;
+			sourceTree = "<group>";
+		};
+		D93D90231C83CCD9009A611B /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				D93D90241C83CCD9009A611B /* Socket.swift */,
+				D93D90251C83CCD9009A611B /* SocketParser.swift */,
+				D93D90261C83CCD9009A611B /* SocketServer.swift */,
+			);
+			name = Socket;
+			path = Sources/Socket;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,17 +304,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D92AA23E1C79E1000063C79B /* SocketParser.swift in Sources */,
 				D92AA2401C79E1000063C79B /* Method.swift in Sources */,
 				D92AA23F1C79E1000063C79B /* Request.swift in Sources */,
+				D93D90281C83CCD9009A611B /* SocketParser.swift in Sources */,
 				D9436DDD1C82ACB80009D244 /* RegExp.swift in Sources */,
-				D92AA23A1C79E1000063C79B /* SocketServer.swift in Sources */,
+				D93D90271C83CCD9009A611B /* Socket.swift in Sources */,
 				D92AA23C1C79E1000063C79B /* Belt.swift in Sources */,
+				D93D90291C83CCD9009A611B /* SocketServer.swift in Sources */,
 				D9528B061C82483F0088AC98 /* ContentType.swift in Sources */,
 				D9528B091C827BD10088AC98 /* ETag.swift in Sources */,
 				D93E07F31C7A1D410073F296 /* ServeStatic.swift in Sources */,
 				D92AA24A1C79F39E0063C79B /* Batteries.swift in Sources */,
-				D92AA23D1C79E1000063C79B /* Socket.swift in Sources */,
 				D93D90221C83CC00009A611B /* Storable.swift in Sources */,
 				D92AA24D1C79F53A0063C79B /* Head.swift in Sources */,
 				D92AA2351C79E1000063C79B /* Server.swift in Sources */,
