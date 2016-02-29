@@ -25,14 +25,28 @@ let handler: Handler = { request in
   case (.Get, "/json"): 
     return Response().json(["Hello": "world"])
   case (.Get, "/html"):
-    let tree: Html =
-      .Div$(
-        ["display": "inline-block",
-         "font-family": "georgia"],
-        .Spread(
-          [.P(.Text("Hello world")),
-           .P(.Text("Yeah, this DSL needs some work..."))]))
-    return Response().html(tree.render())
+    let template: Renderable =
+      div(
+        // pass a dictionary as the first argument to any
+        // element to set its attributes
+        ["style": ["color": "red", "width": "200px"],
+         "border": "5px solid black"],
+        h1("quick hansel templating demo"),
+        hr(),
+        "hello",
+        "world",
+        // you can pass in child elements as an array
+        ol(["apples", "bananas", "oranges"].map { li($0) }),
+        // or not (up to 10 elements)
+        ul(
+          li("item a"),
+          li("item b"),
+          li("item c")
+        ),
+        p("everything is <script>alert('escaped')</script> by default"),
+        p(.Safe("but you can <strong>bypass</strong> it") as SafeString)
+      )
+    return Response().html(template.render())
   default: 
     return Response(.NotFound)
   }
