@@ -71,12 +71,16 @@ class Element: HtmlConvertible {
   var tagName: String = ""
   var kids: [HtmlConvertible]
 
+  // INITIALIZERS
+
   init (_ attrs: Attrs = [:], _ kids: [HtmlConvertible]) {
     self.attrs = attrs
     self.kids = void ? [] : kids
   }
 
-  // WITHOUT ATTRS
+  convenience init (_ attrs: Attrs) {
+    self.init(attrs, [])
+  }
 
   convenience init () {
     self.init([:], [])
@@ -85,6 +89,8 @@ class Element: HtmlConvertible {
   convenience init (_ kids: [HtmlConvertible]) {
     self.init([:], kids)
   }
+
+  // WITHOUT ATTRS
 
   convenience init (_ a: HtmlConvertible) {
     self.init([:], [a])
@@ -127,10 +133,6 @@ class Element: HtmlConvertible {
   }
 
   // WITH ATTRS
-
-  convenience init (_ attrs: Attrs) {
-    self.init(attrs, [])
-  }
 
   convenience init (_ attrs: Attrs, _ a: HtmlConvertible) {
     self.init(attrs, [a])
