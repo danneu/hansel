@@ -1,4 +1,6 @@
 
+<div style="text-align: center"><img src="hansel.png" alt="Hansel"></div>
+
 # Hansel
 
 Swift web-servers, so hot right now.
