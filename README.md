@@ -1,5 +1,5 @@
 
-<div style="text-align: center"><img src="hansel.png" alt="Hansel"></div>
+![Hansel](hansel.png)
 
 # Hansel
 
