@@ -34,6 +34,7 @@
 		D9528B091C827BD10088AC98 /* ETag.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9528B081C827BD10088AC98 /* ETag.swift */; };
 		D9944FF71C7A9B18001666EB /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9944FF61C7A9B18001666EB /* RequestBody.swift */; };
 		D9AD1BFD1C8399AC006BF478 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9AD1BFC1C8399AC006BF478 /* Query.swift */; };
+		D9BDA02D1C84122100494728 /* HtmlConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BDA02C1C84122100494728 /* HtmlConvertible.swift */; };
 		E9E2226E3AA301228CBF8D08 /* Pods_Hansel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 		D9528B081C827BD10088AC98 /* ETag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ETag.swift; path = Sources/ETag.swift; sourceTree = "<group>"; };
 		D9944FF61C7A9B18001666EB /* RequestBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestBody.swift; path = Sources/RequestBody.swift; sourceTree = "<group>"; };
 		D9AD1BFC1C8399AC006BF478 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Query.swift; path = Sources/Query.swift; sourceTree = "<group>"; };
+		D9BDA02C1C84122100494728 /* HtmlConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConvertible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 		D93D901E1C83CB77009A611B /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				D9BDA02C1C84122100494728 /* HtmlConvertible.swift */,
 				D93D90211C83CC00009A611B /* Storable.swift */,
 				D93D901F1C83CB77009A611B /* HeaderList.swift */,
 			);
@@ -330,6 +333,7 @@
 				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
 				D9AD1BFD1C8399AC006BF478 /* Query.swift in Sources */,
 				D93D90331C83CD71009A611B /* Logger.swift in Sources */,
+				D9BDA02D1C84122100494728 /* HtmlConvertible.swift in Sources */,
 				D92AA23B1C79E1000063C79B /* Handler.swift in Sources */,
 				D93D90201C83CB77009A611B /* HeaderList.swift in Sources */,
 				D93D90361C83DBF2009A611B /* Html.swift in Sources */,

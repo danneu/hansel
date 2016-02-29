@@ -39,8 +39,8 @@ public struct Response: Storable, HeaderList {
     return self.setBody(str).setHeader("content-type", "text/plain")
   }
 
-  public func html (str: String) -> Response {
-    return self.setBody(str).setHeader("content-type", "text/html")
+  public func html (x: HtmlConvertible) -> Response {
+    return self.setBody(x.html()).setHeader("content-type", "text/html")
   }
 
   // TODO: Somehow type this so it can't fail. I don't

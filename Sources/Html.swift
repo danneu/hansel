@@ -16,15 +16,11 @@ func indent (level: Int, tabWidth: Int = 2) -> String {
   return String(count: level * tabWidth, repeatedValue: Character(" "))
 }
 
-func html5 (node: Renderable) -> String {
+func html5 (node: HtmlConvertible) -> String {
   return "<!doctype html>\n\(node.html())"
 }
 
 // PROTOCOLS
-
-protocol Renderable {
-  func html () -> String
-}
 
 protocol AttrConvertible {
   func render () -> String
@@ -33,7 +29,7 @@ protocol AttrConvertible {
 // EXTENSIONS
 
 // Strings wrapped in .Safe won't be escaped
-enum SafeString: Renderable {
+enum SafeString: HtmlConvertible {
   case Safe (String)
   func html () -> String {
     switch self {
@@ -43,8 +39,8 @@ enum SafeString: Renderable {
   }
 }
 
-extension String: Renderable {
-  func html () -> String {
+extension String: HtmlConvertible {
+  public func html () -> String {
     return Belt.escapeHtml(self)
   }
 }
@@ -68,14 +64,14 @@ extension Dictionary: AttrConvertible  {
 
 // IMPL
 
-class Element: Renderable {
+class Element: HtmlConvertible {
   var attrs: Attrs = [:]
   // void elements have no kids or closing tag
   var void: Bool = false
   var tagName: String = ""
-  var kids: [Renderable]
+  var kids: [HtmlConvertible]
 
-  init (_ attrs: Attrs = [:], _ kids: [Renderable]) {
+  init (_ attrs: Attrs = [:], _ kids: [HtmlConvertible]) {
     self.attrs = attrs
     self.kids = void ? [] : kids
   }
@@ -86,47 +82,47 @@ class Element: Renderable {
     self.init([:], [])
   }
 
-  convenience init (_ kids: [Renderable]) {
+  convenience init (_ kids: [HtmlConvertible]) {
     self.init([:], kids)
   }
 
-  convenience init (_ a: Renderable) {
+  convenience init (_ a: HtmlConvertible) {
     self.init([:], [a])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible) {
     self.init([:], [a, b])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible) {
     self.init([:], [a, b, c])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible) {
     self.init([:], [a, b, c, d])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible) {
     self.init([:], [a, b, c, d, e])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible) {
     self.init([:], [a, b, c, d, e, f])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible) {
     self.init([:], [a, b, c, d, e, f, g])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable, _ h: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible, _ h: HtmlConvertible) {
     self.init([:], [a, b, c, d, e, f, g, h])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable, _ h: Renderable, _ i: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible, _ h: HtmlConvertible, _ i: HtmlConvertible) {
     self.init([:], [a, b, c, d, e, f, g, h, i])
   }
 
-  convenience init (_ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable, _ h: Renderable, _ i: Renderable, _ j: Renderable) {
+  convenience init (_ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible, _ h: HtmlConvertible, _ i: HtmlConvertible, _ j: HtmlConvertible) {
     self.init([:], [a, b, c, d, e, f, g, h, i, j])
   }
 
@@ -136,43 +132,43 @@ class Element: Renderable {
     self.init(attrs, [])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible) {
     self.init(attrs, [a])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible) {
     self.init(attrs, [a, b])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible) {
     self.init(attrs, [a, b, c])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible) {
     self.init(attrs, [a, b, c, d])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible) {
     self.init(attrs, [a, b, c, d, e])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible) {
     self.init(attrs, [a, b, c, d, e, f])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible) {
     self.init(attrs, [a, b, c, d, e, f, g])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable, _ h: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible, _ h: HtmlConvertible) {
     self.init(attrs, [a, b, c, d, e, f, g, h])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable, _ h: Renderable, _ i: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible, _ h: HtmlConvertible, _ i: HtmlConvertible) {
     self.init(attrs, [a, b, c, d, e, f, g, h, i])
   }
 
-  convenience init (_ attrs: Attrs, _ a: Renderable, _ b: Renderable, _ c: Renderable, _ d: Renderable, _ e: Renderable, _ f: Renderable, _ g: Renderable, _ h: Renderable, _ i: Renderable, _ j: Renderable) {
+  convenience init (_ attrs: Attrs, _ a: HtmlConvertible, _ b: HtmlConvertible, _ c: HtmlConvertible, _ d: HtmlConvertible, _ e: HtmlConvertible, _ f: HtmlConvertible, _ g: HtmlConvertible, _ h: HtmlConvertible, _ i: HtmlConvertible, _ j: HtmlConvertible) {
     self.init(attrs, [a, b, c, d, e, f, g, h, i, j])
   }
 

@@ -8,6 +8,7 @@ Swift web-servers, so hot right now.
 ``` swift
 import Hansel
 
+// middleware example
 let logger: Middleware = { handler in
   return { request in
     print("Request coming in")
@@ -15,6 +16,31 @@ let logger: Middleware = { handler in
     print("Response going out")
     return response
   }
+}
+
+// built-in templating example
+func demoTemplate (ip: String) -> HtmlConvertible {
+  div(
+    // pass a dictionary as the first argument to any
+    // element to set its attributes
+    ["style": ["color": "red", "width": "200px"],
+     "border": "5px solid black"],
+    h1("quick hansel templating demo"),
+    hr(),
+    "hello",
+    "world",
+    p("your ip address is:", ip),
+    // you can pass in child elements as an array
+    ol(["apples", "bananas", "oranges"].map { li($0) }),
+    // or not (up to 10 elements)
+    ul(
+      li("item a"),
+      li("item b"),
+      li("item c")
+    ),
+    p("everything is <script>alert('escaped')</script> by default"),
+    p(.Safe("but you can <strong>bypass</strong> it") as SafeString)
+  )
 }
 
 // a silly router
@@ -25,28 +51,7 @@ let handler: Handler = { request in
   case (.Get, "/json"): 
     return Response().json(["Hello": "world"])
   case (.Get, "/html"):
-    let template: Renderable =
-      div(
-        // pass a dictionary as the first argument to any
-        // element to set its attributes
-        ["style": ["color": "red", "width": "200px"],
-         "border": "5px solid black"],
-        h1("quick hansel templating demo"),
-        hr(),
-        "hello",
-        "world",
-        // you can pass in child elements as an array
-        ol(["apples", "bananas", "oranges"].map { li($0) }),
-        // or not (up to 10 elements)
-        ul(
-          li("item a"),
-          li("item b"),
-          li("item c")
-        ),
-        p("everything is <script>alert('escaped')</script> by default"),
-        p(.Safe("but you can <strong>bypass</strong> it") as SafeString)
-      )
-    return Response().html(template.render())
+    return Response().html(demoTemplate(request.ip))
   default: 
     return Response(.NotFound)
   }
