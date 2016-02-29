@@ -92,3 +92,10 @@ public struct Mime {
    "zip"     : "application/zip"]
 
 }
+
+//
+// TODO API:
+//
+// - Mime.toExtension("application/octet-stream"): String? => "bin"
+// - Mime.fromPath("foo.tar.gz.zip"): String? => "application/zip"
+// - Mime.fromExt("zip"): String? => "application/zip"
