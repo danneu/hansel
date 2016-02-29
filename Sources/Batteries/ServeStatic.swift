@@ -73,5 +73,5 @@ func drop1 (str: String) -> String {
 // something was lost in translation when I ported it to Swift and it
 // didn't protect the endpoint.
 func isUpPath (str: String) -> Bool {
-  return RegExp("\\.{2,}").test(str)
+  return try! RegExp("\\.{2,}").test(str)
 }

@@ -40,5 +40,5 @@ private func base64 (input: [UInt8]) -> String {
 
 // Strip Base64 string padding
 private func padless (input: String) -> String {
-  return RegExp("=+$").replace(input, template: "")
+  return try! RegExp("=+$").replace(input, template: "")
 }

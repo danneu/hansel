@@ -42,9 +42,9 @@ enum ContentTypeError: ErrorType {
 * quoted-pair   = "\" ( HTAB / SP / VCHAR / obs-text )
 */
 
-private let paramRe = RegExp("; *([!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+) *= *(\"(?:[\\u000b\\u0020\\u0021\\u0023-\\u005b\\u005d-\\u007e\\u0080-\\u00ff]|\\\\[\\u000b\\u0020-\\u00ff])*\"|[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+) *")
-private let textRe = RegExp("^[\\u000b\\u0020-\\u007e\\u0080-\\u00ff]+$")
-private let tokenRe = RegExp("^[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+$")
+private let paramRe = try! RegExp("; *([!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+) *= *(\"(?:[\\u000b\\u0020\\u0021\\u0023-\\u005b\\u005d-\\u007e\\u0080-\\u00ff]|\\\\[\\u000b\\u0020-\\u00ff])*\"|[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+) *")
+private let textRe = try! RegExp("^[\\u000b\\u0020-\\u007e\\u0080-\\u00ff]+$")
+private let tokenRe = try! RegExp("^[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+$")
 
 /**
 * RegExp to match quoted-pair in RFC 7230 sec 3.2.6
@@ -53,13 +53,13 @@ private let tokenRe = RegExp("^[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+$")
 * obs-text    = %x80-FF
 */
 
-private let qescRe = RegExp("\\\\([\\u000b\\u0020-\\u00ff])")
+private let qescRe = try! RegExp("\\\\([\\u000b\\u0020-\\u00ff])")
 
 /**
 * RegExp to match chars that must be quoted-pair in RFC 7230 sec 3.2.6
 */
 
-private let quoteRe = RegExp("([\\\\\"])")
+private let quoteRe = try! RegExp("([\\\\\"])")
 
 /**
 * RegExp to match type in RFC 6838
@@ -69,7 +69,7 @@ private let quoteRe = RegExp("([\\\\\"])")
 * subtype    = token
 */
 
-private let typeRe = RegExp("^[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+\\/[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+$")
+private let typeRe = try! RegExp("^[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+\\/[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+$")
 
 public struct ContentType {
   // e.g. "image/svg+xml

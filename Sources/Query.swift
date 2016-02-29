@@ -35,5 +35,5 @@ func splitAll (separator: Character, _ input: String) -> [String] {
 func decode (input: String) -> String {
   return input
     |> Belt.urlDecode
-    |> { RegExp("\\+").replace($0, template: " ") }
+    |> { try! RegExp("\\+").replace($0, template: " ") }
 }
