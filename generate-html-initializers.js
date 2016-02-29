@@ -1,6 +1,6 @@
 'use strict'
 
-const maxArity = 25
+const maxArity = 20
 
 for (var n = 1; n <= maxArity; n++) {
   console.log(template(n))

@@ -60,6 +60,41 @@ extension Dictionary: AttrConvertible  {
 
 // IMPL
 
+// For custom nodes
+//
+// Ex:
+//     node("el")
+//     node("el", "Hello")
+//     node("el", ["display": "block"], "Hello")
+//
+// TODO: Allow user to create void elements
+class node: Element {
+  private init (_ tag: String, attrs: Attrs = [:], kids: [HtmlConvertible] = []) {
+    super.init(attrs, kids)
+    self.tagName = tag
+  }
+
+  // node("el")
+  convenience init (_ tag: String) {
+    self.init(tag)
+  }
+
+  // node("el", ["display": "block"])
+  convenience init (_ tag: String, _ attrs: Attrs) {
+    self.init(tag, attrs: attrs)
+  }
+
+  // node("el", [a, b, c])
+  convenience init (_ tag: String, _ kids: [HtmlConvertible]) {
+    self.init(tag, kids: kids)
+  }
+
+  // node("el", [:], [a, b, c])
+  convenience init (_ tag: String, _ attrs: Attrs, _ kids: [HtmlConvertible]) {
+    self.init(tag, attrs: attrs, kids: kids)
+  }
+}
+
 class Element: HtmlConvertible {
   var attrs: Attrs = [:]
   // void elements have no kids or closing tag
@@ -203,26 +238,6 @@ class Element: HtmlConvertible {
     self.init([:], [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20])
   }
 
-  convenience init (_ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible) {
-    self.init([:], [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21])
-  }
-
-  convenience init (_ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible) {
-    self.init([:], [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22])
-  }
-
-  convenience init (_ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible, _ a23: HtmlConvertible) {
-    self.init([:], [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23])
-  }
-
-  convenience init (_ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible, _ a23: HtmlConvertible, _ a24: HtmlConvertible) {
-    self.init([:], [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24])
-  }
-
-  convenience init (_ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible, _ a23: HtmlConvertible, _ a24: HtmlConvertible, _ a25: HtmlConvertible) {
-    self.init([:], [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25])
-  }
-
   convenience init (_ attrs: Attrs, _ a1: HtmlConvertible) {
     self.init(attrs, [a1])
   }
@@ -301,26 +316,6 @@ class Element: HtmlConvertible {
 
   convenience init (_ attrs: Attrs, _ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible) {
     self.init(attrs, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20])
-  }
-
-  convenience init (_ attrs: Attrs, _ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible) {
-    self.init(attrs, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21])
-  }
-
-  convenience init (_ attrs: Attrs, _ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible) {
-    self.init(attrs, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22])
-  }
-
-  convenience init (_ attrs: Attrs, _ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible, _ a23: HtmlConvertible) {
-    self.init(attrs, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23])
-  }
-
-  convenience init (_ attrs: Attrs, _ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible, _ a23: HtmlConvertible, _ a24: HtmlConvertible) {
-    self.init(attrs, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24])
-  }
-
-  convenience init (_ attrs: Attrs, _ a1: HtmlConvertible, _ a2: HtmlConvertible, _ a3: HtmlConvertible, _ a4: HtmlConvertible, _ a5: HtmlConvertible, _ a6: HtmlConvertible, _ a7: HtmlConvertible, _ a8: HtmlConvertible, _ a9: HtmlConvertible, _ a10: HtmlConvertible, _ a11: HtmlConvertible, _ a12: HtmlConvertible, _ a13: HtmlConvertible, _ a14: HtmlConvertible, _ a15: HtmlConvertible, _ a16: HtmlConvertible, _ a17: HtmlConvertible, _ a18: HtmlConvertible, _ a19: HtmlConvertible, _ a20: HtmlConvertible, _ a21: HtmlConvertible, _ a22: HtmlConvertible, _ a23: HtmlConvertible, _ a24: HtmlConvertible, _ a25: HtmlConvertible) {
-    self.init(attrs, [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25])
   }
   
   //

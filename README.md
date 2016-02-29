@@ -38,7 +38,7 @@ func demoTemplate (ip: String) -> HtmlConvertible {
     p("your ip address is: \(ip)"),
     // you can pass in child elements as an array
     ol(["apples", "bananas", "oranges"].map { li($0) }),
-    // or not (up to 25 elements)
+    // or not (up to 20 elements)
     ul(
       li("item a"),
       li("item b"),
