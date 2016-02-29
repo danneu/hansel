@@ -1,13 +1,6 @@
 
 import Foundation
 
-// TODO: I'm planning on address being the socket address and
-// a request.ip function returning the address or
-// the final proxy in X-Forwarded-For if some sort of trust=true
-// setting is configured
-
-// TODO: Support byte array
-
 enum RequestError: ErrorType {
   case InvalidUrl
 }
@@ -15,12 +8,15 @@ enum RequestError: ErrorType {
 public struct Request: Storable, HeaderList {
   public var url: String
   public var method: Method
-  var headers: [Header]
+  public var headers: [Header]
+  // basically a byte array with some convenience methods
   public var body: RequestBody
   var store: Store
+  // remote connection ip address. use the #ip method.
   private var address: String
   private var nsurl: NSURL
-  // Opts
+
+  // options, not part of the request model
   var trustProxy: Bool
 
   public init (
@@ -47,18 +43,47 @@ public struct Request: Storable, HeaderList {
       self.trustProxy = trustProxy
   }
 
+  // returns client ip address. uses x-forwarded-for if proxy is trusted.
   public var ip: String {
-    if self.trustProxy {
-      return self.getHeader("x-forwarded-for") ?? self.address
+    if trustProxy {
+      return getHeader("x-forwarded-for") ?? address
     } else {
-      return self.address
+      return address
     }
   }
+
+  // returns host header. uses x-forwarded-host if proxy is trusted.
+  public var host: String? {
+    if self.trustProxy {
+      return getHeader("x-forwarded-host") ?? getHeader("host")
+    } else {
+      return getHeader("host")
+    }
+  }
+
+  // returns content-type without any of its parameters
+  // Ex: "application/json; charset=utf-8" => "application/json"
+  // returns nil on invalid content-type
+  public var type: String? {
+    let val = getHeader("content-type")
+    if val == nil { return nil }
+    do {
+      return try ContentType.parse(val!).type
+    } catch {
+      return nil
+    }
+  }
+
+  // URL PARTS
 
   // TODO: Handle "example.com//////" and malicious paths,
   // possible fail in initializer
   public var path: String {
     return nsurl.path ?? "/"
+  }
+
+  public var querystring: String {
+    return nsurl.query ?? ""
   }
 
   public var query: [String: String] {

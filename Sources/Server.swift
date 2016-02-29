@@ -35,6 +35,8 @@ public class Server {
   }
 }
 
+// Feed any option dependencies into the 
+// request.
 func wrapRequestOptions (trustProxy trustProxy: Bool) -> Middleware {
   return { handler in
     return { request in
