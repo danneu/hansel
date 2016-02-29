@@ -60,6 +60,8 @@ let handler: Handler = { request in
 Server(logger(handler)).listen(3000)
 ```
 
+![templating demo screenshot](http://i.imgur.com/3cXptdG.png)
+
 Hansel is an experimental Swift web-server that focuses on:
 
 - **Simplicity**
