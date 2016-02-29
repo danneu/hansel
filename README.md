@@ -484,13 +484,6 @@ ETag.generate(bytes) //=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
 will be extended to create weak ETags based on fs `stat`
 data (mtime and size).
 
-## Default Middleware
-
-When you give hansel your final handler function, it wraps it with 
-some of its own outer middleware:
-
-- **HEAD request handling**
-
 ## Thanks
 
 - Socket implementation from [glock45/swifter][swifter]
