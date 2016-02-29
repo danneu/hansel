@@ -24,6 +24,15 @@ let handler: Handler = { request in
     return Response().html("<h1>Homepage</h1>")
   case (.Get, "/json"): 
     return Response().json(["Hello": "world"])
+  case (.Get, "/html"):
+    let tree: Html =
+      .Div$(
+        ["display": "inline-block",
+         "font-family": "georgia"],
+        .Spread(
+          [.P(.Text("Hello world")),
+           .P(.Text("Yeah, this DSL needs some work..."))]))
+    return Response().html(tree.render())
   default: 
     return Response(.NotFound)
   }
