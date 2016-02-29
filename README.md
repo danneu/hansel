@@ -1,6 +1,4 @@
 
-*Disclaimer: I'm new to Swift and XCode*
-
 # Hansel
 
 Swift web-servers, so hot right now.
@@ -23,13 +21,19 @@ func demoTemplate (ip: String) -> HtmlConvertible {
   div(
     // pass a dictionary as the first argument to any
     // element to set its attributes
-    ["style": ["color": "red", "width": "200px"],
-     "border": "5px solid black"],
+    ["style": ["background-color": "#3498db",
+               "color": "white",
+               "width": "600px",
+               "margin": "20px auto",
+               "border": "5px solid black",
+               "padding": "10px",
+               "font-family": "Menlo"],
+     "class": "demo-box"],
     h1("quick hansel templating demo"),
     hr(),
-    "hello",
+    "hello, ",
     "world",
-    p("your ip address is:", ip),
+    p("your ip address is: \(ip)"),
     // you can pass in child elements as an array
     ol(["apples", "bananas", "oranges"].map { li($0) }),
     // or not (up to 10 elements)
@@ -39,7 +43,7 @@ func demoTemplate (ip: String) -> HtmlConvertible {
       li("item c")
     ),
     p("everything is <script>alert('escaped')</script> by default"),
-    p(.Safe("but you can <strong>bypass</strong> it") as SafeString)
+    p(.Safe("but you can <u><b>bypass</b></u> it") as SafeString)
   )
 }
 
@@ -523,6 +527,10 @@ data (mtime and size).
 [swifter]: https://github.com/glock45/swifter
 [vapor]: https://github.com/tannernelson/vapor
 [jshttp]: https://github.com/jshttp
+
+## Disclaimer
+
+I'm new to Swift and XCode
 
 ## TODO
 
