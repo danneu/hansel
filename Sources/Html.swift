@@ -52,7 +52,6 @@ extension Dictionary: AttrConvertible  {
     var output = ""
     for (idx, (k, v)) in self.enumerate() {
       output += (idx > 0 ? " " : "") + "\(k):\(v);"
-
     }
     return output
   }
