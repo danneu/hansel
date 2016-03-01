@@ -9,7 +9,7 @@ extension Batteries {
       if (hasSlash(request.path)) {
         return Response().redirect(trimSlash(request.path), status: .MovedPermanently)
       }
-      return handler(request)
+      return try handler(request)
     }
   }
 }

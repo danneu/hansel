@@ -66,7 +66,8 @@ public class SocketServer {
     let parser = SocketParser()
 
     while let request = try? parser.readHttpRequest(socket) {
-      let response = handler(request).finalize()
+      // we can try! since hansel has its own top-level try/catch
+      let response = try! handler(request).finalize()
       do {
         try self.respond(socket, response: response)
       } catch {

@@ -12,7 +12,7 @@ extension Batteries {
 
         // Only serve assets to HEAD or GET
         if request.method != .Head && request.method != .Get {
-          return handler(request)
+          return try handler(request)
         }
 
         // containing NULL bytes is malicious
@@ -38,7 +38,7 @@ extension Batteries {
 
         // we can only serve files
         guard fullPath.isFile else {
-          return handler(request)
+          return try handler(request)
         }
 
         // guess the mime-type from the extension
@@ -49,7 +49,7 @@ extension Batteries {
 
         // get the stat info so that the stream is etaggable
         guard let stats = stat(fullPath.description) else {
-          return handler(request)
+          return try handler(request)
         }
 
         return Response()

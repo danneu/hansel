@@ -10,7 +10,7 @@ extension Batteries {
   // TODO: Cookies should be Opts -> Middleware (configurable)
   static let cookies: Middleware = { handler in
     return { request in
-      let response = handler(cookieRequest(request))
+      let response = try handler(cookieRequest(request))
       return cookieResponse(response)
     }
   }

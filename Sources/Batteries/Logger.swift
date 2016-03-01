@@ -6,7 +6,7 @@ extension Batteries {
     return { request in
       logRequest(request)
       let start = getMillis()
-      let response = handler(request)
+      let response = try handler(request)
       logResponse(request, response: response, start: start)
       return response
     }

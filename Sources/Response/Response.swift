@@ -45,10 +45,8 @@ public struct Response: Storable, HeaderList, Tappable {
     return self.setBody(x.html()).setHeader("content-type", "text/html")
   }
 
-  // TODO: Somehow type this so it can't fail. I don't
-  // want user to have to `try`.
-  public func json (obj: Any) -> Response {
-    let bytes = try! Jay().dataFromJson(obj)
+  public func json (obj: Any) throws -> Response {
+    let bytes = try Jay().dataFromJson(obj)
     return self.setBody(ByteArray(bytes)).setHeader("content-type", "application/json")
   }
 

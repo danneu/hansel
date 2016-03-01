@@ -1,3 +1,3 @@
 import Foundation
 
-public typealias Handler = Request -> Response
+public typealias Handler = (_: Request) throws -> Response

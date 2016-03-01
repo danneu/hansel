@@ -26,7 +26,7 @@ import Hansel
 let logger: Middleware = { handler in
   return { request in
     print("Request coming in")
-    let response = handler(request)
+    let response = try handler(request)
     print("Response going out")
     return response
   }
@@ -99,7 +99,7 @@ struct Response {
   // ...
 }
 
-typealias Handler = Request -> Response
+typealias Handler = (Request) throws -> Response
 typealias Middleware = Handler -> Handler
 ```
 
@@ -115,9 +115,9 @@ Some random quick-start examples:
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
 Response(status: .Ok, headers: [])
-Response().text("Hello")                 //=> text/plain
-Response().html("<h1>Hello</h1>")        //=> text/html
-Response().json(["favoriteNumber": 42])  //=> application/json
+Response().text("Hello")                     //=> text/plain
+Response().html("<h1>Hello</h1>")            //=> text/html
+try Response().json(["favoriteNumber": 42])  //=> application/json
 Response().stream(FileStream("./video.mp4"), "video/mp4")
 Response(.NotFound)
 Response(.NotFound).text("File not found :(")
@@ -129,8 +129,8 @@ request.url                     //  "http://example.com/users?sort=created"
 request.query                   // ["sort": "created"]
 request.path                    // "/users"
 request.method                  // Method.Get
-request.body.json()             // ["foo": "bar"]
-request.body.utf8()             // "{\"foo\":\"bar\"}"
+try request.body.json()         // ["foo": "bar"]
+try request.body.utf8()         // "{\"foo\":\"bar\"}"
 request.headers                 // [("host", "example.com"), ...]
 request.getHeader("host")       // "example.com"
 request.getHeader("xxxxx")      // nil
@@ -174,7 +174,7 @@ func handler (request: Request) -> Response {
 
 // Preferred
 let handler: Handler { request in 
-  Response().text("Hello world")
+  return Response().text("Hello world")
 }
 ```
 
@@ -186,16 +186,16 @@ and after the response leaves the handler.
 Because `Middleware` is a typealias, these are equivalent:
 
 ``` swift
-func middleware (handler: (Request -> Response)) -> (Request -> Response) {
+func middleware (handler: (Request -> Response)) throws -> (Request -> Response) {
   return { request in
-    let response = handler(request)
+    let response = try handler(request)
     return response
   }
 }
 
 func middleware (handler: Handler) -> Handler {
   return { request in
-    let response = handler(request)
+    let response = try handler(request)
     return response
   }
 }
@@ -203,7 +203,7 @@ func middleware (handler: Handler) -> Handler {
 // Preferred
 let middleware: Middleware = { handler in
   return { request in
-    let response = handler(request)
+    let response = try handler(request)
     return response
   }
 }

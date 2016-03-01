@@ -1,6 +1,10 @@
 
 import Foundation
 
+#if os(Linux)
+  import Glibc
+#endif
+
 public class Server {
   private let socketServer: SocketServer
 
@@ -9,6 +13,7 @@ public class Server {
     // own final outer middleware
     let middleware = compose(
       Builtin.wrapOptions(trustProxy: trustProxy),
+      Builtin.wrapErrorHandler,
       Builtin.wrapHead
     )
     self.socketServer = SocketServer(middleware(handler))
@@ -49,7 +54,7 @@ extension Builtin {
       return { request in
         var copy = request
         copy.trustProxy = trustProxy
-        return handler(copy)
+        return try handler(copy)
       }
     }
   }
@@ -60,7 +65,7 @@ extension Builtin {
 extension Builtin {
   static let wrapHead: Middleware = { handler in
     return { request in
-      let response = handler(headRequest(request))
+      let response = try handler(headRequest(request))
       return headResponse(request, response: response)
     }
   }
@@ -79,5 +84,19 @@ private func headResponse (request: Request, response: Response) -> Response {
     return response.none()
   } else {
     return response
+  }
+}
+
+// Top-level generic error handler
+
+extension Builtin {
+  static let wrapErrorHandler: Middleware = { handler in
+    return { request in
+      do {
+        return try handler(request)
+      } catch {
+        return Response(.Error)
+      }
+    }
   }
 }

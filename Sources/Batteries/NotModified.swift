@@ -7,7 +7,7 @@ extension Batteries {
   static func notModified (etag etag: Bool) -> Middleware {
     return { handler in
       return { request in
-        var response = handler(request)
+        var response = try handler(request)
 
         // only consider HEAD and GET requests
         guard request.method == .Get || request.method == .Head else {

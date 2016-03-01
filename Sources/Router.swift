@@ -77,7 +77,7 @@ public enum Router {
   func handler () -> Handler {
     return { request in
       if let (h, params) = self.find(request.method, segments: toSegments(request.url), mws: [], params: [String: String](), router: self) {
-        return h(request.setParams(params))
+        return try h(request.setParams(params))
       } else {
         return Response(.NotFound)
       }
