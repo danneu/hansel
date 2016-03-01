@@ -161,7 +161,7 @@ let handler: Handler = { request in
 }
 ```
 
-## Handler (Request -> Response)
+## Handler (Request → Response)
 
 Your application is a function that takes a `Request` and returns a `Response`.
 
@@ -178,7 +178,7 @@ let handler: Handler { request in
 }
 ```
 
-## Middleware (Handler -> Handler)
+## Middleware (Handler → Handler)
 
 Middleware functions let you run logic before the request hits the handler
 and after the response leaves the handler.
