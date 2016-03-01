@@ -7,11 +7,28 @@ import CryptoSwift
 //
 // Currently only generates them from byte arrays.
 //
-// TODO: Support weak ETags from FS stat data (mtime and size)
-//
+// TODO: Support weak ETags
 
 struct ETag {
-  static func generate (bytes: [UInt8]) -> String {
+  static func generate (entity: ETaggable) -> String {
+    return entity.etag()
+  }
+}
+
+// PROTOCOL + EXTENSIONS
+
+public protocol ETaggable {
+  func etag () -> String
+}
+
+extension FileStream: ETaggable {
+  public func etag () -> String {
+    return "\"\(base16(size))-\(base16(mtime))\""
+  }
+}
+
+extension ByteArray: ETaggable {
+  public func etag () -> String {
     if bytes.isEmpty {
       return "\"0-1B2M2Y8AsgTpgAmY7PhCfg\""
     }
@@ -21,9 +38,11 @@ struct ETag {
 
     return "\"\(base16(len))-\(hash64)\""
   }
+}
 
-  static func generate (input: String) -> String {
-    return generate([UInt8](input.utf8))
+extension String: ETaggable {
+  public func etag () -> String {
+    return ByteArray(self).etag()
   }
 }
 

@@ -84,6 +84,9 @@ public class SocketServer {
 
   // TODO: KeepAlive
   private func respond (socket: Socket, response: Response) throws -> Bool {
+    // need it mutable so we can call mutable functions on response.body
+    var response = response
+
     try socket.writeUTF8("HTTP/1.1 \(response.status.rawValue) \(response.status.phrase)\r\n")
 
     // write k=v headers
@@ -94,10 +97,15 @@ public class SocketServer {
     // write boundary
     try socket.writeUTF8("\r\n")
 
+    // prepare body stream
+    response.body.open()
+    defer { response.body.close() }
+
     // write body
-    try socket.writeUInt8(response.body)
+    while let bytes = response.body.next() {
+      try socket.writeUInt8(bytes)
+    }
 
     return true
   }
-
 }

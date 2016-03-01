@@ -1,10 +1,10 @@
 import Foundation
 import Jay
 
-public struct Response: Storable, HeaderList {
+public struct Response: Storable, HeaderList, Tappable {
   public var status: Status = .Ok
   var headers: [Header] = []
-  public var body: [UInt8] = []
+  public var body: Streamable = ByteArray()
   var store: Store = [:]
 
   // INITIALIZERS
@@ -22,17 +22,16 @@ public struct Response: Storable, HeaderList {
     var copy = self; copy.status = status; return copy
   }
 
-  private func setBody (bytes: [UInt8]) -> Response {
-    var copy = self; copy.body = bytes; return copy
-  }
-  private func setBody (str: String) -> Response {
-    var copy = self; copy.body = [UInt8](str.utf8); return copy
+  private func setBody (newBody: Streamable = ByteArray()) -> Response {
+    var copy = self
+    copy.body = newBody
+    return copy
   }
 
   // SET RESPONSE BODY (HELPERS)
 
   public func none () -> Response {
-    return self.setBody([]).deleteHeader("content-type")
+    return self.setBody().deleteHeader("content-type")
   }
 
   public func text (str: String) -> Response {
@@ -47,11 +46,15 @@ public struct Response: Storable, HeaderList {
   // want user to have to `try`.
   public func json (obj: Any) -> Response {
     let bytes = try! Jay().dataFromJson(obj)
-    return self.setBody(bytes).setHeader("content-type", "application/json")
+    return self.setBody(ByteArray(bytes)).setHeader("content-type", "application/json")
   }
 
-  public func bytes (bytes: [UInt8], type: String?) -> Response {
+  public func bytes (bytes: ByteArray, type: String?) -> Response {
     return self.setBody(bytes).setHeader("content-type", type)
+  }
+
+  public func stream (fileStream: FileStream, type: String?) -> Response {
+    return self.setBody(fileStream).setHeader("content-type", type)
   }
 
   // FINALIZE
@@ -72,7 +75,13 @@ public struct Response: Storable, HeaderList {
 
     return final
       .setHeader("content-type", type)
-      .setHeader("content-length", String(final.body.count))
+      .tap { r in
+        if let len = final.body.length {
+          return r.setHeader("content-length", String(len))
+        } else {
+          return r.setHeader("transfer-encoding", "chunked")
+        }
+      }
   }
 
   // REDIRECT

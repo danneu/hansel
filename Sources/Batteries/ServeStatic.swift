@@ -2,7 +2,7 @@
 import Foundation
 import PathKit
 
-internal func wrapServeStatic (root: String) -> Middleware {
+public func wrapServeStatic (root: String) -> Middleware {
   return { handler in
     return { request in
       var rootPath = Path(root)
@@ -34,29 +34,29 @@ internal func wrapServeStatic (root: String) -> Middleware {
       // resolve the full path
       let fullPath = (rootPath + relativePath).absolute()
 
-      if (fullPath.isFile) {
-        var fileBody: NSData
-        do {
-          fileBody = try fullPath.read()
-        } catch {
-          return Response(.Error)
-        }
-
-        var type: String? = nil
-        if let ext = fullPath.`extension` {
-          type = Mime.exts[ext]
-        }
-
-        var bytes = [UInt8](count: fileBody.length, repeatedValue: 0)
-        fileBody.getBytes(&bytes, length: fileBody.length)
-
-        return Response().bytes(bytes, type: type)
+      // we can only serve files
+      guard fullPath.isFile else {
+        return handler(request)
       }
 
-      return handler(request)
+      // guess the mime-type from the extension
+      var type: String? = nil
+      if let ext = fullPath.`extension` {
+        type = Mime.exts[ext]
+      }
+
+      // get the stat info so that the stream is etaggable
+      guard let (size, mtime) = stat(fullPath.description) else {
+        return handler(request)
+      }
+
+      return Response()
+        .stream(FileStream(fullPath.description, size: size, mtime: mtime), type: type)
     }
   }
 }
+
+// HELPERS
 
 // slice off first char of a string. 
 // if string is empty, short-circuits empty string
@@ -74,4 +74,19 @@ func drop1 (str: String) -> String {
 // didn't protect the endpoint.
 func isUpPath (str: String) -> Bool {
   return try! RegExp("\\.{2,}").test(str)
+}
+
+// FILESYSTEM STAT
+
+typealias FileModificationTime = Int // seconds since epoch
+typealias FileSize = Int
+
+func stat (path: String) -> (FileSize, FileModificationTime)? {
+  guard let attrs: NSDictionary = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
+    let mdate: NSDate = attrs.fileModificationDate() else {
+      return nil
+  }
+
+  let mtime = Int(mdate.timeIntervalSince1970)
+  return (Int(attrs.fileSize()), mtime)
 }

@@ -5,7 +5,7 @@ enum RequestError: ErrorType {
   case InvalidUrl
 }
 
-public struct Request: Storable, HeaderList {
+public struct Request: Storable, HeaderList, Tappable {
   public var url: String
   public var method: Method
   public var headers: [Header]
