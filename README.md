@@ -305,7 +305,7 @@ let router: Router = .Node("/", [
   ])
   .Node("/users", [
     .Route(.Get, listUsersHandler)
-    .Route(.Post, createUserHandler)
+    .RouteM(.Post, [validateUser], createUserHandler)
     .NodeM("/:user", [loadUser], [
       .Route(.Get, showUserHandler)
     ])
