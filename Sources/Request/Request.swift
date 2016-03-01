@@ -79,8 +79,12 @@ public struct Request: Storable, HeaderList, Tappable {
 
   // TODO: Handle "example.com//////" and malicious paths,
   // possible fail in initializer
+  //
+  // Using CFURL over NSURL because CFURL's path:
+  // - Includes trailing slash
+  // - Does not decode percent-encoding
   public var path: String {
-    return nsurl.path ?? "/"
+    return CFURLCopyPath(nsurl as CFURL) as String
   }
 
   public var querystring: String {

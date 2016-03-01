@@ -41,6 +41,7 @@
 		D94F2F121C858AC9005767EF /* RegExp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F2F0C1C858AC9005767EF /* RegExp.swift */; };
 		D94F2F151C858B90005767EF /* Base16.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F2F131C858B90005767EF /* Base16.swift */; };
 		D94F2F161C858B90005767EF /* Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F2F141C858B90005767EF /* Base64.swift */; };
+		D94F2F181C858DD6005767EF /* RemoveTrailingSlash.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F2F171C858DD6005767EF /* RemoveTrailingSlash.swift */; };
 		D9BDA02D1C84122100494728 /* HtmlConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BDA02C1C84122100494728 /* HtmlConvertible.swift */; };
 		E9E2226E3AA301228CBF8D08 /* Pods_Hansel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */; };
 /* End PBXBuildFile section */
@@ -85,6 +86,7 @@
 		D94F2F0C1C858AC9005767EF /* RegExp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegExp.swift; sourceTree = "<group>"; };
 		D94F2F131C858B90005767EF /* Base16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base16.swift; sourceTree = "<group>"; };
 		D94F2F141C858B90005767EF /* Base64.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64.swift; sourceTree = "<group>"; };
+		D94F2F171C858DD6005767EF /* RemoveTrailingSlash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveTrailingSlash.swift; sourceTree = "<group>"; };
 		D9BDA02C1C84122100494728 /* HtmlConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConvertible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -198,6 +200,7 @@
 				D93D902C1C83CD71009A611B /* Cookie.swift */,
 				D93D902E1C83CD71009A611B /* Logger.swift */,
 				D93D902F1C83CD71009A611B /* ServeStatic.swift */,
+				D94F2F171C858DD6005767EF /* RemoveTrailingSlash.swift */,
 			);
 			name = Batteries;
 			path = Sources/Batteries;
@@ -378,6 +381,7 @@
 				D94F2EF91C856267005767EF /* Status.swift in Sources */,
 				D94F2F111C858AC9005767EF /* Query.swift in Sources */,
 				D92AA2251C79E0840063C79B /* main.swift in Sources */,
+				D94F2F181C858DD6005767EF /* RemoveTrailingSlash.swift in Sources */,
 				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
 				D94F2EF81C856267005767EF /* Response.swift in Sources */,
 				D94F2F0D1C858AC9005767EF /* ContentType.swift in Sources */,

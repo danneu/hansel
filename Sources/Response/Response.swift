@@ -89,6 +89,8 @@ public struct Response: Storable, HeaderList, Tappable {
 
   // REDIRECT
 
+  // 301: .MovedPermanently
+  // 302: .Found
   public func redirect (url: String, status: Status = .Found) -> Response {
     return self
       .setHeader("location", url)
