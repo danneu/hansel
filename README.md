@@ -527,6 +527,17 @@ Full list: `init(ms: Int)`, `secs:`, `mins:`, `hrs:`, `days:`, `weeks:`, `months
 
 ## Development (OSX)
 
+- Latest [Swift 3.0-DEV-SNAPSHOT](https://swift.org/download/)
+- Launching Xcode with `xcrun launch-with-toolchain /Library/Developer/Toolchains/swift-latest.xctoolchain` to use the installed Swift snapshot
+
+Not sure why I use the snapshot. I think I started using it since it was the
+only way to get Swift's package manager, which is the only way I could
+figure out how to run the project externally from Xcode. 
+But since `swift build` doesn't compile anymore for me due to a problem
+with a dependency.
+
+#### Steps that might work
+
 Figuring out how to use Xcode and package my project has been a 
 steep challenge. This is sheepishly the closest I've got to a clue:
 
