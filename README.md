@@ -473,6 +473,31 @@ ETag.generate(FileStream("./video.mp4", ...))
 ETags are generated for streams are based on data gathered from `stat`'ing
 the filesystem.
 
+## Custom Response Body
+
+A `response.body` conforms to the `Payload` protocol which involves 
+implementing just a few methods from a couple protocols:
+
+``` swift
+protocol Streamable {
+  mutating func next () -> [UInt8]?
+  func open () -> Void
+  func close () -> Void
+  var length: Int? { get }
+}
+
+protocol ETaggable {
+  func etag () -> String
+}
+```
+
+Hansel comes with these `Payload` implementations:
+
+- `String`
+- `ByteArray` (struct wrapper around `[UInt8]` so that it can conform)
+- Hansel's `FileStream` struct that represents a file path that will
+get streamed to the client.
+
 ## Thanks
 
 - Socket implementation from [glock45/swifter][swifter]
