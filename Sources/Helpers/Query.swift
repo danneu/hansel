@@ -14,7 +14,7 @@ public struct Query {
   }
 }
 
-func splitPair (input: String) -> (String, String) {
+private func splitPair (input: String) -> (String, String) {
   let result = input
     .characters
     .split("=", maxSplit: 1, allowEmptySlices: false)
@@ -24,14 +24,14 @@ func splitPair (input: String) -> (String, String) {
   return (key, val)
 }
 
-func splitAll (separator: Character, _ input: String) -> [String] {
+private func splitAll (separator: Character, _ input: String) -> [String] {
   return input
     .characters
     .split(separator, maxSplit: 50, allowEmptySlices: false)
     .map(String.init)
 }
 
-func decode (input: String) -> String {
+private func decode (input: String) -> String {
   return input
     |> Belt.urlDecode
     |> { try! RegExp("\\+").replace($0, template: " ") }

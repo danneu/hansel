@@ -34,7 +34,6 @@ extension ByteArray: Streamable {
     let bytes = self.bytes
     self.bytes = []
     return bytes
-    // return self.bytes.removeAtIndex(self.bytes.startIndex)
   }
 
   public func open () -> Void {}

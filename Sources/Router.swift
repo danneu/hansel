@@ -1,22 +1,6 @@
 
 import Foundation
 
-func toSegments (url: String) -> [String] {
-  var arr = url.characters.split("/").map({ s in "/" + String.init(s) })
-  arr.insert("/", atIndex: 0)
-  return arr
-}
-
-// Until swift gets spread (...) operator at callsite, duplicate
-// Middleware.swift's compose function here but tweak it so that
-// it handles array args.
-//
-// I was getting fatal crash with `return compose(mws)`
-public func composeArr (mws: [Middleware]) -> Middleware {
-  let noop: Middleware = identity // tell swift how to infer
-  return mws.reduce(noop, combine: { accum, next in accum << next })
-}
-
 // TODO: /:param capture
 public enum Router {
   case Node (String, [Middleware], [Router])
@@ -71,4 +55,20 @@ public enum Router {
       }
     }
   }
+}
+
+private func toSegments (url: String) -> [String] {
+  var arr = url.characters.split("/").map({ s in "/" + String.init(s) })
+  arr.insert("/", atIndex: 0)
+  return arr
+}
+
+// Until swift gets spread (...) operator at callsite, duplicate
+// Middleware.swift's compose function here but tweak it so that
+// it handles array args.
+//
+// I was getting fatal crash with `return compose(mws)`
+private func composeArr (mws: [Middleware]) -> Middleware {
+  let noop: Middleware = identity // tell swift how to infer
+  return mws.reduce(noop, combine: { accum, next in accum << next })
 }
