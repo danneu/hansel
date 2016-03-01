@@ -7,6 +7,17 @@
 
 Swift web-servers, so hot right now.
 
+## Features
+
+- [x] Streaming responses
+- [x] `div("HTML templating", span("as Swift functions"))`
+- [x] JSON support
+- [x] Cookies
+- [x] Static-file streaming
+- [ ] Tests
+
+## Example
+
 ``` swift
 import Hansel
 
@@ -108,7 +119,7 @@ struct Request {
 struct Response {
   let status: Status
   let headers: [Header]
-  let body: [UInt8]
+  let body: Streamable
   // ...
 }
 
@@ -128,9 +139,10 @@ Some random quick-start examples:
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
 Response(status: .Ok, headers: [])
-Response().text("Hello")                //=> text/plain
-Response().html("<h1>Hello</h1>")       //=> text/html
-Response().json(["favoriteNumber": 42]) //=> application/json
+Response().text("Hello")                 //=> text/plain
+Response().html("<h1>Hello</h1>")        //=> text/html
+Response().json(["favoriteNumber": 42])  //=> application/json
+Response().stream(FileStream("./video.mp4"), "video/mp4")
 Response(.NotFound)
 Response(.NotFound).text("File not found :(")
 ```
@@ -414,9 +426,13 @@ Server(router.handler()).listen(3000)
 
 ### Static File Serving (Middleware)
 
-Stubbed out some basic static asset serving middleware that stats the
-file system and serves the file if there is one. Else the request continues
-down the chain.
+The `serveStatic` middleware checks the `request.path` against the directory
+that you initialize the middleware with.
+
+If the file does not exist, then the request continues downstream.
+
+If the file does exist, then it returns a response that will stream
+the file to the client.
 
 ``` swift
 let middleware = compose(
@@ -513,15 +529,19 @@ type.format() //=> "image/svg+xml; charset=utf-8; foo=bar"
 
 I have a basic ETag generator in `ETag.swift` that works on byte arrays.
 
+`ETag.swift` contains an ETag generator that can be called on anything
+that conforms to the `ETaggable` protocol.
+
 ``` swift
 let bytes: [UInt8] = Array("foo".utf8)
 
 ETag.generate(bytes) //=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
+ETag.generate("foo") //=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
+ETag.generate(FileStream("./video.mp4", ...))
 ```
 
-**TODO:** Once I figure out a streaming abstraction, the ETag generator
-will be extended to create weak ETags based on fs `stat`
-data (mtime and size).
+ETags are generated for streams are based on data gathered from `stat`'ing
+the filesystem.
 
 ## Thanks
 
