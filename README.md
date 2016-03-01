@@ -33,44 +33,21 @@ let logger: Middleware = { handler in
 }
 
 // built-in templating example
-func demoTemplate (ip: String) -> HtmlConvertible {
+func demoTemplate (ip: String) -> HtmlConvertible =
   div(
-    // pass a dictionary as the first argument to any
-    // element to set its attributes
-    ["style": ["background-color": "#3498db",
-               "color": "white",
-               "width": "600px",
-               "margin": "20px auto",
-               "border": "5px solid black",
-               "padding": "10px",
-               "font-family": "Menlo"],
-     "class": "demo-box"],
-    h1("quick hansel templating demo"),
-    hr(),
-    "hello, ",
-    "world",
-    p("your ip address is: \(ip)"),
-    // you can pass in child elements as an array
-    ol(["apples", "bananas", "oranges"].map { li($0) }),
-    // or not (up to 20 elements)
-    ul(
-      li("item a"),
-      li("item b"),
-      li("item c")
-    ),
-    p("everything is <script>alert('escaped')</script> by default"),
-    p(.Safe("but you can <u><b>bypass</b></u> it") as SafeString),
-    node("whatever", ["and you can create arbitrary html nodes"])
-  )
-}
+    h1("Welcome!"),
+    p(["style": ["color": "red"]], 
+      "Your IP address is: ", strong(ip)))
 
-// a silly router
-let handler: Handler = { request in
+// a silly router for demonstration
+let resource: Handler = { request in
   switch (request.method, request.path) {
   case (.Get, "/"): 
     return Response().html("<h1>Homepage</h1>")
   case (.Get, "/json"): 
     return Response().json(["Hello": "world"])
+  case (.Get, "/text"): 
+    return Response().text("How are you?")
   case (.Get, "/html"):
     return Response().html(demoTemplate(request.ip))
   default: 
@@ -80,8 +57,6 @@ let handler: Handler = { request in
 
 Server(logger(handler)).listen(3000)
 ```
-
-![templating demo screenshot](http://i.imgur.com/3cXptdG.png)
 
 Hansel is an experimental Swift web-server that focuses on:
 
@@ -150,168 +125,39 @@ Response(.NotFound).text("File not found :(")
 
 ``` swift
 // GET http://example.com/users?sort=created {"foo": "bar"}
-request.url                //  "http://example.com/users?sort=created"
-request.query              // ["sort": "created"]
-request.path               // "/users"
-request.method             // Method.Get
-request.body.json()        // ["foo": "bar"]
-request.body.utf8()        // "{\"foo\":\"bar\"}"
-request.headers            // [("host", "example.com"), ...]
-request.getHeader("host")  // "example.com"
-request.getHeader("xxxxx") // nil
+request.url                     //  "http://example.com/users?sort=created"
+request.query                   // ["sort": "created"]
+request.path                    // "/users"
+request.method                  // Method.Get
+request.body.json()             // ["foo": "bar"]
+request.body.utf8()             // "{\"foo\":\"bar\"}"
+request.headers                 // [("host", "example.com"), ...]
+request.getHeader("host")       // "example.com"
+request.getHeader("xxxxx")      // nil
+request.setHeader("key", "val") //=> Request
 ```
 
-### Reading/Writing Headers
-
 ``` swift
-public typealias Header = (String, String)
-```
-
-Headers are represented as string tuples to model the fact that
-duplicate headers can exist (like when setting multiple cookies) and
-for eventual integration with the [Nest protocol][nest].
-
-The Request and Response conform to my HeaderList protocol
-which implements methods for reading and updating headers:
-
-``` swift
-public typealias Header = (String, String)
-
-protocol HeaderList {
-  var headers: [Header] { get set }
-  func getHeader (key: String) -> String?
-  func setHeader (key: String, val: String?) -> Self
-  func deleteHeader (key: String) -> Self
-  func appendHeader (key: String, val: String) -> Self
-  func updateHeader (key: String, fn: String? -> String?) -> Self
-}
-```
-
-- `getHeader(key)` returns the first matching header.
-- `deleteHeader(key)` deletes all headers with that key.
-- `setHeader(key, val)` deletes all the headers of that key and then sets the
-header.
-- `updateHeader(key, fn(val -> val))` updates the first matching header and
-deletes the rest.
-- `appendHeader(key, val)` appends a header to the array.
-
-[nest]: https://github.com/nestproject/Nest/blob/master/Specification.md
-
-Example:
-
-``` swift
+// these are all non-destructive transformations
 let handler: Handler = { request in
   return Response()
     .text("Test")
     .setHeader("X-Example", "initial")
     .setHeader("X-Example", "overwritten")
-    .appendHeader("Set-Cookie", "hello=world")
-    .appendHeader("Set-Cookie", "goodbye=world")
-}
-```
-
-Produces this Response:
-
-```
-HTTP/1.1 200 OK
-X-Example: overwritten
-Set-Cookie: hello=world
-Set-Cookie: goodbye=world
-Content-Length: 4
-
-Test
-```
-
-### Storage
-
-Request and Response also implement my Storable protocol which
-gives handlers and middleware a dictionary to store arbitrary data.
-
-``` swift
-typealias Store = [String: Any]
-
-protocol Storable {
-  var store: Store { get set }
-  func getStore (key: String) -> Any?
-  func setStore (key: String, val: Any) -> Self
-  func updateStore (key: String, fn: Any -> Any) -> Self
-}
-```
-
-My idea so far is that middleware can use `request.store` and `response.store`
-as generic data slots, and then extend Request and Respond with helper 
-methods that read/manipulate data in those slots.
-
-For example, this is how the Cookie.swift middleware is implemented:
-
-``` swift
-extension Response {
-  var cookies: [String: ResponseCookie] {
-    if let value = self.getStore("cookies") as? [String: ResponseCookie] {
-      return value
-    } else {
-      return [:]
+    .appendHeader("Fruit", "apples")
+    .appendHeader("Fruit", "oranges")
+    .redirect("/users/hansel")
+    .setCookie("lang", "es")
+    .setCookie("session_id", { 
+      value: "e08c5eff-96bf-4b97-b30b-c81335da563d",
+      maxAge: 86400, // expires in 24 hours
+    })
+    // store data for downstream middleware/handlers to access
+    .setStore("current_user", User(id: 42, uname: "hansel"))
+    .tap { response in 
+      // tap lets you chain together arbitrary transformations
+      return conditon ? change(response) : response
     }
-  }
-
-  func setCookie (key: String, value: String) -> Response {
-    return self.setCookie(key, opts: ResponseCookie(key, value: value))
-  }
-
-  func setCookie (key: String, opts: ResponseCookie) -> Response {
-    return self.updateStore("cookies") { cookies in
-      if var dict = cookies as? [String: ResponseCookie] {
-        dict[key] = opts
-        return dict
-      } else {
-        return [key: opts]
-      }
-    }
-  }
-}
-```
-
-That way, cookie middleware exposes cookie features as just
-wrappers around the store:
-
-- response.cookies: [String: String]
-- response.setCookie: (String, ResponseCookie) -> Response
-
-Without the end-user having to manipulate the store directly.
-
-Another example is authentication middleware that
-attaches `request.currentUser: User?` to every request so that downstream
-middleware and handlers can access the current logged-in user:
-
-``` swift
-struct User {
-  var id: Int
-  var uname: String
-}
-
-protocol HasCurrentUser {
-  var currentUser: User? { get set }
-}
-
-extension Request: HasCurrentUser {
-  var currentUser: User? {
-    get { 
-      return self.store["current_user"] as! User
-    }
-    set (user) {
-      self.setStore("current_user", user)
-    }
-  }
-}
-
-let wrapCurrentUser: Middleware = { handler in
-  return { request in
-    let sessionId: String? = request.cookies["session_id"]
-    if sessionId == nil { return handler(request) }
-    let user: User? = database.getUserBySessionId(sessionId!)
-    if user == nil { return handler(request) }
-    return handler(request.setCurrentUser(user))
-  }
 }
 ```
 
@@ -377,6 +223,46 @@ Server(middleware(handler)).listen(3000)
 
 I've started stubbing out some basic middleware and tools.
 
+### Templating
+
+Hansel comes with a minimal templating library that lets you build
+HTML views with Swift code:
+
+``` swift
+func demoTemplate (ip: String) -> HtmlConvertible {
+  div(
+    // pass a dictionary as the first argument to any
+    // element to set its attributes
+    ["style": ["background-color": "#3498db",
+               "color": "white",
+               "width": "600px",
+               "margin": "20px auto",
+               "border": "5px solid black",
+               "padding": "10px",
+               "font-family": "Menlo"],
+     "class": "demo-box"],
+    h1("quick hansel templating demo"),
+    hr(),
+    "hello, ",
+    "world",
+    p("your ip address is: \(ip)"),
+    // you can pass in child elements as an array
+    ol(["apples", "bananas", "oranges"].map { li($0) }),
+    // or not (up to 20 elements)
+    ul(
+      li("item a"),
+      li("item b"),
+      li("item c")
+    ),
+    p("everything is <script>alert('escaped')</script> by default"),
+    p(.Safe("but you can <u><b>bypass</b></u> it") as SafeString),
+    node("whatever", ["and you can create arbitrary html nodes"])
+  )
+}
+```
+
+![templating demo screenshot](http://i.imgur.com/3cXptdG.png)
+
 ### Development Logger (Middleware)
 
 The logger middleware prints basic info about the request and response
@@ -401,28 +287,69 @@ The routing tree is implemented as a simple recursive enum:
 ``` swift
 enum Router {
   case .Route (Method, Handler)
-  case .Node (String, [Middleware], [Router])
+  case .Node (String, [Router])
+  // The "M" (middleware) versions let you pass in an array of
+  // middleware that will get applied if a downstream route matches
+  case .RouteM (Method, [Middleware], Handler)
+  case .NodeM (String, [Middleware], [Router])
 }
 ```
 
 Example:
 
 ``` swift
-let router: Router = .Node("/", [logger, cookieParser], [
+let router: Router = .Node("/", [
   .Route(.Get, homepageHandler),
-  .Node("/admin", [ensureAdmin], [
+  .NodeM("/admin", [ensureAdmin], [
     .Route(.Get, adminPanelHandler)
   ])
-  .Node("/users", [], [
+  .Node("/users", [
     .Route(.Get, listUsersHandler)
     .Route(.Post, createUserHandler)
-    .Node("/:user", [loadUser], [
+    .NodeM("/:user", [loadUser], [
       .Route(.Get, showUserHandler)
     ])
   ])
 ])
 
 Server(router.handler()).listen(3000)
+```
+
+I'd like to eventually develop a less string-heavy router.
+
+#### URL Route Params
+
+If a node has a parameter segment (Ex: `"/:username"`), then the param
+appears in the `request.params` dictionary (`[String: String]`) which
+you can access in downstream middleware and handlers.
+
+``` swift
+let router: Router = .Node("/", [
+  .Node("/:a", [
+    .Node("/:b", [
+      .Node("/:c", [
+        .Route(.Get, { Response().json($0.params) })
+      ])
+    ])
+  ])
+])
+
+Server(router.handler()).listen(3000)
+```
+
+Demo:
+
+```
+$ curl http://localhost:3000/apples/bananas/oranges
+HTTP/1.1 200 OK
+content-length: 42
+content-type: application/json
+
+{
+    "a": "apples",
+    "b": "bananas",
+    "c": "oranges"
+}
 ```
 
 ### Static File Serving (Middleware)
