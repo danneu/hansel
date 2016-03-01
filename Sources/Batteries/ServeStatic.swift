@@ -4,11 +4,11 @@ import PathKit
 
 extension Batteries {
   // maxage is milliseconds
-  static func serveStatic (root: String, maxAge: Int = 0) -> Middleware {
+  static func serveStatic (root: String, maxAge: Milliseconds = Milliseconds(0)) -> Middleware {
     return { handler in
       return { request in
         var rootPath = Path(root)
-        let relativePath = Path(drop1(request.path))
+        let relativePath = Path(Belt.drop(1, request.path))
 
         // Only serve assets to HEAD or GET
         if request.method != .Head && request.method != .Get {
@@ -64,15 +64,6 @@ extension Batteries {
 }
 
 // HELPERS
-
-// slice off first char of a string. 
-// if string is empty, short-circuits empty string
-func drop1 (str: String) -> String {
-  if str.isEmpty {
-    return str
-  }
-  return str.substringFromIndex(str.startIndex.advancedBy(1))
-}
 
 // path is tring to hop up hierarchy
 // 

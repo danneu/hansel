@@ -17,11 +17,6 @@ public struct ByteArray: Payload {
     self.bytes = bytes
   }
 
-  // ex: ByteArray("foo".utf8)
-  init (_ view: String.UTF8View) {
-    self.bytes = [UInt8](view)
-  }
-
   // ex: ByteArray("foo")
   init (_ str: String) {
     self.bytes = [UInt8](str.utf8)

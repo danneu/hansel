@@ -33,8 +33,6 @@ extension Request {
   }
 }
 
-typealias Seconds = Int
-
 struct ResponseCookie {
   var key: String
   var value: String

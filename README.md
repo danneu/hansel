@@ -58,6 +58,8 @@ let resource: Handler = { request in
 Server(logger(handler)).listen(3000)
 ```
 
+----
+
 Hansel is an experimental Swift web-server that focuses on:
 
 - **Simplicity**
@@ -498,10 +500,36 @@ Hansel comes with these `Payload` implementations:
 - Hansel's `FileStream` struct that represents a file path that will
 get streamed to the client.
 
+## Seconds & Milliseconds Utility
+
+In HTTP, some things are expressed in seconds (cookie max-age) and
+some things are expressed in milliseconds (cache-control max-age).
+It's easy to get this wrong, and it's hard to notice it when you do.
+
+Hansel uses type-safety to prevent these errors with these structs:
+
+- `Milliseconds(Int)`
+- `Seconds(Int)`
+
+Functions that need to distinguish between them (like the cookie and
+serve-static middleware) just require you to provide an instance of one
+or the other.
+
+They also offer far more readable conversions over the
+ol `1000 * 60 * 60 * 24 * 7 * 2` chain:
+
+``` swift
+Seconds(days: 365)      // Seconds(31536000)
+Milliseconds(weeks: 2)  // Milliseconds(1209600000)
+```
+
+Full list: `init(ms: Int)`, `secs:`, `mins:`, `hrs:`, `days:`, `weeks:`, `months:`
+
 ## Thanks
 
 - Socket implementation from [glock45/swifter][swifter]
 - Some socket glue code from [tannernelson/vapor][vapor]
+- Some Linux fixes from [tannernelson/vapor][vapor]
 - Some HTTP/RFC implementation ported from [jshttp]
 
 [swifter]: https://github.com/glock45/swifter
