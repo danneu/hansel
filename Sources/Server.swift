@@ -2,9 +2,9 @@
 import Foundation
 
 public class Server {
-  let socketServer: SocketServer
+  private let socketServer: SocketServer
 
-  public init (_ handler: Handler, trustProxy: Bool = false) {
+  init (_ handler: Handler, trustProxy: Bool = false) {
     // This is where hansel wraps the user's handler with its
     // own final outer middleware
     let middleware = compose(
@@ -14,7 +14,7 @@ public class Server {
     self.socketServer = SocketServer(middleware(handler))
   }
 
-  public func listen (port: Int = 3000) {
+  func listen (port: Int = 3000) {
     do {
       try self.socketServer.boot(port)
       print("Listening on \(port)")
@@ -24,7 +24,7 @@ public class Server {
     }
   }
 
-  func loop() {
+  private func loop() {
     #if os(Linux)
       while true {
         sleep(1)

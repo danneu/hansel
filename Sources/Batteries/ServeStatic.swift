@@ -54,7 +54,7 @@ extension Batteries {
 
         return Response()
           .stream(FileStream(fullPath.description,
-                             byteSize: stats.byteSize,
+                             fileSize: stats.fileSize,
                              modifiedAt: stats.modifiedAt),
                   type: type)
           .setHeader("cache-control", "public, max-age=\(maxAge)")
@@ -85,7 +85,7 @@ func isUpPath (str: String) -> Bool {
 
 // FILESYSTEM STAT
 
-func stat (path: String) -> (byteSize: Int, modifiedAt: NSDate)? {
+func stat (path: String) -> (fileSize: Int, modifiedAt: NSDate)? {
   guard let attrs: NSDictionary = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
     let modifiedAt: NSDate = attrs.fileModificationDate() else {
       return nil

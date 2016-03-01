@@ -25,7 +25,7 @@ public protocol ETaggable {
 
 extension FileStream: ETaggable {
   public func etag () -> String {
-    return "\"\(Base16.encode(byteSize))-\(Base16.encode(mtime))\""
+    return "\"\(Base16.encode(fileSize))-\(Base16.encode(mtime))\""
   }
 }
 

@@ -3,7 +3,7 @@ import Foundation
 
 public struct FileStream: Payload {
   var modifiedAt: NSDate
-  var byteSize: Int
+  var fileSize: Int
   var stream: NSInputStream
 
   // seconds since epoch
@@ -12,10 +12,10 @@ public struct FileStream: Payload {
   }
 
   // TODO: Throw on fail
-  init (_ path: String, byteSize: Int, modifiedAt: NSDate) {
+  init (_ path: String, fileSize: Int, modifiedAt: NSDate) {
     let stream: NSInputStream = NSInputStream(fileAtPath: path)!
     self.stream = stream
-    self.byteSize = byteSize
+    self.fileSize = fileSize
     self.modifiedAt = modifiedAt
   }
 }
@@ -35,6 +35,6 @@ extension FileStream: Streamable {
   }
 
   public var length: Int? {
-    return byteSize
+    return fileSize
   }
 }
