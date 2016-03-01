@@ -1,12 +1,24 @@
 
 import Foundation
 
-// TODO: /:param capture
+//
+// A simple router
+//
+// Not very robust, yet very string-based. 
+//
+// TODO: Make it more type-safe
+// FIXME: Nasty code
+//
+
+typealias Params = [String: String]
+
 public enum Router {
   case Node (String, [Middleware], [Router])
   case Route (Method, Handler)
 
-  func find (method: Method, segments: [String], mws: [Middleware], router: Router) -> Handler? {
+  func find (method: Method, segments: [String], mws: [Middleware], params: Params, router: Router) -> (Handler, Params)? {
+    var params = params // need it mutable
+
     var restSegs: [String]
     if segments.count <= 1 {
       restSegs = []
@@ -25,21 +37,29 @@ public enum Router {
         return nil
       }
       let middleware = composeArr(mws)
-      return middleware(rHandler)
+      return (middleware(rHandler), params)
     case .Node(let nSeg, let nMws, let branches):
-      let currSeg = segments.first
-      if currSeg == nil {
+      guard let currSeg = segments.first else {
         return nil
       }
-      // fail if current segment does not match node's
-      if (currSeg != nSeg) {
-        return nil
+
+      // if param segment like /:message,
+      // then merge in a param: ["message": "foo"]
+      if isParamSegment(nSeg) {
+        params[getParamKey(nSeg)] = Belt.drop(1, currSeg)
+      } else {
+        // if not a param segment, fail if current segment does not match node's
+        // segment
+        if (currSeg != nSeg) {
+          return nil
+        }
       }
+
       // traverse branches if any match
-      var found: Handler? = nil
+      var found: (Handler, Params)? = nil
       for branch in branches {
-        if let h = self.find(method, segments: restSegs, mws: mws + nMws, router: branch) {
-          found = h
+        if let result = self.find(method, segments: restSegs, mws: mws + nMws, params: params, router: branch) {
+          found = result
         }
       }
       return found
@@ -48,13 +68,22 @@ public enum Router {
 
   func handler () -> Handler {
     return { request in
-      if let h = self.find(request.method, segments: toSegments(request.url), mws: [], router: self) {
+      if let (h, params) = self.find(request.method, segments: toSegments(request.url), mws: [], params: Params(), router: self) {
+        debugPrint("params:", params)
         return h(request)
       } else {
         return Response(.NotFound)
       }
     }
   }
+}
+
+private func isParamSegment (input: String) -> Bool {
+  return try! RegExp("^/:").test(input)
+}
+
+private func getParamKey (segment: String) -> String {
+  return try! RegExp("^/:(.+)$").replace(segment, template: "$1")
 }
 
 private func toSegments (url: String) -> [String] {

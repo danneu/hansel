@@ -416,7 +416,7 @@ let router: Router = .Node("/", [logger, cookieParser], [
   .Node("/users", [], [
     .Route(.Get, listUsersHandler)
     .Route(.Post, createUserHandler)
-    .Node("/:user", [loadUser], [ // doesn't actually parse params yet
+    .Node("/:user", [loadUser], [
       .Route(.Get, showUserHandler)
     ])
   ])

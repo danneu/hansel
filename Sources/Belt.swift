@@ -33,6 +33,15 @@ extension Belt {
   }
 }
 
+extension Belt {
+  static func drop (n: Int, _ input: String) -> String {
+    if input.isEmpty { return input }
+    if n == 0 { return input }
+    if n >= input.characters.count { return "" }
+    return input.substringFromIndex(input.startIndex.advancedBy(n))
+  }
+}
+
 // FUNCTIONAL HELPERS
 //
 // Generic things things don't get namespaced behind Belt
