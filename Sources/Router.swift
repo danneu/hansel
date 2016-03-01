@@ -7,16 +7,16 @@ import Foundation
 // Not very robust, yet very string-based. 
 //
 // TODO: Make it more type-safe
-// FIXME: Nasty code
+// FIXME: Nasty code...
 //
 
-typealias Params = [String: String]
-
 public enum Router {
-  case Node (String, [Middleware], [Router])
+  case Node (String, [Router])
   case Route (Method, Handler)
+  case NodeM (String, [Middleware], [Router])
+  case RouteM (Method, [Middleware], Handler)
 
-  func find (method: Method, segments: [String], mws: [Middleware], params: Params, router: Router) -> (Handler, Params)? {
+  func find (method: Method, segments: [String], mws: [Middleware], params: [String: String], router: Router) -> (Handler, [String: String])? {
     var params = params // need it mutable
 
     var restSegs: [String]
@@ -27,36 +27,44 @@ public enum Router {
     }
 
     switch router {
-    case .Route(let rMethod, let rHandler):
+    case let .Route (rMethod, rHandler):
       // fail if we hit a route but still have more segments left to crawl
-      if (!segments.isEmpty) {
-        return nil
-      }
+      if (!segments.isEmpty) { return nil }
       // fail if we don't match
-      if (method != rMethod) {
-        return nil
-      }
+      if (method != rMethod) { return nil }
       let middleware = composeArr(mws)
       return (middleware(rHandler), params)
-    case .Node(let nSeg, let nMws, let branches):
-      guard let currSeg = segments.first else {
-        return nil
-      }
-
-      // if param segment like /:message,
-      // then merge in a param: ["message": "foo"]
+    case let .RouteM (rMethod, rMws, rHandler):
+      // fail if we hit a route but still have more segments left to crawl
+      if (!segments.isEmpty) { return nil }
+      // fail if we don't match
+      if (method != rMethod) { return nil }
+      let middleware = composeArr(mws + rMws)
+      return (middleware(rHandler), params)
+    case let .Node (nSeg, branches):
+      guard let currSeg = segments.first else { return nil }
       if isParamSegment(nSeg) {
         params[getParamKey(nSeg)] = Belt.drop(1, currSeg)
-      } else {
-        // if not a param segment, fail if current segment does not match node's
-        // segment
-        if (currSeg != nSeg) {
-          return nil
+      } else if currSeg != nSeg {
+        return nil
+      }
+      // traverse branches if any match
+      var found: (Handler, [String: String])? = nil
+      for branch in branches {
+        if let result = self.find(method, segments: restSegs, mws: mws, params: params, router: branch) {
+          found = result
         }
       }
-
+      return found
+    case let .NodeM(nSeg, nMws, branches):
+      guard let currSeg = segments.first else { return nil }
+      if isParamSegment(nSeg) {
+        params[getParamKey(nSeg)] = Belt.drop(1, currSeg)
+      } else if currSeg != nSeg {
+        return nil
+      }
       // traverse branches if any match
-      var found: (Handler, Params)? = nil
+      var found: (Handler, [String: String])? = nil
       for branch in branches {
         if let result = self.find(method, segments: restSegs, mws: mws + nMws, params: params, router: branch) {
           found = result
@@ -68,9 +76,8 @@ public enum Router {
 
   func handler () -> Handler {
     return { request in
-      if let (h, params) = self.find(request.method, segments: toSegments(request.url), mws: [], params: Params(), router: self) {
-        debugPrint("params:", params)
-        return h(request)
+      if let (h, params) = self.find(request.method, segments: toSegments(request.url), mws: [], params: [String: String](), router: self) {
+        return h(request.setParams(params))
       } else {
         return Response(.NotFound)
       }
@@ -100,4 +107,16 @@ private func toSegments (url: String) -> [String] {
 private func composeArr (mws: [Middleware]) -> Middleware {
   let noop: Middleware = identity // tell swift how to infer
   return mws.reduce(noop, combine: { accum, next in accum << next })
+}
+
+// REQUEST PARAM EXTENSION
+
+extension Request {
+  var params: [String: String] {
+    return getStore("params") as? [String: String] ?? [:]
+  }
+
+  private func setParams (params: [String: String]) -> Request {
+    return self.setStore("params", params)
+  }
 }
