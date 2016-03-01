@@ -1,10 +1,13 @@
 import Foundation
 import Jay
 
+public protocol Payload: Streamable, ETaggable {}
+extension String: Payload {}
+
 public struct Response: Storable, HeaderList, Tappable {
   public var status: Status = .Ok
   var headers: [Header] = []
-  public var body: Streamable = ByteArray()
+  public var body: Payload = ByteArray()
   var store: Store = [:]
 
   // INITIALIZERS
@@ -22,7 +25,7 @@ public struct Response: Storable, HeaderList, Tappable {
     var copy = self; copy.status = status; return copy
   }
 
-  private func setBody (newBody: Streamable = ByteArray()) -> Response {
+  private func setBody (newBody: Payload = ByteArray()) -> Response {
     var copy = self
     copy.body = newBody
     return copy

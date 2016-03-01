@@ -46,12 +46,15 @@ public func wrapServeStatic (root: String) -> Middleware {
       }
 
       // get the stat info so that the stream is etaggable
-      guard let (size, mtime) = stat(fullPath.description) else {
+      guard let stats = stat(fullPath.description) else {
         return handler(request)
       }
 
       return Response()
-        .stream(FileStream(fullPath.description, size: size, mtime: mtime), type: type)
+        .stream(FileStream(fullPath.description,
+                           byteSize: stats.byteSize,
+                           modifiedAt: stats.modifiedAt),
+                type: type)
     }
   }
 }
@@ -78,15 +81,11 @@ func isUpPath (str: String) -> Bool {
 
 // FILESYSTEM STAT
 
-typealias FileModificationTime = Int // seconds since epoch
-typealias FileSize = Int
-
-func stat (path: String) -> (FileSize, FileModificationTime)? {
+func stat (path: String) -> (byteSize: Int, modifiedAt: NSDate)? {
   guard let attrs: NSDictionary = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
-    let mdate: NSDate = attrs.fileModificationDate() else {
+    let modifiedAt: NSDate = attrs.fileModificationDate() else {
       return nil
   }
 
-  let mtime = Int(mdate.timeIntervalSince1970)
-  return (Int(attrs.fileSize()), mtime)
+  return (Int(attrs.fileSize()), modifiedAt)
 }

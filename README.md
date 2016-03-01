@@ -14,6 +14,7 @@ Swift web-servers, so hot right now.
 - [x] JSON support
 - [x] Cookies
 - [x] Static-file streaming
+- [x] ETag and `304 Not Modified`
 - [ ] Tests
 
 ## Example
@@ -119,7 +120,7 @@ struct Request {
 struct Response {
   let status: Status
   let headers: [Header]
-  let body: Streamable
+  let body: Payload // i.e. Streamable, ETaggable
   // ...
 }
 

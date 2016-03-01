@@ -35,7 +35,8 @@ public struct Request: Storable, HeaderList, Tappable {
       self.method = method
       self.url = url
       self.body = RequestBody(body)
-      self.headers = headers
+      // Ensure headers are trimmed
+      self.headers = headers.map { (k, v) in (Belt.trim(k), Belt.trim(v))  }
       self.store = store
       self.address = address
       self.nsurl = nsurl
