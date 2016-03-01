@@ -20,7 +20,6 @@
 		D93D90291C83CCD9009A611B /* SocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D90261C83CCD9009A611B /* SocketServer.swift */; };
 		D93D90301C83CD71009A611B /* Batteries.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D902B1C83CD71009A611B /* Batteries.swift */; };
 		D93D90311C83CD71009A611B /* Cookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D902C1C83CD71009A611B /* Cookie.swift */; };
-		D93D90321C83CD71009A611B /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D902D1C83CD71009A611B /* Head.swift */; };
 		D93D90331C83CD71009A611B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D902E1C83CD71009A611B /* Logger.swift */; };
 		D93D90341C83CD71009A611B /* ServeStatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D902F1C83CD71009A611B /* ServeStatic.swift */; };
 		D93D90361C83DBF2009A611B /* Html.swift in Sources */ = {isa = PBXBuildFile; fileRef = D93D90351C83DBF2009A611B /* Html.swift */; };
@@ -65,7 +64,6 @@
 		D93D90261C83CCD9009A611B /* SocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketServer.swift; sourceTree = "<group>"; };
 		D93D902B1C83CD71009A611B /* Batteries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Batteries.swift; sourceTree = "<group>"; };
 		D93D902C1C83CD71009A611B /* Cookie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cookie.swift; sourceTree = "<group>"; };
-		D93D902D1C83CD71009A611B /* Head.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Head.swift; sourceTree = "<group>"; };
 		D93D902E1C83CD71009A611B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		D93D902F1C83CD71009A611B /* ServeStatic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServeStatic.swift; sourceTree = "<group>"; };
 		D93D90351C83DBF2009A611B /* Html.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Html.swift; path = Sources/Html.swift; sourceTree = "<group>"; };
@@ -198,7 +196,6 @@
 				D93D902B1C83CD71009A611B /* Batteries.swift */,
 				D94F2EFA1C856371005767EF /* NotModified.swift */,
 				D93D902C1C83CD71009A611B /* Cookie.swift */,
-				D93D902D1C83CD71009A611B /* Head.swift */,
 				D93D902E1C83CD71009A611B /* Logger.swift */,
 				D93D902F1C83CD71009A611B /* ServeStatic.swift */,
 			);
@@ -380,7 +377,6 @@
 				D92AA2371C79E1000063C79B /* Middleware.swift in Sources */,
 				D94F2EF91C856267005767EF /* Status.swift in Sources */,
 				D94F2F111C858AC9005767EF /* Query.swift in Sources */,
-				D93D90321C83CD71009A611B /* Head.swift in Sources */,
 				D92AA2251C79E0840063C79B /* main.swift in Sources */,
 				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
 				D94F2EF81C856267005767EF /* Response.swift in Sources */,

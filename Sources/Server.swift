@@ -8,8 +8,8 @@ public class Server {
     // This is where hansel wraps the user's handler with its
     // own final outer middleware
     let middleware = compose(
-      wrapRequestOptions(trustProxy: trustProxy),
-      Batteries.head
+      Builtin.wrapOptions(trustProxy: trustProxy),
+      Builtin.wrapHead
     )
     self.socketServer = SocketServer(middleware(handler))
   }
@@ -35,14 +35,49 @@ public class Server {
   }
 }
 
+//
+// BUILT-IN MIDDLEWARE
+//
+
+private struct Builtin {}
+
 // Feeds any option dependencies into the
 // request so taht the request can access them.
-func wrapRequestOptions (trustProxy trustProxy: Bool) -> Middleware {
-  return { handler in
-    return { request in
-      var copy = request
-      copy.trustProxy = trustProxy
-      return handler(copy)
+extension Builtin {
+  static func wrapOptions (trustProxy trustProxy: Bool) -> Middleware {
+    return { handler in
+      return { request in
+        var copy = request
+        copy.trustProxy = trustProxy
+        return handler(copy)
+      }
     }
+  }
+}
+
+// Middleware that handles HEAD requests
+
+extension Builtin {
+  static let wrapHead: Middleware = { handler in
+    return { request in
+      let response = handler(headRequest(request))
+      return headResponse(request, response: response)
+    }
+  }
+}
+
+private func headRequest (request: Request) -> Request {
+  // Turn HEAD request into GET request
+  if request.method == .Head {
+    return request.setMethod(.Get)
+  }
+  return request
+}
+
+private func headResponse (request: Request, response: Response) -> Response {
+  if request.method == .Head {
+    return response.none()
+  } else {
+    return response
   }
 }
