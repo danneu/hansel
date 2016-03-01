@@ -14,7 +14,6 @@ public struct Query {
   }
 }
 
-
 func splitPair (input: String) -> (String, String) {
   let result = input
     .characters

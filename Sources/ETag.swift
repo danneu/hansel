@@ -15,11 +15,13 @@ struct ETag {
   }
 }
 
-// PROTOCOL + EXTENSIONS
+// PROTOCOL
 
 public protocol ETaggable {
   func etag () -> String
 }
+
+// EXTENSIONS
 
 extension FileStream: ETaggable {
   public func etag () -> String {
