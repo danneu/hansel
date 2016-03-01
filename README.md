@@ -525,6 +525,43 @@ Milliseconds(weeks: 2)  // Milliseconds(1209600000)
 
 Full list: `init(ms: Int)`, `secs:`, `mins:`, `hrs:`, `days:`, `weeks:`, `months:`
 
+## Development (OSX)
+
+Figuring out how to use Xcode and package my project has been a 
+steep challenge. This is sheepishly the closest I've got to a clue:
+
+    git clone git@github.com:danneu/hansel.git
+    cd hansel
+    pod install
+
+Open `Hansel.xcworkspace` since apparently it's the file that CocoaPods makes,
+so it's configured to load the installed pod dependencies.
+
+Create `Sources/main.swift`:
+
+``` swift
+let handler: Handler = { _ in Response().text("Hello world") }
+Server(handler).listen(3000)
+```
+
+Click Xcode's Run button:
+
+![xcode controls](http://i.imgur.com/07ANAsO.png)
+
+When the project builds successfully, you should see
+"Listening on 3000" printing to Xcode's output console (bottom pane).
+
+Navigate to <http://localhost:3000>.
+
+----
+
+I used to have `swift build && .build/debug/Hansel` working, but
+then I added the CryptoSwift dependency which can't compile in its
+latest version on latest Swift. ([issue](https://github.com/krzyzanowskim/CryptoSwift/issues/218)).
+
+Fortunately CocoaPods lets you choose a git branch instead of just a 
+repository, so I was able to pick a patched branch.
+
 ## Thanks
 
 - Socket implementation from [glock45/swifter][swifter]
