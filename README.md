@@ -527,16 +527,18 @@ type.format() //=> "image/svg+xml; charset=utf-8; foo=bar"
 
 ### ETag
 
-I have a basic ETag generator in `ETag.swift` that works on byte arrays.
-
 `ETag.swift` contains an ETag generator that can be called on anything
 that conforms to the `ETaggable` protocol.
 
 ``` swift
-let bytes: [UInt8] = Array("foo".utf8)
-
+// Strings
 ETag.generate(bytes) //=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
+
+// Bytes
+let bytes: [UInt8] = Array("foo".utf8)
 ETag.generate("foo") //=> "\"3-rL0Y20zC+Fzt72VPzMSk2A\""
+
+// Streams
 ETag.generate(FileStream("./video.mp4", ...))
 ```
 
