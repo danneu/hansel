@@ -116,7 +116,15 @@ extension Request {
     return getStore("params") as? [String: String] ?? [:]
   }
 
+  // this function is only used internally. params should
+  // be read-only to the user.
   private func setParams (params: [String: String]) -> Request {
+    // url-decode the values
+    // TODO: add tests for this
+    var params = params
+    for (k, v) in params {
+      params[k] = Belt.urlDecode(v)
+    }
     return self.setStore("params", params)
   }
 }
