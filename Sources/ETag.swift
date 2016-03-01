@@ -25,7 +25,7 @@ public protocol ETaggable {
 
 extension FileStream: ETaggable {
   public func etag () -> String {
-    return "\"\(base16(byteSize))-\(base16(mtime))\""
+    return "\"\(Base16.encode(byteSize))-\(Base16.encode(mtime))\""
   }
 }
 
@@ -35,10 +35,12 @@ extension ByteArray: ETaggable {
       return "\"0-1B2M2Y8AsgTpgAmY7PhCfg\""
     }
 
-    let hash64 = padless << base64 <| Hash.md5(bytes).calculate()
+    let hash64 = bytes
+      |> { Hash.md5($0).calculate() }
+      |> { Base64.encode($0, padding: false) }
     let len = bytes.count
 
-    return "\"\(base16(len))-\(hash64)\""
+    return "\"\(Base16.encode(len))-\(hash64)\""
   }
 }
 
@@ -46,20 +48,4 @@ extension String: ETaggable {
   public func etag () -> String {
     return ByteArray(self).etag()
   }
-}
-
-// HELPERS
-
-private func base16 (n: Int) -> String {
-  return String(n, radix: 16, uppercase: false)
-}
-
-private func base64 (input: [UInt8]) -> String {
-  let data = NSData(bytes: input, length: input.count)
-  return data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-}
-
-// Strip Base64 string padding
-private func padless (input: String) -> String {
-  return try! RegExp("=+$").replace(input, template: "")
 }
