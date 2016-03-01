@@ -7,10 +7,12 @@ import Foundation
 // Hansel wraps the rootHandler with this already
 //
 
-internal let wrapHead: Middleware = { handler in
-  return { request in
-    let response = handler(headRequest(request))
-    return headResponse(request, response: response)
+extension Batteries {
+  static let head: Middleware = { handler in
+    return { request in
+      let response = handler(headRequest(request))
+      return headResponse(request, response: response)
+    }
   }
 }
 

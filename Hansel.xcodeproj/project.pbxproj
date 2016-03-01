@@ -196,8 +196,8 @@
 		D93D902A1C83CD71009A611B /* Batteries */ = {
 			isa = PBXGroup;
 			children = (
-				D94F2EFA1C856371005767EF /* NotModified.swift */,
 				D93D902B1C83CD71009A611B /* Batteries.swift */,
+				D94F2EFA1C856371005767EF /* NotModified.swift */,
 				D93D902C1C83CD71009A611B /* Cookie.swift */,
 				D93D902D1C83CD71009A611B /* Head.swift */,
 				D93D902E1C83CD71009A611B /* Logger.swift */,

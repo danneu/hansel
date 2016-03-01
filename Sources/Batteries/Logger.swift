@@ -1,13 +1,15 @@
 
 import Foundation
 
-internal let wrapLogger: Middleware = { handler in
-  return { request in
-    logRequest(request)
-    let start = getMillis()
-    let response = handler(request)
-    logResponse(request, response: response, start: start)
-    return response
+extension Batteries {
+  static let logger: Middleware = { handler in
+    return { request in
+      logRequest(request)
+      let start = getMillis()
+      let response = handler(request)
+      logResponse(request, response: response, start: start)
+      return response
+    }
   }
 }
 

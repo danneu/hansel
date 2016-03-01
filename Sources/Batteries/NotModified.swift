@@ -1,40 +1,42 @@
 
 import Foundation
 
-// if etag == true, then middleware will generate and add ETag
-// header to response, else it will only use the last-modified header
-public func wrapNotModified (etag: Bool) -> Middleware {
-  return { handler in
-    return { request in
-      var response = handler(request)
+extension Batteries {
+  // if etag == true, then middleware will generate and add ETag
+  // header to response, else it will only use the last-modified header
+  static func notModified (etag etag: Bool) -> Middleware {
+    return { handler in
+      return { request in
+        var response = handler(request)
 
-      // only consider HEAD and GET requests
-      guard request.method == .Get || request.method == .Head else {
-        return response
+        // only consider HEAD and GET requests
+        guard request.method == .Get || request.method == .Head else {
+          return response
+        }
+
+        // only consider 200 responses
+        guard response.status == .Ok else {
+          return response
+        }
+
+        // add etag header
+        if etag {
+          response = response.setHeader("etag", ETag.generate(response.body))
+        }
+
+        // add last-modified header if body has that info
+        if let body = response.body as? FileStream {
+          response = response.setHeader("last-modified", HttpDate.toString(body.modifiedAt))
+        }
+
+        // only consider stale requests
+        if !isCached(request, response) {
+          return response
+        }
+
+        // tell client that their cache is still valid,
+        return Response(.NotModified)
       }
-
-      // only consider 200 responses
-      guard response.status == .Ok else {
-        return response
-      }
-
-      // add etag header
-      if etag {
-        response = response.setHeader("etag", ETag.generate(response.body))
-      }
-
-      // add last-modified header if body has that info
-      if let body = response.body as? FileStream {
-        response = response.setHeader("last-modified", HttpDate.toString(body.modifiedAt))
-      }
-
-      // only consider stale requests
-      if !isCached(request, response) {
-        return response
-      }
-
-      // tell client that their cache is still valid,
-      return Response(.NotModified)
     }
   }
 }

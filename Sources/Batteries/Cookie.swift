@@ -6,6 +6,16 @@ import Foundation
 // TODO: Is there a way to only apply these extensions if the middleware
 // is actually used?
 
+extension Batteries {
+  // TODO: Cookies should be Opts -> Middleware (configurable)
+  static let cookies: Middleware = { handler in
+    return { request in
+      let response = handler(cookieRequest(request))
+      return cookieResponse(response)
+    }
+  }
+}
+
 extension Request {
   var cookies: [String: String] {
     return self.getStore("cookies") as! [String: String]
@@ -67,14 +77,7 @@ extension Response {
   }
 }
 
-internal struct Cookie {
-  internal static let wrapCookies: Middleware = { handler in
-    return { request in
-      let response = handler(cookieRequest(request))
-      return cookieResponse(response)
-    }
-  }
-}
+
 
 // TRANSFORMERS
 
