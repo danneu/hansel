@@ -152,7 +152,7 @@ func serialize (opts: ResponseCookie) -> String {
   }
 
   if let expires = opts.expires {
-    pairs.append("expires=\(toUtcString(expires))")
+    pairs.append("expires=\(HttpDate.toString(expires))")
   }
 
   if let httpOnly = opts.httpOnly where httpOnly == true {
@@ -168,13 +168,4 @@ func serialize (opts: ResponseCookie) -> String {
   }
 
   return pairs.joinWithSeparator("; ")
-}
-
-// FIXME: Wrong format but can't be bothered.
-// Try: Mon, 22 Feb 2016 00:47:58 GMT
-func toUtcString (date: NSDate) -> String {
-  let formatter = NSDateFormatter();
-  formatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-  formatter.timeZone = NSTimeZone(abbreviation: "UTC")
-  return formatter.stringFromDate(date)
 }
