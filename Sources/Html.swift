@@ -4,9 +4,11 @@ import Foundation
 //
 // Generate html from a Swift enum datastructure
 //
-// TODO: Escape HTML
+// TODO: Ensure HTML and attr values are escaped
 // TODO: Generalize, DRY up the madness
-// TODO: DRY this up if swift ever gets variadic init inheritance
+// TODO: Figure out how to stop compiler from crashing from variadic
+// init overload so that I can replace the code-gen arity madeness
+// with variadic initializers
 
 typealias Attrs = [String: AttrConvertible]
 
@@ -43,7 +45,7 @@ extension String: HtmlConvertible {
 
 extension String: AttrConvertible {
   func render () -> String {
-    return self
+    return Belt.escapeHtml(self)
   }
 }
 
