@@ -45,7 +45,7 @@ let resource: Handler = { request in
   case (.Get, "/"): 
     return Response().html("<h1>Homepage</h1>")
   case (.Get, "/json"): 
-    return Response().json(["Hello": "world"])
+    return try Response().json(["Hello": "world"])
   case (.Get, "/text"): 
     return Response().text("How are you?")
   case (.Get, "/html"):
@@ -328,7 +328,7 @@ let router: Router = .Node("/", [
   .Node("/:a", [
     .Node("/:b", [
       .Node("/:c", [
-        .Route(.Get, { Response().json($0.params) })
+        .Route(.Get, { try Response().json($0.params) })
       ])
     ])
   ])
