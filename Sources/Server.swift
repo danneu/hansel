@@ -94,7 +94,10 @@ extension Builtin {
     return { request in
       do {
         return try handler(request)
-      } catch {
+      } catch RequestError.BadBody {
+        return Response(.BadRequest)
+      } catch let err {
+        print("Unhandled Error:", err)
         return Response(.Error)
       }
     }

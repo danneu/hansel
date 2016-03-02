@@ -11,7 +11,7 @@ Swift web-servers, so hot right now.
 
 - [x] Streaming responses
 - [x] `div("HTML templating", span("as Swift functions"))`
-- [x] JSON support
+- [x] JSON encoding & decoding
 - [x] Cookies
 - [x] Static-file streaming
 - [x] ETag and `304 Not Modified`
@@ -44,8 +44,15 @@ let resource: Handler = { request in
   switch (request.method, request.path) {
   case (.Get, "/"): 
     return Response().html("<h1>Homepage</h1>")
-  case (.Get, "/json"): 
+  case (.Get, "/json-encode"): 
     return try Response().json(["Hello": "world"])
+  case (.Post, "/json-decode"):
+    // decodes json {"uname": "chuck", "password": "secret"}
+    let decoder = JD.object2 { ($0, $1) }
+      "uname" => JD.string, 
+      "password" => JD.string
+    let (uname, pass) = try request.json(decoder)
+    // Lookup user credentials ...
   case (.Get, "/text"): 
     return Response().text("How are you?")
   case (.Get, "/html"):
@@ -132,6 +139,7 @@ request.query                   // ["sort": "created"]
 request.path                    // "/users"
 request.method                  // Method.Get
 try request.body.json()         // ["foo": "bar"]
+try request.body.json(decoder)  //
 try request.body.utf8()         // "{\"foo\":\"bar\"}"
 request.headers                 // [("host", "example.com"), ...]
 request.getHeader("host")       // "example.com"
@@ -224,6 +232,57 @@ Server(middleware(handler)).listen(3000)
 ## Batteries Included
 
 I've started stubbing out some basic middleware and tools.
+
+### JSON Decoder (JD)
+
+I really like @evancz's decoder abstraction in [Elm][elm],
+so I threw together a Swift impl thanks to czechboy0's work on [Jay][jay],
+the parser.
+
+Jay has a `JsonValue` enum that destructures into all the possible Javascript
+types. Hansel's `Decoder<T>` either decodes a `JsonValue` into Swift value `T`
+or it throws an error.
+
+``` swift
+JD.decode(Decoder<T>, JsonValue) -> Result<ErrorString, T>
+```
+
+Some examples:
+
+| JSON                                | Decoder             |     Result         
+| ----------------------------------- |--------------------| ----------------------------------------|
+| `"foo"`                           | `JD.string`                                                   |  `.Ok("foo")`   
+| `42`                              | `JD.int`                                                      |  `.Ok(42)`     
+| `[1, 2, 3, 4]`                    | `JD.array(JD.int)`                                            |  `.Ok([1, 2, 3])`   
+| `["a", 2, "c", 4]`                | `JD.oneOf([JD.string, JD.int])`                               |  `.Ok(["a", 2, "c", 4])`
+| `{"status": 200, "headers": []}`  | `("status" => JD.int)`                                        |  `.Ok(200)`             
+| `{"a": { "b": { "c": 42 }}}`      | `["a", "b", "c"] => JD.int`                                   |  `.Ok()`    
+| `{"id": 42, "uname": "barney"}`   | `JD.object2(User.init, "id"=>JD.int, "uname"=>JD.string)`     |  `.Ok(User(42, "barney"))`
+| `[null, "x", null]`               | `JD.array(JD.oneOf([JD.string, JD.null("x")]))`               |  `.Ok(["x", "x", "x"])`  
+
+When reading the request json (`try request.json()`), you can pass in a `Decoder`.
+If the decode fails, an error is thrown. If it's successful, the decoded
+Swift value returns.
+
+``` swift
+let handler: Handler = { request in
+  let decoder = JD.tuple2("uname" => JD.string, "pass" => JD.string)
+  let (uname, pass) = try req.json(decoder)
+  // authenticate user ...
+}
+```
+
+Here's a hansel application that expects you to send it a JSON array
+of numbers (e.g. `[50, 25, 1]`) and it will respond with the sum
+(e.g. `{ "sum": 76 }`):
+
+``` swift
+let handler: Handler = { request in 
+  let nums = try request.json(JD.array(JD.int))
+  let sum = nums.reduce(0, combine: +)
+  return Response().json(["sum": sum])
+}
+```
 
 ### Templating
 
@@ -583,6 +642,9 @@ repository, so I was able to pick a patched branch.
 [swifter]: https://github.com/glock45/swifter
 [vapor]: https://github.com/tannernelson/vapor
 [jshttp]: https://github.com/jshttp
+[elm]: http://elm-lang.org/
+[evancz]: https://github.com/evancz
+[jay]: https://github.com/czechboy0/Jay
 
 ## Disclaimer
 

@@ -1,8 +1,13 @@
 
 import Foundation
+import Jay
 
+// TODO: Consolidate errors and actually come up with a game
+// plan.
 enum RequestError: ErrorType {
   case InvalidUrl
+  // body doesn't convert to the expected format
+  case BadBody
 }
 
 public struct Request: Storable, HeaderList, Tappable {
@@ -35,8 +40,7 @@ public struct Request: Storable, HeaderList, Tappable {
       self.method = method
       self.url = url
       self.body = RequestBody(body)
-      // Ensure headers are trimmed
-      self.headers = headers.map { (k, v) in (Belt.trim(k), Belt.trim(v))  }
+      self.headers = headers
       self.store = store
       self.address = address
       self.nsurl = nsurl
@@ -95,6 +99,20 @@ public struct Request: Storable, HeaderList, Tappable {
     if nsurl.query == nil { return [:] }
     return nsurl.query!
       |> Query.parse
+  }
+
+  // BODY CONVERSION (proxied to RequestBody for convenience)
+
+  func utf8 () throws -> String {
+    return try body.utf8()
+  }
+
+  func json () throws -> JsonValue {
+    return try body.json()
+  }
+
+  func json <T> (decoder: Decoder<T>) throws -> T {
+    return try body.json(decoder)
   }
 
   // UPDATING REQUEST

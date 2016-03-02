@@ -1,6 +1,10 @@
 import Foundation
 import Jay
 
+public protocol JsonEncodable {
+  func json () -> JsonValue
+}
+
 public protocol Payload: Streamable, ETaggable {}
 extension String: Payload {}
 
@@ -43,6 +47,11 @@ public struct Response: Storable, HeaderList, Tappable {
 
   public func html (x: HtmlConvertible) -> Response {
     return self.setBody(x.html()).setHeader("content-type", "text/html")
+  }
+
+  public func json (body: JsonEncodable) throws -> Response {
+    let bytes = try Jay().dataFromJson(body.json())
+    return self.setBody(ByteArray(bytes)).setHeader("content-type", "application/json")
   }
 
   public func json (obj: Any) throws -> Response {

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '3B0ED91C385372B41B40400A'
+               BlueprintIdentifier = '973F6D5B37B51D689B0F6E5B'
                BlueprintName = 'PathKit'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'PathKit.framework'>

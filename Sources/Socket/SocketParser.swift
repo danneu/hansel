@@ -73,7 +73,7 @@ class SocketParser {
         .map(String.init)
 
       if let key = tokens.first, val = tokens.last {
-        headers.append((key, val))
+        headers.append((key, Belt.trim(val)))
       }
     }
   }

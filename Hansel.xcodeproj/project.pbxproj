@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D906560E1C864D160097FB19 /* JD.swift in Sources */ = {isa = PBXBuildFile; fileRef = D906560D1C864D160097FB19 /* JD.swift */; };
 		D92AA2251C79E0840063C79B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2241C79E0840063C79B /* main.swift */; };
 		D92AA2351C79E1000063C79B /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA2281C79E1000063C79B /* Server.swift */; };
 		D92AA2371C79E1000063C79B /* Middleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92AA22A1C79E1000063C79B /* Middleware.swift */; };
@@ -50,6 +51,7 @@
 		01A63E7C1D63BEE1E5C919ED /* Pods-Hansel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hansel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hansel/Pods-Hansel.release.xcconfig"; sourceTree = "<group>"; };
 		04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hansel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA3B6037C0ED7555216156BF /* Pods-Hansel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hansel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hansel/Pods-Hansel.debug.xcconfig"; sourceTree = "<group>"; };
+		D906560D1C864D160097FB19 /* JD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JD.swift; path = Sources/JD.swift; sourceTree = "<group>"; };
 		D92AA2131C79E05E0063C79B /* Hansel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hansel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D92AA21D1C79E05E0063C79B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D92AA2241C79E0840063C79B /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/main.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				D92AA2281C79E1000063C79B /* Server.swift */,
 				D93D90351C83DBF2009A611B /* Html.swift */,
 				D92AA2241C79E0840063C79B /* main.swift */,
+				D906560D1C864D160097FB19 /* JD.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 				D94F2EF41C85622D005767EF /* RequestBody.swift in Sources */,
 				D93D90331C83CD71009A611B /* Logger.swift in Sources */,
 				D9BDA02D1C84122100494728 /* HtmlConvertible.swift in Sources */,
+				D906560E1C864D160097FB19 /* JD.swift in Sources */,
 				D94F2F101C858AC9005767EF /* Mime.swift in Sources */,
 				D92AA23B1C79E1000063C79B /* Handler.swift in Sources */,
 				D94F2EE61C852A16005767EF /* Tappable.swift in Sources */,

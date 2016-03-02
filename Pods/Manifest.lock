@@ -20,7 +20,7 @@ CHECKOUT OPTIONS:
     :commit: 1f439767c7339f41af556c679fa3401401d87c7d
     :git: https://github.com/krzyzanowskim/CryptoSwift
   Jay:
-    :commit: e05563977b545a7da457e4291d28cdc2572b40b2
+    :commit: dad8df19a7c58605758ef74133a775e824702aa7
     :git: https://github.com/czechboy0/Jay.git
 
 SPEC CHECKSUMS:
