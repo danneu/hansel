@@ -11,11 +11,13 @@ Swift web-servers, so hot right now.
 
 - [x] Streaming responses
 - [x] `div("HTML templating", span("as Swift functions"))`
-- [x] JSON encoding & decoding
+- [x] JSON support with declarative decoding
 - [x] Cookies
-- [x] Static-file streaming
-- [x] ETag and `304 Not Modified`
+- [x] Static-file serving
+- [x] ETag, Last-Modified, `304 Not Modified` support
 - [ ] Tests
+
+Linux support is a work-in-progress.
 
 ## Example
 
@@ -32,37 +34,37 @@ let logger: Middleware = { handler in
   }
 }
 
-// built-in templating example
+// built-in templating
 func demoTemplate (ip: String) -> HtmlConvertible =
   div(
     h1("Welcome!"),
     p(["style": ["color": "red"]], 
       "Your IP address is: ", strong(ip)))
 
-// a silly router for demonstration
-let resource: Handler = { request in
-  switch (request.method, request.path) {
-  case (.Get, "/"): 
-    return Response().html("<h1>Homepage</h1>")
-  case (.Get, "/json-encode"): 
-    return try Response().json(["Hello": "world"])
-  case (.Post, "/json-decode"):
-    // decodes json {"uname": "chuck", "password": "secret"}
-    let decoder = JD.object2 { ($0, $1) }
-      "uname" => JD.string, 
-      "password" => JD.string
-    let (uname, pass) = try request.json(decoder)
-    // Lookup user credentials ...
-  case (.Get, "/text"): 
-    return Response().text("How are you?")
-  case (.Get, "/html"):
-    return Response().html(demoTemplate(request.ip))
-  default: 
-    return Response(.NotFound)
-  }
-}
+// basic router
+let router: Router = Node("/", [
+  .Route(.Get, "/", { req in
+    return Response().html("<h1>Homepage</h1>") 
+  }),
+  .Route(.Get, "/test", { req in
+    return Response().text("Hi, how are you?") 
+  }),
+  .Route(.Get, "/html", { req in 
+    return Response().html(demoTemplate(req.ip)) 
+  }),
+  .Route(.Get, "/json-encode", { req in
+    return try Response.json(["Hello", "world!"]) 
+  }),
+  .Route(.Post, "/json-decode", { req in
+    // decodes json {"uname": "chuck", "password": "secret"}} => (String, String)
+    let decoder = JD.tuple2("uname" => JD.string, "password" => JD.string)
+    let (uname, password) = try request.json(decoder)
+    // look up credentials ...
+  })
+])
 
-Server(logger(handler)).listen(3000)
+// initialize a server by passing it a handler
+Server(logger(router.handler())).listen(3000)
 ```
 
 ----
@@ -71,7 +73,7 @@ Hansel is an experimental Swift web-server that focuses on:
 
 - **Simplicity**
 - **Immutability**
-- **Middleware as higher-order functions**
+- **Middleware**
 
 Your entire application is expressed as a function that
 takes a `Request` and returns a `Response`, i.e. a `Handler`.
@@ -233,15 +235,20 @@ Server(middleware(handler)).listen(3000)
 
 I've started stubbing out some basic middleware and tools.
 
-### JSON Decoder (JD)
+### JSON Decoder
 
-I really like @evancz's decoder abstraction in [Elm][elm],
-so I threw together a Swift impl thanks to czechboy0's work on [Jay][jay],
+- Implementation: [Sources/JD.swift](https://github.com/danneu/hansel/blob/master/Sources/JD.swift)
+- Elm's [Json.Decode docs](http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Json-Decode)
+
+I really like @evancz's declarative decoder abstraction in [Elm][elm],
+so I threw together a Swift impl thanks to @czechboy0's work on [Jay][jay],
 the parser.
 
-Jay has a `JsonValue` enum that destructures into all the possible Javascript
-types. Hansel's `Decoder<T>` either decodes a `JsonValue` into Swift value `T`
-or it throws an error.
+Hansel's `Decoder<T>` either decodes json into Swift value `T`
+or it throws an error which gets converted into a `400 Bad Request` by
+default.
+
+It's all in Hansel's `JD` namespace.
 
 ``` swift
 JD.decode(Decoder<T>, JsonValue) -> Result<ErrorString, T>
@@ -255,9 +262,9 @@ Some examples:
 | `42`                              | `JD.int`                                                      |  `.Ok(42)`     
 | `[1, 2, 3, 4]`                    | `JD.array(JD.int)`                                            |  `.Ok([1, 2, 3])`   
 | `["a", 2, "c", 4]`                | `JD.oneOf([JD.string, JD.int])`                               |  `.Ok(["a", 2, "c", 4])`
-| `{"status": 200, "headers": []}`  | `("status" => JD.int)`                                        |  `.Ok(200)`             
-| `{"a": { "b": { "c": 42 }}}`      | `["a", "b", "c"] => JD.int`                                   |  `.Ok()`    
-| `{"id": 42, "uname": "barney"}`   | `JD.object2(User.init, "id"=>JD.int, "uname"=>JD.string)`     |  `.Ok(User(42, "barney"))`
+| <pre>{<br>  "status": 200,<br>  "headers": []<br>}</pre>  | `("status" => JD.int)`                                        |  `.Ok(200)`             
+| `{"a": { "b": { "c": 42 }}}`      | `["a", "b", "c"] => JD.int`                                   |  `.Ok(42)`    
+| `{"id": 42, "name": "amy"}`       | <pre>JD.object2(User.init,<br>  "id" => JD.int,<br>  "name" => JD.string)</pre>      |  `.Ok(User(42, "amy"))`
 | `[null, "x", null]`               | `JD.array(JD.oneOf([JD.string, JD.null("x")]))`               |  `.Ok(["x", "x", "x"])`  
 
 When reading the request json (`try request.json()`), you can pass in a `Decoder`.
@@ -280,7 +287,18 @@ of numbers (e.g. `[50, 25, 1]`) and it will respond with the sum
 let handler: Handler = { request in 
   let nums = try request.json(JD.array(JD.int))
   let sum = nums.reduce(0, combine: +)
-  return Response().json(["sum": sum])
+  return try Response().json(["sum": sum])
+}
+```
+
+```
+$ curl -H 'Content-Type: application/json' -d '[1, 2, 3]' http://localhost:3000
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 9
+
+{
+  "sum": 6
 }
 ```
 
@@ -291,9 +309,7 @@ HTML views with Swift code:
 
 ``` swift
 func demoTemplate (ip: String) -> HtmlConvertible {
-  div(
-    // pass a dictionary as the first argument to any
-    // element to set its attributes
+  let attrs =
     ["style": ["background-color": "#3498db",
                "color": "white",
                "width": "600px",
@@ -301,7 +317,10 @@ func demoTemplate (ip: String) -> HtmlConvertible {
                "border": "5px solid black",
                "padding": "10px",
                "font-family": "Menlo"],
-     "class": "demo-box"],
+     "class": "demo-box"]
+  // pass a dictionary as the first argument to any
+  // element to set its attributes
+  return div(attrs,
     h1("quick hansel templating demo"),
     hr(),
     "hello, ",
@@ -309,7 +328,7 @@ func demoTemplate (ip: String) -> HtmlConvertible {
     p("your ip address is: \(ip)"),
     // you can pass in child elements as an array
     ol(["apples", "bananas", "oranges"].map { li($0) }),
-    // or not (up to 20 elements)
+    // or as variadic args (up to 20 elements)
     ul(
       li("item a"),
       li("item b"),
@@ -586,17 +605,6 @@ Full list: `init(ms: Int)`, `secs:`, `mins:`, `hrs:`, `days:`, `weeks:`, `months
 
 ## Development (OSX)
 
-- Latest [Swift 3.0-DEV-SNAPSHOT](https://swift.org/download/)
-- Launching Xcode with `xcrun launch-with-toolchain /Library/Developer/Toolchains/swift-latest.xctoolchain` to use the installed Swift snapshot
-
-Not sure why I use the snapshot. I think I started using it since it was the
-only way to get Swift's package manager, which is the only way I could
-figure out how to run the project externally from Xcode. 
-But since `swift build` doesn't compile anymore for me due to a problem
-with a dependency.
-
-#### Steps that might work
-
 Figuring out how to use Xcode and package my project has been a 
 steep challenge. This is sheepishly the closest I've got to a clue:
 
@@ -614,9 +622,7 @@ let handler: Handler = { _ in Response().text("Hello world") }
 Server(handler).listen(3000)
 ```
 
-Click Xcode's Run button:
-
-![xcode controls](http://i.imgur.com/07ANAsO.png)
+Click Xcode's run button.
 
 When the project builds successfully, you should see
 "Listening on 3000" printing to Xcode's output console (bottom pane).
@@ -649,13 +655,3 @@ repository, so I was able to pick a patched branch.
 ## Disclaimer
 
 I'm new to Swift and XCode
-
-## TODO
-
-- `swift build` works with PathKit in Package.swift, but even when launching
-XCode with latest-swift (3.0-DEV), it can resolve `import PathKit`. However
-cocoapods PathKit works in XCode, but not with `swift build`.
-So that's why I have both. Sheesh.
-- Figure out how to add protocol constraints to types so that middleware
-can ensure that Request/Response implement dependency protocols. For example,
-session middleware ensuring that the Request implements cookies.
