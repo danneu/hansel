@@ -4,10 +4,15 @@ import PackageDescription
 let package = Package(
   name: "Hansel",
   dependencies: [
+    // Enable CryptoSwift again once CryptoSwift stable can build, 
+    // i.e. once its develop branch is merged into stable master.
+    //
+    // .Package(
+    //   url: "https://github.com/krzyzanowskim/CryptoSwift.git", 
+    //   majorVersion: 0
+    // ),
     .Package(
-      url: "https://github.com/krzyzanowskim/CryptoSwift.git", 
-      majorVersion: 0),
-    .Package(url: "https://github.com/kylef/PathKit",
+      url: "https://github.com/kylef/PathKit",
       majorVersion: 0,
       minor: 6
     ),

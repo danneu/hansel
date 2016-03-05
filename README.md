@@ -535,6 +535,9 @@ type.format() //=> "image/svg+xml; charset=utf-8; foo=bar"
 
 ### ETag
 
+**Note**: ETagging will not work until the stable version of CryptoSwift
+works with the lastest Swift ([issue](https://github.com/krzyzanowskim/CryptoSwift/issues/217)). For now, md5 hashes always return `"aaaaaaaaaaaaaaaa"`.
+
 `ETag.swift` contains an ETag generator that can be called on anything
 that conforms to the `ETaggable` protocol.
 
@@ -610,17 +613,28 @@ steep challenge. This is sheepishly the closest I've got to a clue:
 
     git clone git@github.com:danneu/hansel.git
     cd hansel
-    pod install
 
-Open `Hansel.xcworkspace` since apparently it's the file that CocoaPods makes,
-so it's configured to load the installed pod dependencies.
-
-Create `Sources/main.swift`:
+Create `Sources/Hansel/main.swift`:
 
 ``` swift
+// Sources/Hansel/main.swift
 let handler: Handler = { _ in Response().text("Hello world") }
 Server(handler).listen(3000)
 ```
+
+Build project:
+
+```
+swift build
+```
+
+Start server:
+
+```
+.build/debug/Hansel
+```
+
+or
 
 Click Xcode's run button.
 
@@ -628,15 +642,6 @@ When the project builds successfully, you should see
 "Listening on 3000" printing to Xcode's output console (bottom pane).
 
 Navigate to <http://localhost:3000>.
-
-----
-
-I used to have `swift build && .build/debug/Hansel` working, but
-then I added the CryptoSwift dependency which can't compile in its
-latest version on latest Swift. ([issue](https://github.com/krzyzanowskim/CryptoSwift/issues/218)).
-
-Fortunately CocoaPods lets you choose a git branch instead of just a 
-repository, so I was able to pick a patched branch.
 
 ## Thanks
 
