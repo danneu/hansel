@@ -67,13 +67,25 @@ public struct Request: Storable, HeaderList, Tappable {
   }
 
   // returns content-type without any of its parameters
-  // Ex: "application/json; charset=utf-8" => "application/json"
-  // returns nil on invalid content-type
+  // Ex: "application/json; charset=utf-8" => Optional("application/json")
   public var type: String? {
-    let val = getHeader("content-type")
-    if val == nil { return nil }
+    guard let val = getHeader("content-type") else {
+      return nil
+    }
     do {
-      return try ContentType.parse(val!).type
+      return try ContentType.parse(val).type
+    } catch {
+      return nil
+    }
+  }
+
+  // Ex: "application/json; charset=utf-8" => Optional("utf-8")
+  public var charset: String? {
+    guard let val = getHeader("content-type") else {
+      return nil
+    }
+    do {
+      return try ContentType.parse(val).params["charset"]
     } catch {
       return nil
     }
