@@ -340,6 +340,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D92AA2201C79E05E0063C79B /* Build configuration list for PBXNativeTarget "Hansel" */;
 			buildPhases = (
+				D9DE70F51C8BA20600EE4E93 /* ShellScript */,
 				D92AA20F1C79E05E0063C79B /* Sources */,
 				D92AA2101C79E05E0063C79B /* Frameworks */,
 				D92AA2111C79E05E0063C79B /* Resources */,
@@ -395,6 +396,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D9DE70F51C8BA20600EE4E93 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "~/.swiftenv/shims/swift build";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D92AA20F1C79E05E0063C79B /* Sources */ = {
