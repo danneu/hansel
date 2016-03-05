@@ -641,16 +641,17 @@ repository, so I was able to pick a patched branch.
 ## Thanks
 
 - Socket implementation from [glock45/swifter][swifter]
-- Some socket glue code from [tannernelson/vapor][vapor]
-- Some Linux fixes from [tannernelson/vapor][vapor]
+- Some socket glue code from [qutheory/vapor][vapor]
+- Linux fixes from [qutheory/vapor][vapor] and [johnno1962/NSLinux][nslinux]
 - Some HTTP/RFC implementation ported from [jshttp]
 
 [swifter]: https://github.com/glock45/swifter
-[vapor]: https://github.com/tannernelson/vapor
+[vapor]: https://github.com/qutheory/vapor
 [jshttp]: https://github.com/jshttp
 [elm]: http://elm-lang.org/
 [evancz]: https://github.com/evancz
 [jay]: https://github.com/czechboy0/Jay
+[nslinux]: https://github.com/johnno1962/NSLinux
 
 ## Disclaimer
 

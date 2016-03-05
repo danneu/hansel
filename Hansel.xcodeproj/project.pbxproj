@@ -43,6 +43,8 @@
 		D94F2F151C858B90005767EF /* Base16.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F2F131C858B90005767EF /* Base16.swift */; };
 		D94F2F161C858B90005767EF /* Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F2F141C858B90005767EF /* Base64.swift */; };
 		D94F2F181C858DD6005767EF /* RemoveTrailingSlash.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94F2F171C858DD6005767EF /* RemoveTrailingSlash.swift */; };
+		D97726E61C8B6D0D00EDDE10 /* LinuxFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97726E41C8B6D0D00EDDE10 /* LinuxFixes.swift */; };
+		D97726E71C8B6D0D00EDDE10 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97726E51C8B6D0D00EDDE10 /* StringExtensions.swift */; };
 		D9BDA02D1C84122100494728 /* HtmlConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BDA02C1C84122100494728 /* HtmlConvertible.swift */; };
 		E9E2226E3AA301228CBF8D08 /* Pods_Hansel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A34CCEFE83A1C183127FF4 /* Pods_Hansel.framework */; };
 /* End PBXBuildFile section */
@@ -89,6 +91,8 @@
 		D94F2F131C858B90005767EF /* Base16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base16.swift; sourceTree = "<group>"; };
 		D94F2F141C858B90005767EF /* Base64.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64.swift; sourceTree = "<group>"; };
 		D94F2F171C858DD6005767EF /* RemoveTrailingSlash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveTrailingSlash.swift; sourceTree = "<group>"; };
+		D97726E41C8B6D0D00EDDE10 /* LinuxFixes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxFixes.swift; sourceTree = "<group>"; };
+		D97726E51C8B6D0D00EDDE10 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D9BDA02C1C84122100494728 /* HtmlConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlConvertible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,6 +155,7 @@
 		D92AA2231C79E0750063C79B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D97726E31C8B6D0D00EDDE10 /* Fixes */,
 				D94F2F061C858AC9005767EF /* Helpers */,
 				D94F2EF51C856267005767EF /* Response */,
 				D94F2EEE1C85622D005767EF /* Request */,
@@ -244,6 +249,16 @@
 			);
 			name = Helpers;
 			path = Sources/Helpers;
+			sourceTree = "<group>";
+		};
+		D97726E31C8B6D0D00EDDE10 /* Fixes */ = {
+			isa = PBXGroup;
+			children = (
+				D97726E41C8B6D0D00EDDE10 /* LinuxFixes.swift */,
+				D97726E51C8B6D0D00EDDE10 /* StringExtensions.swift */,
+			);
+			name = Fixes;
+			path = Sources/Fixes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -387,7 +402,9 @@
 				D94F2F181C858DD6005767EF /* RemoveTrailingSlash.swift in Sources */,
 				D92AA2391C79E1000063C79B /* Router.swift in Sources */,
 				D94F2EF81C856267005767EF /* Response.swift in Sources */,
+				D97726E61C8B6D0D00EDDE10 /* LinuxFixes.swift in Sources */,
 				D94F2F0D1C858AC9005767EF /* ContentType.swift in Sources */,
+				D97726E71C8B6D0D00EDDE10 /* StringExtensions.swift in Sources */,
 				D94F2EE41C851070005767EF /* Streamable.swift in Sources */,
 				D94F2F161C858B90005767EF /* Base64.swift in Sources */,
 				D94F2EFB1C856371005767EF /* NotModified.swift in Sources */,

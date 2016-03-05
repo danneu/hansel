@@ -65,6 +65,8 @@ public struct JD {
   // DECODERS
   //
 
+  // MARK: - Decoders
+
   static let string: Decoder<String> = Decoder { value in
     guard case let .String(str) = value else {
       throw DecoderError("Expected String but got \(value)")
