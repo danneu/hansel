@@ -35,32 +35,39 @@ let logger: Middleware = { handler in
 }
 
 // built-in templating
-func demoTemplate (ip: String) -> HtmlConvertible =
-  div(
+func demoTemplate (ip: String) -> HtmlConvertible {
+  return div(
     h1("Welcome!"),
     p(["style": ["color": "red"]], 
       "Your IP address is: ", strong(ip)))
+}
 
 // basic router
 let router: Router = Node("/", [
-  .Route(.Get, "/", { req in
-    return Response().html("<h1>Homepage</h1>") 
+  .Route(.Get, { req in
+    return Response().text("Welcome to the homepage")
   }),
-  .Route(.Get, "/test", { req in
-    return Response().text("Hi, how are you?") 
-  }),
-  .Route(.Get, "/html", { req in 
-    return Response().html(demoTemplate(req.ip)) 
-  }),
-  .Route(.Get, "/json-encode", { req in
-    return try Response.json(["Hello", "world!"]) 
-  }),
-  .Route(.Post, "/json-decode", { req in
-    // decodes json {"uname": "chuck", "password": "secret"}} => (String, String)
-    let decoder = JD.tuple2("uname" => JD.string, "password" => JD.string)
-    let (uname, password) = try request.json(decoder)
-    // look up credentials ...
-  })
+  .Node("/html", [
+    .Route(.Get, { req in
+      return Response().html(demoTemplate(req.ip))
+    })
+  ]),
+  .Node("/json-encode", [
+    .Route(.Get, { req in
+     return try Response().json(["hello": 42])
+    })
+  ]),
+  .Node("/json-decode", [
+    .Route(.Post, { req in
+      // decodes json {"uname": String, "password": String}} => (String, String)
+      let decoder = JD.object2({ ($0, $1) },
+        "uname" => JD.string, 
+        "password" => JD.string)
+      let (uname, password) = try request.json(decoder)
+      // look up credentials ...
+      return Response().text("You logged in as: \(uname)")
+    })
+  ])
 ])
 
 // initialize a server by passing it a handler
@@ -273,7 +280,8 @@ Swift value returns.
 
 ``` swift
 let handler: Handler = { request in
-  let decoder = JD.tuple2("uname" => JD.string, "pass" => JD.string)
+  // decodes {"uname": String, "pass": String} into tuple (String, String)
+  let decoder = JD.object2({ ($0, $1) }, "uname" => JD.string, "pass" => JD.string)
   let (uname, pass) = try req.json(decoder)
   // authenticate user ...
 }
