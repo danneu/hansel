@@ -18,7 +18,38 @@ Swift web-servers, so hot right now.
 - [x] Linux support
 - [ ] Tests
 
-## Example
+## Quickstart
+
+    mkdir HelloWorld
+
+``` swift
+// HelloWorld/Sources/main.swift
+import Hansel
+
+let handler: Handler = { request in 
+  return Response().text("Hello world!")
+}
+
+Server(handler).listen()
+```
+
+``` swift
+// HelloWorld/Package.swift
+import PackageDescription
+let package = Package(
+  name: "HelloWorld",
+  dependencies: [
+    .Package(url: "https://github.com/danneu/hansel.git", majorVersion: 0)
+  ]
+)
+```
+
+    swift build && rm -rf Packages/*/Tests && swift build
+    .build/debug/HelloWorld --port 3000
+
+Server listening on 3000.
+
+## Another Example
 
 ``` swift
 import Hansel
@@ -70,7 +101,7 @@ let router: Router = Node("/", [
 ])
 
 // initialize a server by passing it a handler
-Server(logger(router.handler())).listen(3000)
+Server(logger(router.handler())).listen()
 ```
 
 ----
