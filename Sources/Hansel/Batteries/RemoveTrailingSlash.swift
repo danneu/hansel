@@ -7,7 +7,9 @@ extension Batteries {
   public static let removeTrailingSlash: Middleware = { handler in
     return { request in
       if (hasSlash(request.path)) {
-        return Response().redirect(trimSlash(request.path), status: .MovedPermanently)
+        let newPath = trimSlash(request.path)
+          + (request.nsurl.query == nil ? "" : "?\(request.nsurl.query!)")
+        return Response().redirect(newPath, status: .MovedPermanently)
       }
       return try handler(request)
     }

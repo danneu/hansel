@@ -19,7 +19,7 @@ public struct Request: Storable, HeaderList, Tappable {
   public var store: Store
   // remote connection ip address. use the #ip method.
   private var address: String
-  private var nsurl: NSURL
+  public var nsurl: NSURL
 
   // options, not part of the request model
   var trustProxy: Bool
@@ -100,7 +100,13 @@ public struct Request: Storable, HeaderList, Tappable {
   // - Includes trailing slash
   // - Does not decode percent-encoding
   public var path: String {
-    return CFURLCopyPath(nsurl as CFURL) as String
+    // Doesn't work on Linux:
+    // return CFURLCopyPath(nsurl as CFURL) as String
+
+    // Attempt to come up with cross-plat path that includes trailing slash:
+    // https://tools.ietf.org/html/rfc3986#appendix-B
+    let re = try! RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?")
+    return re.replace(url, template: "$5")
   }
 
   public var querystring: String {
