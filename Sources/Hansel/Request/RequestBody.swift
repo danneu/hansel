@@ -11,7 +11,7 @@ public class RequestBody: CustomStringConvertible {
   }
 
   public func utf8 () throws -> String {
-    if let str = NSString(bytes: self.bytes, length: self.bytes.count, encoding: NSUTF8StringEncoding) as? String {
+    if let str = String(bytes: self.bytes, encoding: NSUTF8StringEncoding) {
       return str
     } else {
       throw RequestError.BadBody
