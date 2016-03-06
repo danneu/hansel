@@ -31,7 +31,10 @@ and try this locally or on a Ubuntu VPS.
 import Hansel
 
 let handler: Handler = { request in 
-  return Response().text("Hello world!")
+  return Response().html(
+    d.div(
+      d.h1("Hello world"),
+      d.p("Your IP address is: \(request.ip)")))
 }
 
 Server(handler).listen()
@@ -52,61 +55,6 @@ let package = Package(
     .build/debug/HelloWorld --port 3000
 
 Server listening on 3000.
-
-## Another Example
-
-``` swift
-import Hansel
-
-// middleware example
-let logger: Middleware = { handler in
-  return { request in
-    print("Request coming in")
-    let response = try handler(request)
-    print("Response going out")
-    return response
-  }
-}
-
-// built-in templating
-func demoTemplate (ip: String) -> HtmlConvertible {
-  return d.div(
-    d.h1("Welcome!"),
-    d.p(["style": ["color": "red"]], 
-        "Your IP address is: ", d.strong(ip)))
-}
-
-// basic router
-let router: Router = Node("/", [
-  .Route(.Get, { req in
-    return Response().text("Welcome to the homepage")
-  }),
-  .Node("/html", [
-    .Route(.Get, { req in
-      return Response().html(demoTemplate(req.ip))
-    })
-  ]),
-  .Node("/json-encode", [
-    .Route(.Get, { req in
-     return try Response().json(["hello": 42])
-    })
-  ]),
-  .Node("/json-decode", [
-    .Route(.Post, { req in
-      // decodes json {"uname": String, "password": String}} => (String, String)
-      let decoder = JD.object2({ ($0, $1) },
-        "uname" => JD.string, 
-        "password" => JD.string)
-      let (uname, password) = try request.json(decoder)
-      // look up credentials ...
-      return Response().text("You logged in as: \(uname)")
-    })
-  ])
-])
-
-// initialize a server by passing it a handler
-Server(logger(router.handler())).listen()
-```
 
 ----
 
@@ -136,7 +84,7 @@ Hansel boils down to these concepts:
 The `Request` and `Response` are immutable structs. Their API lets you
 chain together transformations.
 
-Some random quick-start examples:
+Example usage junkdrawer:
 
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
@@ -190,30 +138,40 @@ let handler: Handler = { request in
 
 ## Handler (Request → Response)
 
+``` swift
+typealias Handler = (Request) throws -> Response
+```
+
 Your application is a function that takes a `Request` and returns a `Response`.
 
 ``` swift
-typealias Handler = (Request) throws -> Response
-
 let handler: Handler { request in 
   return Response().text("Hello world")
 }
+
+Server(handler).listen()
 ```
 
 ## Middleware (Handler → Handler)
+
+``` swift
+typealias Middleware = Handler -> Handler
+```
 
 Middleware functions let you run logic before the request hits the handler
 and after the response leaves the handler.
 
 ``` swift
-typealias Middleware = Handler -> Handler
-
-let middleware: Middleware = { handler in
+let logger: Middleware = { handler in
   return { request in
+    print("Request coming in")
     let response = try handler(request)
+    print("Response going out")
     return response
   }
 }
+
+Server(logger(handler)).listen()
 ```
 
 Since middleware are just functions, it's trivial to compose them:
