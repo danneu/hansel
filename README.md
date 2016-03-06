@@ -525,6 +525,10 @@ Server(middleware(handler)).listen()
 
 ### Content-Type Parser
 
+**OSX-only:** Since the parser is regexp-heavy, NSRegularExpression is not
+implemented on Linux, and I can't find an alternative impl that works with 
+moderately-complex regexps, the content-type parser is disabled on Linux.
+
 `ContentType.swift` implements a Content-Type header parser according to
 RFC 7231.
 
