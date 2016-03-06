@@ -1,5 +1,6 @@
 
 import Foundation
+import Commander
 
 #if os(Linux)
   import Glibc
@@ -19,14 +20,18 @@ public class Server {
     self.socketServer = SocketServer(middleware(handler))
   }
 
-  public func listen (port: Int = 3000) {
-    do {
-      try self.socketServer.boot(port)
-      print("Listening on \(port)")
-      self.loop()
-    } catch {
-      print("Server failed to boot: \(error)")
-    }
+  @noreturn public func listen (port: Int = 3000) {
+    command(
+      Option("port", port, description: "The server will bind to this port (Default: \(port))")
+    ) { port in
+      do {
+        try self.socketServer.boot(port)
+        print("Listening on \(port)")
+        self.loop()
+      } catch {
+        print("Server failed to boot: \(error)")
+      }
+    }.run()
   }
 
   private func loop() {
