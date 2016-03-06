@@ -46,6 +46,7 @@
 		D97727441C8B8D9900EDDE10 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = D977271B1C8B8D9900EDDE10 /* Socket.swift */; };
 		D97727451C8B8D9900EDDE10 /* SocketParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D977271C1C8B8D9900EDDE10 /* SocketParser.swift */; };
 		D97727461C8B8D9900EDDE10 /* SocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D977271D1C8B8D9900EDDE10 /* SocketServer.swift */; };
+		D99B6A0E1C8C3E9500562610 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99B6A0D1C8C3E9500562610 /* Log.swift */; };
 		D99C24FD1C8BB9C500F26F99 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99C24FC1C8BB9C500F26F99 /* main.swift */; };
 		D9DE70DF1C8B9B4900EE4E93 /* Consts.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D9DE70CB1C8B9B4900EE4E93 /* Consts.swift.o */; };
 		D9DE70E01C8B9B4900EE4E93 /* Extensions.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D9DE70CC1C8B9B4900EE4E93 /* Extensions.swift.o */; };
@@ -111,6 +112,7 @@
 		D977271B1C8B8D9900EDDE10 /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		D977271C1C8B8D9900EDDE10 /* SocketParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketParser.swift; sourceTree = "<group>"; };
 		D977271D1C8B8D9900EDDE10 /* SocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketServer.swift; sourceTree = "<group>"; };
+		D99B6A0D1C8C3E9500562610 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		D99C24FC1C8BB9C500F26F99 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/HanselDev/main.swift; sourceTree = "<group>"; };
 		D9DE70CB1C8B9B4900EE4E93 /* Consts.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = Consts.swift.o; path = .build/debug/Jay.build/Consts.swift.o; sourceTree = "<group>"; };
 		D9DE70CC1C8B9B4900EE4E93 /* Extensions.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = Extensions.swift.o; path = .build/debug/Jay.build/Extensions.swift.o; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				D97726FB1C8B8D9900EDDE10 /* Handler.swift */,
 				D97727051C8B8D9900EDDE10 /* Html.swift */,
 				D97727071C8B8D9900EDDE10 /* JD.swift */,
+				D99B6A0D1C8C3E9500562610 /* Log.swift */,
 				D97727091C8B8D9900EDDE10 /* MD5.swift */,
 				D977270A1C8B8D9900EDDE10 /* Middleware.swift */,
 				D97727181C8B8D9900EDDE10 /* Router.swift */,
@@ -437,6 +440,7 @@
 				D977272C1C8B8D9900EDDE10 /* ContentType.swift in Sources */,
 				D97727291C8B8D9900EDDE10 /* Handler.swift in Sources */,
 				D97727311C8B8D9900EDDE10 /* RegExp.swift in Sources */,
+				D99B6A0E1C8C3E9500562610 /* Log.swift in Sources */,
 				D97727401C8B8D9900EDDE10 /* Response.swift in Sources */,
 				D97727451C8B8D9900EDDE10 /* SocketParser.swift in Sources */,
 				D97727381C8B8D9900EDDE10 /* HeaderList.swift in Sources */,
