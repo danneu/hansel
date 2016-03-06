@@ -1,12 +1,35 @@
 
 import Foundation
 
+#if os(Linux)
+import POSIXRegex
+#endif
+
 //
 // Convenience wrapper around common regex functions
 //
 
+// API
+//
+// let re = try RegExp(pattern)
+// re.replace("input string", template: "$1")
+// re.test("input string") // true
+
+// Linux:
+//
+// - NSRegularExpression is not implemented for Linux
+// - The POSIXRegex wrapper library I'm using is too basic to
+//   support any moderately complex expression I've tried, so
+//   some functionality like ContentType.swift are just going
+//   to be disabled until Linux gets support
+
 public class RegExp {
+#if os(Linux)
+  let internalExpression: Regex
+#else
   let internalExpression: NSRegularExpression
+#endif
+
   let pattern: String
 
   // Initializer throws if pattern is invalid. You should
@@ -14,31 +37,53 @@ public class RegExp {
   // user-input.
   public init (_ pattern: String) throws {
     self.pattern = pattern
+#if os(Linux)
+    self.internalExpression = try Regex(pattern: pattern, options: .CaseInsensitive)
+#else
     self.internalExpression = try NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
+#endif
   }
 
   // STRINGS
 
+#if os(Linux)
+  public func replace (input: String, template: String) -> String {
+    return self.internalExpression.replace(input, withTemplate: template)
+  }
+#else
   public func replace (input: String, template: String) -> String {
     return self.internalExpression.stringByReplacingMatchesInString(input, options: [], range: NSMakeRange(0, input.characters.count), withTemplate: template)
   }
+#endif
 
   // MATCHES
 
+#if os(Linux)
+  public func test (input: String) -> Bool {
+    return self.internalExpression.matches(input)
+  }
+#endif
+
+#if os(OSX)
   // Simply check if regex matches a string at all
   public func test (input: String) -> Bool {
     return self.findFirst(input) != nil
   }
 
-  // Returns first match
-  public func findFirst (input: String, start: Int = 0) -> NSTextCheckingResult? {
+  // Note: The following are not public since there are too
+  // many issues implementing them in Linux. So far the plan
+  // is to just wait til Linux gets NSRegularExpression support.
+
+  // Returns first match (not implemented in Linux)
+  internal func findFirst (input: String, start: Int = 0) -> NSTextCheckingResult? {
     let range = NSMakeRange(start, input.characters.count - start)
     return self.internalExpression.firstMatchInString(input, options: [], range: range)
   }
 
   // Returns all matches
-  public func findAll (input: String, start: Int = 0) -> [NSTextCheckingResult] {
+  internal func findAll (input: String, start: Int = 0) -> [NSTextCheckingResult] {
     let range = NSMakeRange(start, input.characters.count - start)
     return self.internalExpression.matchesInString(input, options: [], range: range)
   }
+#endif
 }

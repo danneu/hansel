@@ -1,6 +1,9 @@
 
 import Foundation
 
+// OSX-only until Linux gets NSRegularExpression
+#if os(OSX)
+
 //
 // HTTP Content-Type header parser according to RFC 7231
 //
@@ -193,3 +196,4 @@ private func quoteValue (input: String) throws -> String {
 // - type string is downcased
 // - param keys are downcased (case preserved in param vals)
 //
+#endif

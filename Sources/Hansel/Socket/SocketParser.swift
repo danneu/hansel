@@ -35,7 +35,8 @@ class SocketParser {
     var bodyBytes: [UInt8] = []
     if
       let lengthStr = (headers.filter { $0.0.lowercaseString == "content-length" }.first?.1),
-      let length = Int(lengthStr) {
+      // ensure no spaces in val since Int(" 40") is nil
+      let length = Int(lengthStr.trim()) {
         bodyBytes = try readBody(socket, size: length)
     }
 

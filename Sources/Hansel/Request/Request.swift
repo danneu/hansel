@@ -66,6 +66,8 @@ public struct Request: Storable, HeaderList, Tappable {
     }
   }
 
+// ContentType disabled til Linux gets a good regex impl
+#if os(OSX)
   // returns content-type without any of its parameters
   // Ex: "application/json; charset=utf-8" => Optional("application/json")
   public var type: String? {
@@ -78,7 +80,10 @@ public struct Request: Storable, HeaderList, Tappable {
       return nil
     }
   }
+#endif
 
+// ContentType disabled til Linux gets a good regex impl
+#if os(OSX)
   // Ex: "application/json; charset=utf-8" => Optional("utf-8")
   public var charset: String? {
     guard let val = getHeader("content-type") else {
@@ -90,6 +95,7 @@ public struct Request: Storable, HeaderList, Tappable {
       return nil
     }
   }
+#endif
 
   // URL PARTS
 
@@ -103,10 +109,7 @@ public struct Request: Storable, HeaderList, Tappable {
     // Doesn't work on Linux:
     // return CFURLCopyPath(nsurl as CFURL) as String
 
-    // Attempt to come up with cross-plat path that includes trailing slash:
-    // https://tools.ietf.org/html/rfc3986#appendix-B
-    let re = try! RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?")
-    return re.replace(url, template: "$5")
+    return url.split(1, separator: "?").first ?? "/"
   }
 
   public var querystring: String {
