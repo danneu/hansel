@@ -1,7 +1,7 @@
 
 ![Hansel](hansel.png)
 
-# Hansel
+# Hansel ![Platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20OS%20X-blue.svg) ![Package Managers](https://img.shields.io/badge/package%20managers-swiftpm-yellow.svg)
 
 Swift web-servers, so hot right now.
 
@@ -37,7 +37,7 @@ let handler: Handler = { request in
       d.p("Your IP address is: \(request.ip)")))
 }
 
-Server(handler).listen()
+Server(Batteries.logger(handler)).listen()
 ```
 
 ``` swift
@@ -56,7 +56,7 @@ let package = Package(
 
 Server listening on 3000.
 
-----
+## Why?
 
 Hansel is an experimental Swift web-server that focuses on:
 
@@ -184,79 +184,57 @@ let middleware = logger << cookieParser << loadCurrentUser
 Server(middleware(handler)).listen(3000)
 ```
 
-## Batteries Included
+## JSON
 
-I've started stubbing out some basic middleware and tools.
+### Sending JSON
 
-### JSON Decoder
-
-- Implementation: [Sources/JD.swift](https://github.com/danneu/hansel/blob/master/Sources/JD.swift)
-- Elm's [Json.Decode docs](http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Json-Decode)
-
-I really like @evancz's declarative decoder abstraction in [Elm][elm],
-so I threw together a Swift impl thanks to @czechboy0's work on [Jay][jay],
-the parser.
-
-Hansel's `Decoder<T>` either decodes json into Swift value `T`
-or it throws an error which gets converted into a `400 Bad Request` by
-default.
-
-It's all in Hansel's `JD` namespace.
-
-``` swift
-JD.decode(Decoder<T>, JsonValue) -> Result<ErrorString, T>
-```
-
-Some examples:
-
-| JSON                                | Decoder             |     Result         
-| ----------------------------------- |--------------------| ----------------------------------------|
-| `"foo"`                           | `JD.string`                                                   |  `.Ok("foo")`   
-| `42`                              | `JD.int`                                                      |  `.Ok(42)`     
-| `[1, 2, 3, 4]`                    | `JD.array(JD.int)`                                            |  `.Ok([1, 2, 3])`   
-| `["a", 2, "c", 4]`                | `JD.oneOf([JD.string, JD.int])`                               |  `.Ok(["a", 2, "c", 4])`
-| <pre>{<br>  "status": 200,<br>  "headers": []<br>}</pre>  | `("status" => JD.int)`                                        |  `.Ok(200)`             
-| `{"a": { "b": { "c": 42 }}}`      | `["a", "b", "c"] => JD.int`                                   |  `.Ok(42)`    
-| `{"id": 42, "name": "amy"}`       | <pre>JD.object2(User.init,<br>  "id" => JD.int,<br>  "name" => JD.string)</pre>      |  `.Ok(User(42, "amy"))`
-| `[null, "x", null]`               | `JD.array(JD.oneOf([JD.string, JD.null("x")]))`               |  `.Ok(["x", "x", "x"])`  
-
-When reading the request json (`try request.json()`), you can pass in a `Decoder`.
-If the decode fails, an error is thrown. If it's successful, the decoded
-Swift value returns.
+Just pass a dictionary into `response.json()`:
 
 ``` swift
 let handler: Handler = { request in
-  // decodes {"uname": String, "pass": String} into tuple (String, String)
-  let decoder = JD.object2({ ($0, $1) }, "uname" => JD.string, "pass" => JD.string)
-  let (uname, pass) = try req.json(decoder)
-  // authenticate user ...
+  return Response().json([
+    "id": 42,
+    "uname": "Murphy"
+  ])
 }
 ```
 
-Here's a hansel application that expects you to send it a JSON array
-of numbers (e.g. `[50, 25, 1]`) and it will respond with the sum
-(e.g. `{ "sum": 76 }`):
+### JSON Decoder
+
+- More: https://github.com/danneu/hansel/wiki/JSON-Decoder
+
+Hansel comes with a declarative JSON decoder built on top of
+**@czechboy0**'s [Jay][jay] JSON parser.
+
+This handler parses the request's JSON body as an array of integers
+and responds with the sum:
 
 ``` swift
-let handler: Handler = { request in 
+// example request payload: [1, 2, 3]
+let handler: Handler = { request in
   let nums = try request.json(JD.array(JD.int))
   let sum = nums.reduce(0, combine: +)
-  return try Response().json(["sum": sum])
+  return Response().json(["sum": sum])
 }
 ```
 
-```
-$ curl -H 'Content-Type: application/json' -d '[1, 2, 3]' http://localhost:3000
-HTTP/1.1 200 OK
-content-type: application/json
-content-length: 9
+This authentication handler parses the username/password combo from
+the request's JSON body:
 
-{
-  "sum": 6
+``` swift
+// example request payload: {"user": {"uname": "chuck"}, "password": "secret"}
+let handler: Handler = { request in
+  let decoder = JD.tuple2(
+    ["user", "uname"] => JD.string, // easy nested access
+    "password" => JD.string
+  )
+  let (uname, password) = try request.json(decoder)
+  // authenticate user ...
+  return Response().json(["success": ["uname": uname]])
 }
 ```
 
-### Templating
+## HTML Templating
 
 Hansel comes with a minimal templating library that lets you build
 HTML views with Swift code:
@@ -287,22 +265,7 @@ func demoTemplate (ip: String) -> HtmlConvertible {
 }
 ```
 
-### Development Logger (Middleware)
-
-The logger middleware prints basic info about the request and response
-to stdout. Good for development.
-
-``` swift
-let middleware = compose(
-  Batteries.logger
-)
-
-Server(middleware(handler)).listen()
-```
-
-![logger screenshot](https://dl.dropboxusercontent.com/spa/quq37nq1583x0lf/_5c9x02w.png)
-
-### Routing
+## Routing
 
 I cobbled together a basic router that turns a tree into a handler.
 
@@ -341,7 +304,7 @@ Server(router.handler()).listen(3000)
 
 I'd like to eventually develop a less string-heavy router.
 
-#### URL Route Params
+### URL Route Params
 
 If a node has a parameter segment (Ex: `"/:username"`), then the param
 appears in the `request.params` dictionary (`[String: String]`) which
@@ -376,19 +339,29 @@ content-type: application/json
 }
 ```
 
-### Static File Serving (Middleware)
+## Development Logger (Middleware)
+
+The logger middleware prints basic info about the request and response
+to stdout. Good for development.
+
+``` swift
+let middleware = compose(
+  Batteries.logger
+)
+
+Server(middleware(handler)).listen()
+```
+
+![logger screenshot](https://dl.dropboxusercontent.com/spa/quq37nq1583x0lf/_5c9x02w.png)
+
+## Static File Serving (Middleware)
 
 The `serveStatic` middleware checks the `request.path` against the directory
 that you initialize the middleware with.
 
-If the file does not exist, then the request continues downstream.
-
-If the file does exist, then it returns a response that will stream
-the file to the client.
-
 ``` swift
 let middleware = compose(
-  Batteries.serveStatic("Public")
+  Batteries.serveStatic("./Public")
 )
 
 let handler: Handler = { request in 
@@ -416,7 +389,7 @@ $ http localhost:3000/../passwords.txt
 HTTP/1.1 403 Forbidden
 ```
 
-### Cookies (Middleware)
+## Cookies (Middleware)
 
 Using this middleware will assoc `.cookies` (dictionary) and 
 `.setCookie(k, v)` methods to the request and response.
@@ -435,7 +408,6 @@ let handler: Handler = { request in
   var count: Int
 
   if let viewsStr = request.cookies["views"], let views = Int(viewsStr) {
-    return Response().text("Message: \(message)")
     count = views + 1
   } else {
     count = 1
@@ -444,16 +416,6 @@ let handler: Handler = { request in
   return Response()
     .text("You have viewed this page \(count) times")
     .setCookie("views", String(count))
-
-  // Or
-
-  return Response()
-    .text("You have viewed this page \(count) times")
-    .setCookie("views", { 
-      value: String(count),
-      maxAge: 86400, // Expire in 24 hours
-      // ... more options
-    })
 }
 
 Server(middleware(handler)).listen()
@@ -461,7 +423,7 @@ Server(middleware(handler)).listen()
 
 ### Content-Type Parser
 
-**OSX-only:** Since the parser is regexp-heavy, NSRegularExpression is not
+**Temporarily disableld:** Since the parser is regexp-heavy, NSRegularExpression is not
 implemented on Linux, and I can't find an alternative impl that works with 
 moderately-complex regexps, the content-type parser is disabled on Linux.
 
@@ -483,7 +445,7 @@ type.format() //=> "image/svg+xml; charset=utf-8; foo=bar"
 
 ### ETag
 
-**Note**: ETagging will not work until the stable version of CryptoSwift
+**Temporarily disabled**: ETagging will not work until the stable version of CryptoSwift
 works with the lastest Swift ([issue](https://github.com/krzyzanowskim/CryptoSwift/issues/217)). For now, md5 hashes always return `"aaaaaaaaaaaaaaaa"`.
 
 `ETag.swift` contains an ETag generator that can be called on anything
@@ -510,6 +472,8 @@ A `response.body` conforms to the `Payload` protocol which involves
 implementing just a few methods from a couple protocols:
 
 ``` swift
+protocol Payload: Streamable, ETaggable {}
+
 protocol Streamable {
   mutating func next () -> [UInt8]?
   func open () -> Void
@@ -585,7 +549,3 @@ swift build && .build/debug/HanselDev --port 4000
 [evancz]: https://github.com/evancz
 [jay]: https://github.com/czechboy0/Jay
 [nslinux]: https://github.com/johnno1962/NSLinux
-
-## Disclaimer
-
-I'm new to Swift and XCode
