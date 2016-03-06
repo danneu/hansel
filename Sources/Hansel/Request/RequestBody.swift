@@ -6,11 +6,11 @@ import Jay
 public class RequestBody: CustomStringConvertible {
   let bytes: [UInt8]
 
-  init (_ bytes: [UInt8] = []) {
+  public init (_ bytes: [UInt8] = []) {
     self.bytes = bytes
   }
 
-  func utf8 () throws -> String {
+  public func utf8 () throws -> String {
     if let str = NSString(bytes: self.bytes, length: self.bytes.count, encoding: NSUTF8StringEncoding) as? String {
       return str
     } else {
@@ -18,7 +18,7 @@ public class RequestBody: CustomStringConvertible {
     }
   }
 
-  func json () throws -> JsonValue {
+  public func json () throws -> JsonValue {
     do {
       return try Jay().typesafeJsonFromData(self.bytes)
     } catch {
@@ -26,7 +26,7 @@ public class RequestBody: CustomStringConvertible {
     }
   }
 
-  func json <T> (decoder: Decoder<T>) throws -> T {
+  public func json <T> (decoder: Decoder<T>) throws -> T {
     switch JD.decode(decoder, try json()) {
     case .Err (_): throw RequestError.BadBody
     case .Ok (let v): return v

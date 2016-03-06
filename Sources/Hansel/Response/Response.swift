@@ -10,9 +10,9 @@ extension String: Payload {}
 
 public struct Response: Storable, HeaderList, Tappable {
   public var status: Status = .Ok
-  var headers: [Header] = []
+  public var headers: [Header] = []
   public var body: Payload = ByteArray()
-  var store: Store = [:]
+  public var store: Store = [:]
 
   // INITIALIZERS
 

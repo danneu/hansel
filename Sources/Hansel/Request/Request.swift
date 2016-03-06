@@ -4,7 +4,7 @@ import Jay
 
 // TODO: Consolidate errors and actually come up with a game
 // plan.
-enum RequestError: ErrorType {
+public enum RequestError: ErrorType {
   case InvalidUrl
   // body doesn't convert to the expected format
   case BadBody
@@ -16,7 +16,7 @@ public struct Request: Storable, HeaderList, Tappable {
   public var headers: [Header]
   // basically a byte array with some convenience methods
   public var body: RequestBody
-  var store: Store
+  public var store: Store
   // remote connection ip address. use the #ip method.
   private var address: String
   private var nsurl: NSURL
@@ -115,15 +115,15 @@ public struct Request: Storable, HeaderList, Tappable {
 
   // BODY CONVERSION (proxied to RequestBody for convenience)
 
-  func utf8 () throws -> String {
+  public func utf8 () throws -> String {
     return try body.utf8()
   }
 
-  func json () throws -> JsonValue {
+  public func json () throws -> JsonValue {
     return try body.json()
   }
 
-  func json <T> (decoder: Decoder<T>) throws -> T {
+  public func json <T> (decoder: Decoder<T>) throws -> T {
     return try body.json(decoder)
   }
 

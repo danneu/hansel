@@ -16,7 +16,7 @@ public enum Router {
   case NodeM (String, [Middleware], [Router])
   case RouteM (Method, [Middleware], Handler)
 
-  func find (method: Method, segments: [String], mws: [Middleware], params: [String: String], router: Router) -> (Handler, [String: String])? {
+  private func find (method: Method, segments: [String], mws: [Middleware], params: [String: String], router: Router) -> (Handler, [String: String])? {
     var params = params // need it mutable
 
     var restSegs: [String]
@@ -112,7 +112,7 @@ private func composeArr (mws: [Middleware]) -> Middleware {
 // REQUEST PARAM EXTENSION
 
 extension Request {
-  var params: [String: String] {
+  public var params: [String: String] {
     return getStore("params") as? [String: String] ?? [:]
   }
 
