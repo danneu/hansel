@@ -3,6 +3,9 @@ import PackageDescription
 
 let package = Package(
   name: "Hansel",
+  targets: [
+    Target(name: "Hansel")
+  ],
   dependencies: [
     // Enable CryptoSwift again once CryptoSwift stable can build, 
     // i.e. once its develop branch is merged into stable master.
