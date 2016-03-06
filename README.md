@@ -649,6 +649,7 @@ Navigate to <http://localhost:3000>.
 - Some socket glue code from [qutheory/vapor][vapor]
 - Linux fixes from [qutheory/vapor][vapor] and [johnno1962/NSLinux][nslinux]
 - Some HTTP/RFC implementation ported from [jshttp]
+- @czechboy0's [blog post](https://honzadvorsky.com/articles/2016-02-25-14-00-3_steps_to_marry_xcode_with_swift_package_manager/) on how to use SPM + Xcode
 
 [swifter]: https://github.com/glock45/swifter
 [vapor]: https://github.com/qutheory/vapor
