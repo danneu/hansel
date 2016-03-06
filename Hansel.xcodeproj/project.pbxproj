@@ -47,6 +47,14 @@
 		D97727451C8B8D9900EDDE10 /* SocketParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D977271C1C8B8D9900EDDE10 /* SocketParser.swift */; };
 		D97727461C8B8D9900EDDE10 /* SocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D977271D1C8B8D9900EDDE10 /* SocketServer.swift */; };
 		D99B6A0E1C8C3E9500562610 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99B6A0D1C8C3E9500562610 /* Log.swift */; };
+		D99B6A171C8C824900562610 /* ArgumentConvertible.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A0F1C8C824900562610 /* ArgumentConvertible.swift.o */; };
+		D99B6A181C8C824900562610 /* ArgumentDescription.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A101C8C824900562610 /* ArgumentDescription.swift.o */; };
+		D99B6A191C8C824900562610 /* ArgumentParser.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A111C8C824900562610 /* ArgumentParser.swift.o */; };
+		D99B6A1A1C8C824900562610 /* Command.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A121C8C824900562610 /* Command.swift.o */; };
+		D99B6A1B1C8C824900562610 /* CommandRunner.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A131C8C824900562610 /* CommandRunner.swift.o */; };
+		D99B6A1C1C8C824900562610 /* Commands.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A141C8C824900562610 /* Commands.swift.o */; };
+		D99B6A1D1C8C824900562610 /* CommandType.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A151C8C824900562610 /* CommandType.swift.o */; };
+		D99B6A1E1C8C824900562610 /* Group.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D99B6A161C8C824900562610 /* Group.swift.o */; };
 		D99C24FD1C8BB9C500F26F99 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99C24FC1C8BB9C500F26F99 /* main.swift */; };
 		D9DE70DF1C8B9B4900EE4E93 /* Consts.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D9DE70CB1C8B9B4900EE4E93 /* Consts.swift.o */; };
 		D9DE70E01C8B9B4900EE4E93 /* Extensions.swift.o in Frameworks */ = {isa = PBXBuildFile; fileRef = D9DE70CC1C8B9B4900EE4E93 /* Extensions.swift.o */; };
@@ -113,6 +121,14 @@
 		D977271C1C8B8D9900EDDE10 /* SocketParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketParser.swift; sourceTree = "<group>"; };
 		D977271D1C8B8D9900EDDE10 /* SocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketServer.swift; sourceTree = "<group>"; };
 		D99B6A0D1C8C3E9500562610 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		D99B6A0F1C8C824900562610 /* ArgumentConvertible.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = ArgumentConvertible.swift.o; path = .build/debug/Commander.build/ArgumentConvertible.swift.o; sourceTree = "<group>"; };
+		D99B6A101C8C824900562610 /* ArgumentDescription.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = ArgumentDescription.swift.o; path = .build/debug/Commander.build/ArgumentDescription.swift.o; sourceTree = "<group>"; };
+		D99B6A111C8C824900562610 /* ArgumentParser.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = ArgumentParser.swift.o; path = .build/debug/Commander.build/ArgumentParser.swift.o; sourceTree = "<group>"; };
+		D99B6A121C8C824900562610 /* Command.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = Command.swift.o; path = .build/debug/Commander.build/Command.swift.o; sourceTree = "<group>"; };
+		D99B6A131C8C824900562610 /* CommandRunner.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = CommandRunner.swift.o; path = .build/debug/Commander.build/CommandRunner.swift.o; sourceTree = "<group>"; };
+		D99B6A141C8C824900562610 /* Commands.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = Commands.swift.o; path = .build/debug/Commander.build/Commands.swift.o; sourceTree = "<group>"; };
+		D99B6A151C8C824900562610 /* CommandType.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = CommandType.swift.o; path = .build/debug/Commander.build/CommandType.swift.o; sourceTree = "<group>"; };
+		D99B6A161C8C824900562610 /* Group.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = Group.swift.o; path = .build/debug/Commander.build/Group.swift.o; sourceTree = "<group>"; };
 		D99C24FC1C8BB9C500F26F99 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = Sources/HanselDev/main.swift; sourceTree = "<group>"; };
 		D9DE70CB1C8B9B4900EE4E93 /* Consts.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = Consts.swift.o; path = .build/debug/Jay.build/Consts.swift.o; sourceTree = "<group>"; };
 		D9DE70CC1C8B9B4900EE4E93 /* Extensions.swift.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = Extensions.swift.o; path = .build/debug/Jay.build/Extensions.swift.o; sourceTree = "<group>"; };
@@ -141,6 +157,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D99B6A171C8C824900562610 /* ArgumentConvertible.swift.o in Frameworks */,
+				D99B6A181C8C824900562610 /* ArgumentDescription.swift.o in Frameworks */,
+				D99B6A191C8C824900562610 /* ArgumentParser.swift.o in Frameworks */,
+				D99B6A1A1C8C824900562610 /* Command.swift.o in Frameworks */,
+				D99B6A1B1C8C824900562610 /* CommandRunner.swift.o in Frameworks */,
+				D99B6A1C1C8C824900562610 /* Commands.swift.o in Frameworks */,
+				D99B6A1D1C8C824900562610 /* CommandType.swift.o in Frameworks */,
+				D99B6A1E1C8C824900562610 /* Group.swift.o in Frameworks */,
 				D9DE70DF1C8B9B4900EE4E93 /* Consts.swift.o in Frameworks */,
 				D9DE70E01C8B9B4900EE4E93 /* Extensions.swift.o in Frameworks */,
 				D9DE70E11C8B9B4900EE4E93 /* Formatter.swift.o in Frameworks */,
@@ -309,6 +333,14 @@
 		D9DE70F31C8B9B6C00EE4E93 /* LinkedDeps */ = {
 			isa = PBXGroup;
 			children = (
+				D99B6A0F1C8C824900562610 /* ArgumentConvertible.swift.o */,
+				D99B6A101C8C824900562610 /* ArgumentDescription.swift.o */,
+				D99B6A111C8C824900562610 /* ArgumentParser.swift.o */,
+				D99B6A121C8C824900562610 /* Command.swift.o */,
+				D99B6A131C8C824900562610 /* CommandRunner.swift.o */,
+				D99B6A141C8C824900562610 /* Commands.swift.o */,
+				D99B6A151C8C824900562610 /* CommandType.swift.o */,
+				D99B6A161C8C824900562610 /* Group.swift.o */,
 				D9DE70CB1C8B9B4900EE4E93 /* Consts.swift.o */,
 				D9DE70CC1C8B9B4900EE4E93 /* Extensions.swift.o */,
 				D9DE70CD1C8B9B4900EE4E93 /* Formatter.swift.o */,

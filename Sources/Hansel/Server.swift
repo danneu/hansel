@@ -21,6 +21,20 @@ public class Server {
     self.socketServer = SocketServer(middleware(handler))
   }
 
+  // same as .listen() except doesn't listen for process arguments.
+  // running server in xcode fails on a commander
+  // error "unknown argument" since xcode seems to pass an argument
+  // in that i can't figure out how to catch.
+  public func embed (port: Int = 3000) {
+    do {
+      try self.socketServer.boot(port)
+      print("Listening on \(port)")
+      self.loop()
+    } catch {
+      print("Server failed to boot: \(error)")
+    }
+  }
+  
   @noreturn public func listen (port: Int = 3000) {
     command(
       Option("port", port, description: "The server will bind to this port (Default: \(port))")
