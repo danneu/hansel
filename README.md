@@ -131,32 +131,6 @@ Hansel boils down to these concepts:
 2. `Handler`s are functions `Request -> Response`
 3. `Middleware` are higher-order functions `Handler -> Handler`
 
-It's just functions.
-
-``` swift
-typealias Header = (String, String)
-
-struct Request {
-  let url: String
-  let headers: [Header]
-  let method: Method
-  let body: [UInt8]
-  // ...
-}
-
-struct Response {
-  let status: Status
-  let headers: [Header]
-  let body: Payload // i.e. Streamable, ETaggable
-  // ...
-}
-
-typealias Handler = (Request) throws -> Response
-typealias Middleware = Handler -> Handler
-```
-
-Everything else in hansel is just convenience functions on top of that.
-
 ## Request & Response
 
 The `Request` and `Response` are immutable structs. Their API lets you
@@ -218,14 +192,9 @@ let handler: Handler = { request in
 
 Your application is a function that takes a `Request` and returns a `Response`.
 
-Because `Handler` is a typealias, these are equivalent:
-
 ``` swift
-func handler (request: Request) -> Response {
-  return Response().text("Hello world")
-}
+typealias Handler = (Request) throws -> Response
 
-// Preferred
 let handler: Handler { request in 
   return Response().text("Hello world")
 }
@@ -236,24 +205,9 @@ let handler: Handler { request in
 Middleware functions let you run logic before the request hits the handler
 and after the response leaves the handler.
 
-Because `Middleware` is a typealias, these are equivalent:
-
 ``` swift
-func middleware (handler: (Request -> Response)) throws -> (Request -> Response) {
-  return { request in
-    let response = try handler(request)
-    return response
-  }
-}
+typealias Middleware = Handler -> Handler
 
-func middleware (handler: Handler) -> Handler {
-  return { request in
-    let response = try handler(request)
-    return response
-  }
-}
-
-// Preferred
 let middleware: Middleware = { handler in
   return { request in
     let response = try handler(request)
@@ -351,18 +305,10 @@ HTML views with Swift code:
 
 ``` swift
 func demoTemplate (ip: String) -> HtmlConvertible {
-  let attrs =
-    ["style": ["background-color": "#3498db",
-               "color": "white",
-               "width": "600px",
-               "margin": "20px auto",
-               "border": "5px solid black",
-               "padding": "10px",
-               "font-family": "Menlo"],
-     "class": "demo-box"]
   // pass a dictionary as the first argument to any
   // element to set its attributes
-  return d.div(attrs,
+  return d.div(["class": "demo-box",
+                "style": ["border": "5px solid black"]],
     d.h1("quick hansel templating demo"),
     d.hr(),
     "hello, ",
@@ -382,8 +328,6 @@ func demoTemplate (ip: String) -> HtmlConvertible {
   )
 }
 ```
-
-![templating demo screenshot](http://i.imgur.com/3cXptdG.png)
 
 ### Development Logger (Middleware)
 
@@ -655,30 +599,18 @@ Full list: `init(ms: Int)`, `secs:`, `mins:`, `hrs:`, `days:`, `weeks:`, `months
 ## Development (OSX)
 
 Figuring out how to use Xcode and package my project has been a 
-steep challenge. 
-
-This is sheepishly the closest I've got to a clue:
+steep challenge, but I think I've finally arrived at some sanity.
 
     git clone git@github.com:danneu/hansel.git
     cd hansel
-    swift build
+    swift build; rm -rf Packages/*/Tests && swift build
 
-Edit `Sources/HanselDev/main.swift`:
-
-``` swift
-// Sources/HanselDev/main.swift
-let handler: Handler = { _ in Response().text("Hello world") }
-Server(handler).listen(3000)
-```
-
-Run the development `main.swift`:
+`Sources/HanselDev/main.swift` is a coding sandbox. It comes populated
+with a small application. Just edit it, rebuild, and relaunch:
 
 ```
-swift build
-.build/debug/HanselDev
+swift build && .build/debug/HanselDev --port 4000
 ```
-
-Navigate to <http://localhost:3000>.
 
 ## Thanks
 
