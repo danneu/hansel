@@ -609,37 +609,28 @@ Full list: `init(ms: Int)`, `secs:`, `mins:`, `hrs:`, `days:`, `weeks:`, `months
 ## Development (OSX)
 
 Figuring out how to use Xcode and package my project has been a 
-steep challenge. This is sheepishly the closest I've got to a clue:
+steep challenge. 
+
+This is sheepishly the closest I've got to a clue:
 
     git clone git@github.com:danneu/hansel.git
     cd hansel
+    swift build
 
-Create `Sources/Hansel/main.swift`:
+Edit `Sources/HanselDev/main.swift`:
 
 ``` swift
-// Sources/Hansel/main.swift
+// Sources/HanselDev/main.swift
 let handler: Handler = { _ in Response().text("Hello world") }
 Server(handler).listen(3000)
 ```
 
-Build project:
+Run the development `main.swift`:
 
 ```
 swift build
+.build/debug/HanselDev
 ```
-
-Start server:
-
-```
-.build/debug/Hansel
-```
-
-or
-
-Click Xcode's run button.
-
-When the project builds successfully, you should see
-"Listening on 3000" printing to Xcode's output console (bottom pane).
 
 Navigate to <http://localhost:3000>.
 
