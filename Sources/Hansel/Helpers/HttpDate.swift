@@ -20,11 +20,11 @@ public struct HttpDate {
     return formatter
   }()
 
-  static func fromString (input: String) -> NSDate? {
+  public static func fromString (input: String) -> NSDate? {
     return formatter.dateFromString(input)
   }
 
-  static func toString (date: NSDate) -> String {
+  public static func toString (date: NSDate) -> String {
     return formatter.stringFromDate(date)
   }
 }

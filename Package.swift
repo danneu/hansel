@@ -4,7 +4,11 @@ import PackageDescription
 let package = Package(
   name: "Hansel",
   targets: [
-    Target(name: "Hansel")
+    Target(name: "Hansel"),
+    Target(
+      name: "HanselDev",
+      dependencies: [.Target(name: "Hansel")]
+    )
   ],
   dependencies: [
     // Enable CryptoSwift again once CryptoSwift stable can build, 

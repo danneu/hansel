@@ -12,14 +12,14 @@ for (var n = 1; n <= maxArity; n++) {
 
 function template (arity) {
   return `
-convenience init (${args(arity)}) {
+public convenience init (${args(arity)}) {
   self.init([:], [${array(arity)}])
 }`
 }
 
 function templateWithAttrs (arity) {
   return `
-convenience init (_ attrs: Attrs, ${args(arity)}) {
+public convenience init (_ attrs: Attrs, ${args(arity)}) {
   self.init(attrs, [${array(arity)}])
 }`
 }

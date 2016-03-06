@@ -8,7 +8,7 @@ import Foundation
 
 extension Batteries {
   // TODO: Cookies should be Opts -> Middleware (configurable)
-  static let cookies: Middleware = { handler in
+  public static let cookies: Middleware = { handler in
     return { request in
       let response = try handler(cookieRequest(request))
       return cookieResponse(response)
@@ -17,11 +17,11 @@ extension Batteries {
 }
 
 extension Request {
-  var cookies: [String: String] {
+  public var cookies: [String: String] {
     return self.getStore("cookies") as! [String: String]
   }
 
-  func setCookie (key: String, value: String) -> Request {
+  public func setCookie (key: String, value: String) -> Request {
     return self.updateStore("cookies") { cookies in
       if var dict = cookies as? [String: String] {
         dict[key] = Belt.urlEncode(value)
@@ -33,7 +33,7 @@ extension Request {
   }
 }
 
-struct ResponseCookie {
+public struct ResponseCookie {
   var key: String
   var value: String
   var path: String? = nil
@@ -51,7 +51,7 @@ struct ResponseCookie {
 }
 
 extension Response {
-  var cookies: [String: ResponseCookie] {
+  public var cookies: [String: ResponseCookie] {
     if let value = self.store["cookies"] as? [String: ResponseCookie] {
       return value
     } else {
@@ -59,11 +59,11 @@ extension Response {
     }
   }
 
-  func setCookie (key: String, value: String) -> Response {
+  public func setCookie (key: String, value: String) -> Response {
     return self.setCookie(key, opts: ResponseCookie(key, value: value))
   }
 
-  func setCookie (key: String, opts: ResponseCookie) -> Response {
+  public func setCookie (key: String, opts: ResponseCookie) -> Response {
     return self.updateStore("cookies") { cookies in
       if var dict = cookies as? [String: ResponseCookie] {
         dict[key] = opts

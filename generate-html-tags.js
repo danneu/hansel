@@ -133,14 +133,14 @@ function capitalize (str) {
 
 function voidTemplate () {
   return `
-  override var void: Bool {
+  public override var void: Bool {
     get { return true } set { self.void = newValue } 
   }`
 }
 
 function template (tag) {
   return `
-class ${tag}: Element {
+public class ${tag}: Element {
   override var tagName: String {
     get { return "${tag}" } set { self.tagName = newValue }
   }${voidTags.indexOf(tag) !== -1 ? voidTemplate() : ''}

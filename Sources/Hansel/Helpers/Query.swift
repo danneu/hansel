@@ -4,7 +4,7 @@ import Foundation
 public struct Query {
   // input: foo=bar&cat=42
   //func parse (input: String) -> [String: String] {
-  static func parse (input: String) -> [String: String] {
+  public static func parse (input: String) -> [String: String] {
     let parts = splitAll("&", input)
     var output: [String: String] = [:]
     for (key, val) in parts.map(splitPair) {

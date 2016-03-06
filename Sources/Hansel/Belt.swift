@@ -68,29 +68,29 @@ protocol TimeConvertible {
 public struct Milliseconds: CustomStringConvertible, TimeConvertible {
   let val: Int
   public var description: String { return String(val) }
-  init (_ val: Int) { self.val = val }
+  public init (_ val: Int) { self.val = val }
   // TIME CONVERTIBLE
-  init (ms: Int) { self.val = ms }
-  init (secs: Int) { self.val = secs * 1000 }
-  init (mins: Int) { self.val = mins * 60000 }
-  init (hrs: Int) { self.val = hrs * 3600000 }
-  init (days: Int) { self.val = days * 86400000 }
-  init (weeks: Int) { self.init(days: weeks * 7) }
-  init (months: Int) { self.init(days: months * 30) }
+  public init (ms: Int) { self.val = ms }
+  public init (secs: Int) { self.val = secs * 1000 }
+  public init (mins: Int) { self.val = mins * 60000 }
+  public init (hrs: Int) { self.val = hrs * 3600000 }
+  public init (days: Int) { self.val = days * 86400000 }
+  public init (weeks: Int) { self.init(days: weeks * 7) }
+  public init (months: Int) { self.init(days: months * 30) }
 }
 
 public struct Seconds: CustomStringConvertible, TimeConvertible {
   let val: Int
   public var description: String { return String(val) }
-  init (_ val: Int) { self.val = val }
+  public init (_ val: Int) { self.val = val }
   // TIME CONVERTIBLE
-  init (ms: Int) { self.val = ms / 1000 }
-  init (secs: Int) { self.val = secs }
-  init (mins: Int) { self.val = mins * 60 }
-  init (hrs: Int) { self.val = hrs * 3600 }
-  init (days: Int) { self.val = days * 86400 }
-  init (weeks: Int) { self.init(days: weeks * 7) }
-  init (months: Int) { self.init(days: months * 30) }
+  public init (ms: Int) { self.val = ms / 1000 }
+  public init (secs: Int) { self.val = secs }
+  public init (mins: Int) { self.val = mins * 60 }
+  public init (hrs: Int) { self.val = hrs * 3600 }
+  public init (days: Int) { self.val = days * 86400 }
+  public init (weeks: Int) { self.init(days: weeks * 7) }
+  public init (months: Int) { self.init(days: months * 30) }
 }
 
 // FUNCTIONAL HELPERS

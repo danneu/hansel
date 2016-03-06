@@ -4,7 +4,7 @@ import PathKit
 
 extension Batteries {
   // maxage is milliseconds
-  static func serveStatic (root: String, maxAge: Milliseconds = Milliseconds(0)) -> Middleware {
+  public static func serveStatic (root: String, maxAge: Milliseconds = Milliseconds(0)) -> Middleware {
     return { handler in
       return { request in
         var rootPath = Path(root)

@@ -11,14 +11,14 @@ import Foundation
 public struct ByteArray: Payload {
   var bytes: [UInt8] = []
 
-  init () {}
+  public init () {}
 
-  init (_ bytes: [UInt8]) {
+  public init (_ bytes: [UInt8]) {
     self.bytes = bytes
   }
 
   // ex: ByteArray("foo")
-  init (_ str: String) {
+  public init (_ str: String) {
     self.bytes = [UInt8](str.utf8)
   }
 }

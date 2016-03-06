@@ -4,7 +4,7 @@ import Foundation
 // Middleware that removes the trailing slash of the url
 // if there is one and 301s to the new url.
 extension Batteries {
-  static let removeTrailingSlash: Middleware = { handler in
+  public static let removeTrailingSlash: Middleware = { handler in
     return { request in
       if (hasSlash(request.path)) {
         return Response().redirect(trimSlash(request.path), status: .MovedPermanently)

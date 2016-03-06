@@ -16,7 +16,7 @@ import Foundation
 // ERROR TYPES
 //
 
-enum ContentTypeError: ErrorType {
+public enum ContentTypeError: ErrorType {
   case InvalidMediaType
   case InvalidParamFormat
   case InvalidParamKey
@@ -73,19 +73,19 @@ private let typeRe = try! RegExp("^[!#$%&'\\*\\+\\-\\.\\^_`\\|~0-9A-Za-z]+\\/[!#
 
 public struct ContentType {
   // e.g. "image/svg+xml
-  let type: String
+  public let type: String
   // e.g. ["charset": "utf-8"]
-  let params: [String: String]
+  public let params: [String: String]
 
   // Note: type and params are not validated until calling
   // the format() method
-  init (_ type: String, params: [String: String] = [:]) {
+  public init (_ type: String, params: [String: String] = [:]) {
     self.type = type
     self.params = params
   }
 
   // Serialize struct into string for the Content-Type header
-  func format () throws -> String {
+  public func format () throws -> String {
     guard typeRe.test(self.type) else {
       throw ContentTypeError.InvalidMediaType
     }
@@ -102,7 +102,7 @@ public struct ContentType {
     return output
   }
 
-  static func parse (input: String) throws -> ContentType {
+  public static func parse (input: String) throws -> ContentType {
     var type: String
 
     // the idx at which params start in the original string

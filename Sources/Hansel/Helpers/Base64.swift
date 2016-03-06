@@ -2,7 +2,7 @@
 import Foundation
 
 public struct Base64 {
-  static func encode (input: [UInt8], padding: Bool) -> String {
+  public static func encode (input: [UInt8], padding: Bool) -> String {
     let data = NSData(bytes: input, length: input.count)
     let string = data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
     return padding ? string : padless(string)

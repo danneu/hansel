@@ -9,7 +9,7 @@ import Foundation
 //
 // TODO: Support weak ETags
 
-struct ETag {
+public struct ETag {
   static func generate (entity: ETaggable) -> String {
     return entity.etag()
   }

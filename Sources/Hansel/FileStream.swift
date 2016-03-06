@@ -12,7 +12,7 @@ public struct FileStream: Payload {
   }
 
   // TODO: Throw on fail
-  init (_ path: String, fileSize: Int, modifiedAt: NSDate) {
+  public init (_ path: String, fileSize: Int, modifiedAt: NSDate) {
     let stream: NSInputStream = NSInputStream(fileAtPath: path)!
     self.stream = stream
     self.fileSize = fileSize

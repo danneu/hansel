@@ -2,7 +2,7 @@
 import Foundation
 
 extension Batteries {
-  static let logger: Middleware = { handler in
+  public static let logger: Middleware = { handler in
     return { request in
       logRequest(request)
       let start = getMillis()

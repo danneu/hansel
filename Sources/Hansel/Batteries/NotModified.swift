@@ -4,7 +4,7 @@ import Foundation
 extension Batteries {
   // if etag == true, then middleware will generate and add ETag
   // header to response, else it will only use the last-modified header
-  static func notModified (etag etag: Bool) -> Middleware {
+  public static func notModified (etag etag: Bool) -> Middleware {
     return { handler in
       return { request in
         var response = try handler(request)
