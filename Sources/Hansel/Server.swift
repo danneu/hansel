@@ -9,11 +9,12 @@ import Commander
 public class Server {
   private let socketServer: SocketServer
 
-  public init (_ handler: Handler, trustProxy: Bool = false) {
+  public init (_ handler: Handler, trustProxy: Bool = false, headerSecurity: HeaderSecurity = .Site) {
     // This is where hansel wraps the user's handler with its
     // own final outer middleware
     let middleware = compose(
       Builtin.wrapOptions(trustProxy: trustProxy),
+      Builtin.wrapHeaderSecurity(headerSecurity),
       Builtin.wrapErrorHandler,
       Builtin.wrapHead
     )
@@ -107,4 +108,53 @@ extension Builtin {
       }
     }
   }
+}
+
+// Secure header defaults
+//
+// TODO: Incomplete. Flesh this out.
+
+public enum HeaderSecurity {
+  // Turn off feature
+  case None
+  // Secure headers for APIs
+  case Api
+  // Secure headers for end-user browser websites
+  case Site
+}
+
+extension Builtin {
+  static func wrapHeaderSecurity (opt: HeaderSecurity) -> Middleware {
+    return { handler in
+      return { request in
+        switch opt {
+        case .None: return try handler(request)
+        // No api defaults implemented
+        case .Api: return try handler(request)
+        case .Site:
+          let response = try handler(request)
+          return response
+            .setHeader("X-Content-Type-Options", "nosniff")
+            .setHeader("X-Frame", "SAMEORIGIN")
+            .setHeader("X-XSS-Protection", determineXssProtection(request.getHeader("user-agent")))
+        }
+      }
+    }
+  }
+}
+
+func determineXssProtection (userAgent: String?) -> String {
+  if userAgent == nil {
+    return "1; mode=block"
+  }
+  let re = try! RegExp("msie\\s*(\\d+)")
+  if !re.test(userAgent!) {
+    return "1; mode=block"
+  }
+  if let ieVersion = Double(re.replace(userAgent!, template: "$1")) {
+    if ieVersion >= 9 {
+      return "1; mode=block"
+    }
+  }
+  return "0"
 }
