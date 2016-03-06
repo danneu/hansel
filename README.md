@@ -3,9 +3,9 @@
 
 # Hansel
 
-[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
-
 Swift web-servers, so hot right now.
+
+Manually tested on OSX 10.11 and Ubuntu 14.04.
 
 ## Features
 
@@ -20,7 +20,11 @@ Swift web-servers, so hot right now.
 
 ## Quickstart
 
+Install the latest snapshot of [Swift 3.0-DEVELOPMENT](https://swift.org/download)
+and try this locally or on a Ubuntu VPS.
+
     mkdir HelloWorld
+    cd HelloWorld
 
 ``` swift
 // HelloWorld/Sources/main.swift
@@ -44,7 +48,7 @@ let package = Package(
 )
 ```
 
-    swift build && rm -rf Packages/*/Tests && swift build
+    swift build; rm -rf Packages/*/Tests && swift build
     .build/debug/HelloWorld --port 3000
 
 Server listening on 3000.
