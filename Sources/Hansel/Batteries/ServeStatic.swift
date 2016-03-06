@@ -57,7 +57,7 @@ extension Batteries {
                              fileSize: stats.fileSize,
                              modifiedAt: stats.modifiedAt),
                   type: type)
-          .setHeader("cache-control", "public, max-age=\(maxAge)")
+          .setHeader("Cache-Control", "public, max-age=\(maxAge)")
       }
     }
   }

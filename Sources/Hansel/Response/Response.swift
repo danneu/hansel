@@ -38,33 +38,33 @@ public struct Response: Storable, HeaderList, Tappable {
   // SET RESPONSE BODY (HELPERS)
 
   public func none () -> Response {
-    return self.setBody().deleteHeader("content-type")
+    return self.setBody().deleteHeader("Content-Type")
   }
 
   public func text (str: String) -> Response {
-    return self.setBody(str).setHeader("content-type", "text/plain")
+    return self.setBody(str).setHeader("Content-Type", "text/plain")
   }
 
   public func html (x: HtmlConvertible) -> Response {
-    return self.setBody(x.html()).setHeader("content-type", "text/html")
+    return self.setBody(x.html()).setHeader("Content-Type", "text/html")
   }
 
   public func json (body: JsonEncodable) throws -> Response {
     let bytes = try Jay().dataFromJson(body.json())
-    return self.setBody(ByteArray(bytes)).setHeader("content-type", "application/json")
+    return self.setBody(ByteArray(bytes)).setHeader("Content-Type", "application/json")
   }
 
   public func json (obj: Any) throws -> Response {
     let bytes = try Jay().dataFromJson(obj)
-    return self.setBody(ByteArray(bytes)).setHeader("content-type", "application/json")
+    return self.setBody(ByteArray(bytes)).setHeader("Content-Type", "application/json")
   }
 
   public func bytes (bytes: ByteArray, type: String?) -> Response {
-    return self.setBody(bytes).setHeader("content-type", type)
+    return self.setBody(bytes).setHeader("Content-Type", type)
   }
 
   public func stream (fileStream: FileStream, type: String?) -> Response {
-    return self.setBody(fileStream).setHeader("content-type", type)
+    return self.setBody(fileStream).setHeader("Content-Type", type)
   }
 
   // FINALIZE
@@ -81,15 +81,15 @@ public struct Response: Storable, HeaderList, Tappable {
 
     // Note: Think about ways to ensure no body vs content-type
     // desyncs
-    let type = final.getHeader("content-type")
+    let type = final.getHeader("Content-Type")
 
     return final
-      .setHeader("content-type", type)
+      .setHeader("Content-Type", type)
       .tap { r in
         if let len = final.body.length {
-          return r.setHeader("content-length", String(len))
+          return r.setHeader("Content-Length", String(len))
         } else {
-          return r.setHeader("transfer-encoding", "chunked")
+          return r.setHeader("Transfer-Encoding", "chunked")
         }
       }
   }
@@ -100,14 +100,14 @@ public struct Response: Storable, HeaderList, Tappable {
   // 302: .Found
   public func redirect (url: String, status: Status = .Found) -> Response {
     return self
-      .setHeader("location", url)
+      .setHeader("Location", url)
       .setStatus(status.redirect() ? status : .Found)
   }
 
   // redirectBack(request)
   // redirectBack(request, "/login")
   public func redirectBack (request: Request, altUrl: String = "/") -> Response {
-    let url = request.getHeader("referer") ?? altUrl
+    let url = request.getHeader("Referer") ?? altUrl
     return self.redirect(url)
   }
 }

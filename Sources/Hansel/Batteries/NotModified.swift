@@ -21,12 +21,12 @@ extension Batteries {
 
         // add etag header
         if etag {
-          response = response.setHeader("etag", ETag.generate(response.body))
+          response = response.setHeader("ETag", ETag.generate(response.body))
         }
 
         // add last-modified header if body has that info
         if let body = response.body as? FileStream {
-          response = response.setHeader("last-modified", HttpDate.toString(body.modifiedAt))
+          response = response.setHeader("Last-Modified", HttpDate.toString(body.modifiedAt))
         }
 
         // only consider stale requests

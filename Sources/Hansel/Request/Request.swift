@@ -51,7 +51,7 @@ public struct Request: Storable, HeaderList, Tappable {
   // returns client ip address. uses x-forwarded-for if proxy is trusted.
   public var ip: String {
     if trustProxy {
-      return getHeader("x-forwarded-for") ?? address
+      return getHeader("X-Forwarded-For") ?? address
     } else {
       return address
     }
@@ -60,9 +60,9 @@ public struct Request: Storable, HeaderList, Tappable {
   // returns host header. uses x-forwarded-host if proxy is trusted.
   public var host: String? {
     if self.trustProxy {
-      return getHeader("x-forwarded-host") ?? getHeader("host")
+      return getHeader("X-Forwarded-Host") ?? getHeader("Host")
     } else {
-      return getHeader("host")
+      return getHeader("Host")
     }
   }
 
@@ -71,7 +71,7 @@ public struct Request: Storable, HeaderList, Tappable {
   // returns content-type without any of its parameters
   // Ex: "application/json; charset=utf-8" => Optional("application/json")
   public var type: String? {
-    guard let val = getHeader("content-type") else {
+    guard let val = getHeader("Content-Type") else {
       return nil
     }
     do {
@@ -86,7 +86,7 @@ public struct Request: Storable, HeaderList, Tappable {
 #if os(OSX)
   // Ex: "application/json; charset=utf-8" => Optional("utf-8")
   public var charset: String? {
-    guard let val = getHeader("content-type") else {
+    guard let val = getHeader("Content-Type") else {
       return nil
     }
     do {
