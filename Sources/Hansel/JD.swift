@@ -110,6 +110,13 @@ public struct JD {
   }
 
   // TUPLE
+  //
+  // If you don't pass a transformation function into the tuple decoder,
+  // then the JSON maps directly onto a Swift tuple. i.e. these are
+  // equivalent:
+  // 
+  //     JD.tuple2({ ($0, $1) }, JD.string, JD.int)
+  //     JD.tuple2(JD.string, JD.int)
 
   public static func tuple1 <A, Z> (f: A -> Z, _ d1: Decoder<A>) -> Decoder<Z> {
     return Decoder { value in
@@ -122,6 +129,10 @@ public struct JD {
     }
   }
 
+  public static func tuple1 <A> (d1: Decoder<A>) -> Decoder<(A)> {
+    return tuple1({ ($0) }, d1)
+  }
+
   public static func tuple2 <A, B, Z> (f: (A, B) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<Z> {
     return Decoder { value in
       guard case let .Array(arr) = value where arr.count == 2 else {
@@ -132,6 +143,10 @@ public struct JD {
         try d2.decode(arr[1])
       )
     }
+  }
+
+  public static func tuple2 <A, B> (d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<(A, B)> {
+    return tuple2({ ($0, $1) }, d1, d2)
   }
 
   public static func tuple3 <A, B, C, Z> (f: (A, B, C) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<Z> {
@@ -147,6 +162,10 @@ public struct JD {
     }
   }
 
+  public static func tuple3 <A, B, C> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<(A, B, C)> {
+    return tuple3({ ($0, $1, $2) }, d1, d2, d3)
+  }
+
   public static func tuple4 <A, B, C, D, Z> (f: (A, B, C, D) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<Z> {
     return Decoder { value in
       guard case let .Array(arr) = value where arr.count == 4 else {
@@ -159,6 +178,10 @@ public struct JD {
         try d4.decode(arr[3])
       )
     }
+  }
+
+  public static func tuple4 <A, B, C, D> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<(A, B, C, D)> {
+    return tuple4({ ($0, $1, $2, $3) }, d1, d2, d3, d4)
   }
 
   public static func tuple5 <A, B, C, D, E, Z> (f: (A, B, C, D, E) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<Z> {
@@ -176,6 +199,10 @@ public struct JD {
     }
   }
 
+  public static func tuple5 <A, B, C, D, E> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<(A, B, C, D, E)> {
+    return tuple5({ ($0, $1, $2, $3, $4) }, d1, d2, d3, d4, d5)
+  }
+
   public static func tuple6 <A, B, C, D, E, F, Z> (f: (A, B, C, D, E, F) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<Z> {
     return Decoder { value in
       guard case let .Array(arr) = value where arr.count == 6 else {
@@ -190,6 +217,10 @@ public struct JD {
         try d6.decode(arr[5])
       )
     }
+  }
+
+  public static func tuple6 <A, B, C, D, E, F> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<(A, B, C, D, E, F)> {
+    return tuple6({ ($0, $1, $2, $3, $4, $5) }, d1, d2, d3, d4, d5, d6)
   }
 
   public static func tuple7 <A, B, C, D, E, F, G, Z> (f: (A, B, C, D, E, F, G) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<Z> {
@@ -209,6 +240,10 @@ public struct JD {
     }
   }
 
+  public static func tuple7 <A, B, C, D, E, F, G> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<(A, B, C, D, E, F, G)> {
+    return tuple7({ ($0, $1, $2, $3, $4, $5, $6) }, d1, d2, d3, d4, d5, d6, d7)
+  }
+
   public static func tuple8 <A, B, C, D, E, F, G, H, Z> (f: (A, B, C, D, E, F, G, H) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<Z> {
     return Decoder { value in
       guard case let .Array(arr) = value where arr.count == 8 else {
@@ -225,6 +260,10 @@ public struct JD {
         try d8.decode(arr[7])
       )
     }
+  }
+
+  public static func tuple8 <A, B, C, D, E, F, G, H> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<(A, B, C, D, E, F, G, H)> {
+    return tuple8({ ($0, $1, $2, $3, $4, $5, $6, $7) }, d1, d2, d3, d4, d5, d6, d7, d8)
   }
 
   public static func array <T> (decoder: Decoder<T>) -> Decoder<[T]> {
