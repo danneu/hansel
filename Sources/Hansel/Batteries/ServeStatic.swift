@@ -77,7 +77,7 @@ func isUpPath (str: String) -> Bool {
 // FILESYSTEM STAT
 
 func stat (path: String) -> (fileSize: Int, modifiedAt: NSDate)? {
-  guard let attrs: [String: AnyObject] = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
+  guard let attrs = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
     let modifiedAt = attrs[NSFileModificationDate] as? NSDate,
     let fileSize = attrs[NSFileSize] as? Int else {
       return nil
