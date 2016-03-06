@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "Downloading deps..."
+swift build
+echo "Fixing Swift Package Manager bug..."
+rm -rf Packages/*/Tests
+echo "Building...."
+swift build
