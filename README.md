@@ -15,9 +15,8 @@ Swift web-servers, so hot right now.
 - [x] Cookies
 - [x] Static-file serving
 - [x] ETag, Last-Modified, `304 Not Modified` support
+- [x] Linux support
 - [ ] Tests
-
-Linux support is a work-in-progress.
 
 ## Example
 
