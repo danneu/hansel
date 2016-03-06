@@ -8,10 +8,10 @@ let middleware: Middleware = compose(
 )
 
 func demoTemplate (ip: String) -> HtmlConvertible {
-  return div(
-    h1("Welcome!"),
-    p(["style": ["color": "red"]],
-      "Your IP address is: ", strong(ip)))
+  return d.div(
+    d.h1("Welcome!"),
+    d.p(["style": ["color": "red"]],
+        "Your IP address is: ", d.strong(ip)))
 }
 
 let router: Router = .Node("/", [

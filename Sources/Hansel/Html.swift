@@ -10,6 +10,8 @@ import Foundation
 // init overload so that I can replace the code-gen arity madeness
 // with variadic initializers
 
+public struct d {}
+
 public typealias Attrs = [String: AttrConvertible]
 
 // HELPERS
@@ -61,6 +63,8 @@ extension Dictionary: AttrConvertible  {
 
 // IMPL
 
+extension d {
+
 // For custom nodes
 //
 // Ex:
@@ -94,6 +98,8 @@ public class node: Element {
   convenience init (_ tag: String, _ attrs: Attrs, _ kids: [HtmlConvertible]) {
     self.init(tag, attrs: attrs, kids: kids)
   }
+}
+
 }
 
 public class Element: HtmlConvertible {
@@ -325,6 +331,8 @@ public class Element: HtmlConvertible {
 }
 
 // TAG GENERATION
+
+extension d {
 
 //
 // === BEGIN GENERATED CODE ===
@@ -999,3 +1007,5 @@ public class wbr: Element {
 //
 // === END GENERATED CODE ===
 //
+
+}

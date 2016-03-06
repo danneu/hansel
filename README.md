@@ -36,10 +36,10 @@ let logger: Middleware = { handler in
 
 // built-in templating
 func demoTemplate (ip: String) -> HtmlConvertible {
-  return div(
-    h1("Welcome!"),
-    p(["style": ["color": "red"]], 
-      "Your IP address is: ", strong(ip)))
+  return d.div(
+    d.h1("Welcome!"),
+    d.p(["style": ["color": "red"]], 
+        "Your IP address is: ", d.strong(ip)))
 }
 
 // basic router
@@ -328,23 +328,23 @@ func demoTemplate (ip: String) -> HtmlConvertible {
      "class": "demo-box"]
   // pass a dictionary as the first argument to any
   // element to set its attributes
-  return div(attrs,
-    h1("quick hansel templating demo"),
-    hr(),
+  return d.div(attrs,
+    d.h1("quick hansel templating demo"),
+    d.hr(),
     "hello, ",
     "world",
-    p("your ip address is: \(ip)"),
+    d.p("your ip address is: \(ip)"),
     // you can pass in child elements as an array
-    ol(["apples", "bananas", "oranges"].map { li($0) }),
+    d.ol(["apples", "bananas", "oranges"].map { d.li($0) }),
     // or as variadic args (up to 20 elements)
-    ul(
-      li("item a"),
-      li("item b"),
-      li("item c")
+    d.ul(
+      d.li("item a"),
+      d.li("item b"),
+      d.li("item c")
     ),
-    p("everything is <script>alert('escaped')</script> by default"),
-    p(.Safe("but you can <u><b>bypass</b></u> it") as SafeString),
-    node("whatever", ["and you can create arbitrary html nodes"])
+    d.p("everything is <script>alert('escaped')</script> by default"),
+    d.p(SafeString.Safe("but you can <u><b>bypass</b></u> it")),
+    d.node("whatever", ["and you can create arbitrary html nodes"])
   )
 }
 ```
