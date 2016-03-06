@@ -112,7 +112,9 @@ public struct ContentType {
     if let idx = input.characters.indexOf(";") {
       let n = input.startIndex.distanceTo(idx)
       paramsStart = n
-      type = Belt.trim((input as NSString).substringToIndex(n)).lowercaseString
+      // Would not work on Linux:
+      //type = Belt.trim((input as NSString).substringToIndex(n)).lowercaseString
+      type = Belt.trim(input.substringToIndex(idx)).lowercaseString
     } else {
       type = Belt.trim(input).lowercaseString
     }
@@ -152,8 +154,13 @@ public struct ContentType {
 
 private func getCapturedPair (fullString: String) -> NSTextCheckingResult -> (String, String) {
   return { match in
-    let key = (fullString as NSString).substringWithRange(match.rangeAtIndex(1))
-    var val = (fullString as NSString).substringWithRange(match.rangeAtIndex(2))
+    // This wouldn't work on linux because of NSString cast:
+    //let key = (fullString as NSString).substringWithRange(match.rangeAtIndex(1))
+    //var val = (fullString as NSString).substringWithRange(match.rangeAtIndex(2))
+
+    let key = fullString.substringWithRange(Belt.rangeFromNSRange(fullString, match.rangeAtIndex(1))!)
+    var val = fullString.substringWithRange(Belt.rangeFromNSRange(fullString, match.rangeAtIndex(2))!)
+
 
     // if starts with quote, remove quotes and escapes
     if (val[val.startIndex] == "\"") {

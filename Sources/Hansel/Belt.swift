@@ -34,12 +34,28 @@ extension Belt {
 }
 
 extension Belt {
-  static func drop (n: Int, _ input: String) -> String {
+  public static func drop (n: Int, _ input: String) -> String {
     if input.isEmpty { return input }
     if n == 0 { return input }
     if n >= input.characters.count { return "" }
     return input.substringFromIndex(input.startIndex.advancedBy(n))
   }
+}
+
+// NSRANGE & RANGE
+
+extension Belt {
+  public static func rangeFromNSRange(s: String, _ nsRange: NSRange) -> Range<String.Index>? {
+    let utf16 = s.utf16
+    let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
+    let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
+    if let from = String.Index(from16, within: s),
+      let to = String.Index(to16, within: s) {
+      return from ..< to
+    }
+    return nil
+  }
+
 }
 
 // TIME INTERVAL HELPER
