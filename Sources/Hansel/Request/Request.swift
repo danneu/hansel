@@ -48,6 +48,13 @@ public struct Request: Storable, HeaderList, Tappable {
       self.trustProxy = trustProxy
   }
 
+  // TODO: be decisive about the scenarios where href has missing
+  // parts like host
+  // TODO: get scheme info (transport protocol) from socket parser?
+  public var href: String {
+    return "//\(host ?? "")\(url)"
+  }
+
   // returns client ip address. uses x-forwarded-for if proxy is trusted.
   public var ip: String {
     if trustProxy {
