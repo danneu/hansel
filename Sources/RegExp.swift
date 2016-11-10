@@ -47,7 +47,7 @@ open class RegExp {
   // STRINGS
 
 #if os(Linux)
-  public func replace (input: String, template: String) -> String {
+  public func replace (_ input: String, template: String) -> String {
     return self.internalExpression.replace(input, withTemplate: template)
   }
 #else
@@ -59,7 +59,7 @@ open class RegExp {
   // MATCHES
 
 #if os(Linux)
-  public func test (input: String) -> Bool {
+  public func test (_ input: String) -> Bool {
     return self.internalExpression.matches(input)
   }
 #endif
@@ -103,7 +103,7 @@ open class RegExp {
 #endif
 
 #if os(Linux)
-  public func findFirstRange (input: String) -> (Int, Int)? {
+  public func findFirstRange (_ input: String) -> (Int, Int)? {
     var string = input
     let maxMatches = 1
 
