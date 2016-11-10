@@ -1,9 +1,7 @@
 
 import Foundation
 
-#if os(Linux)
 import POSIX
-#endif
 
 //
 // Convenience wrapper around common regex functions
@@ -38,7 +36,7 @@ open class RegExp {
   public init (_ pattern: String) throws {
     self.pattern = pattern
 #if os(Linux)
-    self.internalExpression = try Regex(pattern: pattern, options: .CaseInsensitive)
+    self.internalExpression = try Regex(pattern, options: .caseInsensitive)
 #else
     self.internalExpression = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 #endif
@@ -48,11 +46,14 @@ open class RegExp {
 
 #if os(Linux)
   public func replace (_ input: String, template: String) -> String {
-    return self.internalExpression.replace(input, withTemplate: template)
+    return input.replace(self.internalExpression, with: template)
   }
 #else
+  // TODO: replace try! - just trying to get this module updated
+  // to work with swift3/linux right now.
   open func replace (_ input: String, template: String) -> String {
-    return self.internalExpression.stringByReplacingMatches(in: input, options: [], range: NSMakeRange(0, input.characters.count), withTemplate: template)
+    let re = try! Regex(self.internalExpression.pattern)
+    return input.replace(re, with: template)
   }
 #endif
 
@@ -60,7 +61,7 @@ open class RegExp {
 
 #if os(Linux)
   public func test (_ input: String) -> Bool {
-    return self.internalExpression.matches(input)
+    return input.matches(self.internalExpression)
   }
 #endif
 
@@ -84,40 +85,6 @@ open class RegExp {
   internal func findAll (_ input: String, start: Int = 0) -> [NSTextCheckingResult] {
     let range = NSMakeRange(start, input.characters.count - start)
     return self.internalExpression.matches(in: input, options: [], range: range)
-  }
-#endif
-
-  // GET MATCH RANGE
-
-#if os(OSX)
-  // to keep this compatible with linux's findFirstRange, we'll just return
-  // a tuple of (start, end) positions
-  /*open func findFirstRange (_ input: String) -> Range<String.Index>? {
-    guard let match = findFirst(input) else {
-      return nil
-    }
-    let matchStart = input.characters.index(input.startIndex, offsetBy: match.range.location)
-    let matchEnd = .index(matchStart, offsetBy: match.range.length)
-    return (matchStart ..< matchEnd)
-  }*/
-#endif
-
-#if os(Linux)
-  public func findFirstRange (_ input: String) -> (Int, Int)? {
-    var string = input
-    let maxMatches = 1
-
-    var regexMatches = [regmatch_t](count: maxMatches, repeatedValue: regmatch_t())
-    let result = regexec(&preg, string, regexMatches.count, &regexMatches, options.rawValue)
-
-    if result == 1 { // returns 0 when match
-      return nil
-    }
-
-    let start = Int(regexMatches[1].rm_so)
-    let end = Int(regexMatches[1].rm_eo)
-
-    return (start, end)
   }
 #endif
 

@@ -1,6 +1,6 @@
 var _module_nsstring = true
 
-#if os(Linux)
+#if os(LinuxOFF)
 
 import Foundation
 import Glibc
@@ -118,7 +118,7 @@ extension String {
 
 var _module_dispatch = true
 
-#if os(Linux)
+#if os(LinuxOFF)
 import Glibc
 
 let DISPATCH_QUEUE_CONCURRENT = 0, DISPATCH_QUEUE_PRIORITY_HIGH = 0, DISPATCH_QUEUE_PRIORITY_LOW = 0, DISPATCH_QUEUE_PRIORITY_BACKGROUND = 0

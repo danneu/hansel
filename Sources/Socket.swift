@@ -111,7 +111,7 @@ open class Socket: Hashable, Equatable {
       var sent = 0
       while sent < data.count {
         #if os(Linux)
-          let s = send(self.socketFileDescriptor, $0.baseAddress + sent, Int(data.count - sent), Int32(MSG_NOSIGNAL))
+          let s = send(self.socketFileDescriptor, $0.baseAddress! + sent, Int(data.count - sent), Int32(MSG_NOSIGNAL))
         #else
           let s = write(self.socketFileDescriptor, $0.baseAddress! + sent, Int(data.count - sent))
         #endif
@@ -170,7 +170,7 @@ open class Socket: Hashable, Equatable {
   }
 
   fileprivate class func descriptionOfLastError() -> String {
-    return String(cString: UnsafePointer(strerror(errno))) ?? "Error: \(errno)"
+    return String(cString: UnsafePointer(strerror(errno))) 
   }
 
   fileprivate class func setNoSigPipe(_ socket: Int32) {
@@ -188,7 +188,7 @@ open class Socket: Hashable, Equatable {
     #if os(Linux)
       shutdown(socket, Int32(SHUT_RDWR))
     #else
-      Darwin.shutdown(socket, SHUT_RDWR)
+      _ = Darwin.shutdown(socket, SHUT_RDWR)
     #endif
   }
 
@@ -196,7 +196,7 @@ open class Socket: Hashable, Equatable {
     #if os(Linux)
       shutdown(socket, Int32(SHUT_RDWR))
     #else
-      Darwin.shutdown(socket, SHUT_RDWR)
+      _ = Darwin.shutdown(socket, SHUT_RDWR)
     #endif
     close(socket)
   }

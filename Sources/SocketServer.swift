@@ -69,7 +69,7 @@ open class SocketServer {
       // we can try! since hansel has its own top-level try/catch
       let response = try! handler(request).finalize()
       do {
-        try self.respond(socket, response: response)
+        _ = try self.respond(socket, response: response)
       } catch {
         print("Failed to send response: \(error)")
         break

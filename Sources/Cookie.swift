@@ -128,7 +128,11 @@ func parsePair (_ s: String) -> (k: String, v: String)? {
 }
 
 func unwrapQuotes (_ s: String) -> String {
-  let regex = try! NSRegularExpression(pattern: "(^\"|\"$)", options: [])
+  #if os(Linux)
+    let regex = try! RegularExpression(pattern: "(^\"|\"$)", options: [])
+  #else
+    let regex = try! NSRegularExpression(pattern: "(^\"|\"$)", options: [])
+  #endif
   return regex.stringByReplacingMatches(in: s, options: .withoutAnchoringBounds, range: NSMakeRange(0, s.characters.count), withTemplate: "")
 }
 
