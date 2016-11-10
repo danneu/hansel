@@ -2,7 +2,7 @@
 import Foundation
 
 #if os(Linux)
-import POSIXRegex
+import POSIX
 #endif
 
 //
