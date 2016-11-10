@@ -54,7 +54,7 @@ extension String: AttrConvertible {
 extension Dictionary: AttrConvertible  {
   public func render () -> String {
     var output = ""
-    for (idx, (k, v)) in self.enumerated() {
+    for (offset: idx, element: (key: k, value: v)) in self.enumerated() {
       output += (idx > 0 ? " " : "") + "\(k):\(v);"
     }
     return output

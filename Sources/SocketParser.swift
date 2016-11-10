@@ -2,7 +2,7 @@
 import Foundation
 
 class SocketParser {
-  enum Error: Error {
+  enum ParseError: Error {
     case invalidRequest
   }
 
@@ -18,7 +18,7 @@ class SocketParser {
         self.method = .Unknown
         self.path = ""
         self.version = ""
-        throw Error.invalidRequest
+        throw ParseError.invalidRequest
       }
 
       self.method = Method(rawValue: parts[0]) ?? .Unknown

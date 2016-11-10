@@ -131,7 +131,7 @@ public struct Request: Storable, HeaderList, Tappable {
     return try body.utf8()
   }
 
-  public func json () throws -> JsonValue {
+  public func json () throws -> JSON {
     return try body.json()
   }
 

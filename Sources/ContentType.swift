@@ -117,7 +117,7 @@ public struct ContentType {
       paramsStart = n
       // Would not work on Linux:
       //type = Belt.trim((input as NSString).substringToIndex(n)).lowercaseString
-      type = Belt.trim(input.substringToIndex(idx)).lowercased()
+      type = Belt.trim(input.substring(to: idx)).lowercased()
     } else {
       type = Belt.trim(input).lowercased()
     }

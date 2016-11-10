@@ -2,7 +2,7 @@ import Foundation
 import Jay
 
 public protocol JsonEncodable {
-  func json () -> JsonValue
+  func json () -> JSON
 }
 
 public protocol Payload: Streamable, ETaggable {}
@@ -50,12 +50,12 @@ public struct Response: Storable, HeaderList, Tappable {
   }
 
   public func json (_ body: JsonEncodable) throws -> Response {
-    let bytes = try Jay.dataFromJson(body.json())
+    let bytes = try Jay().dataFromJson(any: body.json())
     return self.setBody(ByteArray(bytes)).setHeader("Content-Type", "application/json")
   }
 
   public func json (_ obj: Any) throws -> Response {
-    let bytes = try Jay.dataFromJson(obj)
+    let bytes = try Jay().dataFromJson(any: obj)
     return self.setBody(ByteArray(bytes)).setHeader("Content-Type", "application/json")
   }
 

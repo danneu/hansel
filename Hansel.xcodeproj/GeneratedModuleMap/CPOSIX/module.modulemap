@@ -1,0 +1,5 @@
+module CPOSIX {
+    umbrella "/Users/danneu/Code/Swift/Hansel/Packages/CPOSIX-0.14.0/Sources/CPOSIX/include"
+    link "CPOSIX"
+    export *
+}

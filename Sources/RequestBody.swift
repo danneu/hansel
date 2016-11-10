@@ -18,9 +18,9 @@ open class RequestBody: CustomStringConvertible {
     }
   }
 
-  open func json () throws -> JsonValue {
+  open func json () throws -> JSON {
     do {
-      return try Jay().typesafeJsonFromData(self.bytes)
+      return try Jay().jsonFromData(self.bytes)
     } catch {
       throw RequestError.badBody
     }
@@ -28,8 +28,8 @@ open class RequestBody: CustomStringConvertible {
 
   open func json <T> (_ decoder: Decoder<T>) throws -> T {
     switch JD.decode(decoder, try json()) {
-    case .Err (_): throw RequestError.badBody
-    case .Ok (let v): return v
+    case .err (_): throw RequestError.badBody
+    case .ok (let v): return v
     }
   }
 

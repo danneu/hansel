@@ -5,7 +5,7 @@ import Foundation
 //
 // This is stubbed out for experimentation
 
-let stderr = FileHandle.withStandardError
+let stderr = FileHandle.standardError
 
 public struct Log {
   // write to stderr

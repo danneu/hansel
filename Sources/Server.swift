@@ -9,7 +9,7 @@ import Commander
 open class Server {
   fileprivate let socketServer: SocketServer
 
-  public init (_ handler: Handler, trustProxy: Bool = false, headerSecurity: HeaderSecurity = .site) {
+  public init (_ handler: @escaping Handler, trustProxy: Bool = false, headerSecurity: HeaderSecurity = .site) {
     // This is where hansel wraps the user's handler with its
     // own final outer middleware
     let middleware = compose(

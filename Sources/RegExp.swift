@@ -92,14 +92,14 @@ open class RegExp {
 #if os(OSX)
   // to keep this compatible with linux's findFirstRange, we'll just return
   // a tuple of (start, end) positions
-  open func findFirstRange (_ input: String) -> Range<String.Index>? {
+  /*open func findFirstRange (_ input: String) -> Range<String.Index>? {
     guard let match = findFirst(input) else {
       return nil
     }
     let matchStart = input.characters.index(input.startIndex, offsetBy: match.range.location)
-    let matchEnd = <#T##String.CharacterView corresponding to `matchStart`##String.CharacterView#>.index(matchStart, offsetBy: match.range.length)
+    let matchEnd = .index(matchStart, offsetBy: match.range.length)
     return (matchStart ..< matchEnd)
-  }
+  }*/
 #endif
 
 #if os(Linux)

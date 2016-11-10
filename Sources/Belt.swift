@@ -29,7 +29,7 @@ extension Belt {
   }
 
   public static func urlDecode (_ s: String) -> String {
-    return s.stringByRemovingPercentEncoding ?? s
+    return s.removingPercentEncoding ?? s
   }
 }
 
@@ -47,8 +47,17 @@ extension Belt {
 extension Belt {
   public static func rangeFromNSRange(_ s: String, _ nsRange: NSRange) -> Range<String.Index>? {
     let utf16 = s.utf16
-    let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
-    let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
+    //let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
+    guard let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex) else {
+      return nil
+    }
+
+    //let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
+    guard let to16 = utf16.index(from16, offsetBy: nsRange.length, limitedBy: utf16.endIndex) else {
+      return nil
+    }
+    //let to16 = from16.
+
     if let from = String.Index(from16, within: s),
       let to = String.Index(to16, within: s) {
       return from ..< to
@@ -120,24 +129,31 @@ public func identity <T> (_ a: T) -> T { return a }
 // TODO: Setting correct associativity and precedence on
 // <</>>/<|/|> operators seems to mess up inference
 
+precedencegroup ComposeRight { associativity: left }
+precedencegroup ComposeLeft { associativity: right }
+
 // f >> g == g(f(x))
-infix operator >> { associativity left }
+infix operator >> : ComposeRight
 public func >> <A, B, C> (f: @escaping (A) -> B, g: @escaping (B) -> C) -> (A) -> C {
   return { x in g(f(x)) }
 }
 
 // f << g == f(g(x))
-infix operator << { associativity right }
+infix operator << : ComposeLeft
 public func << <A, B, C> (f: @escaping (B) -> C, g: @escaping (A) -> B) -> (A) -> C {
   return { x in f(g(x)) }
 }
 
 // Application
 
+// precendence 0
+precedencegroup ApplyRight { associativity: left }
+precedencegroup ApplyLeft { associativity: right }
+
 // x |> f == f(x)
 //
 // Ex: 8 |> toString << add42  //=> "50"
-infix operator |> { associativity left precedence 0 }
+infix operator |> : ApplyRight
 public func |> <A, B> (x: A, f: (A) -> B) -> B {
   return f(x)
 }
@@ -145,7 +161,7 @@ public func |> <A, B> (x: A, f: (A) -> B) -> B {
 // f <| x == f(x)
 //
 // Ex: toString << add42 <| 8  //=> "50"
-infix operator <| { associativity right precedence 0 }
+infix operator <| : ApplyLeft
 public func <| <A, B> (f: (A) -> B, x: A) -> B {
   return f(x)
 }
