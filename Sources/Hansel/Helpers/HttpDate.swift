@@ -13,18 +13,18 @@ import Foundation
 
 public struct HttpDate {
   // The docs say NSDateFormatter is thread safe
-  private static let formatter: NSDateFormatter = {
-    let formatter = NSDateFormatter()
+  fileprivate static let formatter: DateFormatter = {
+    let formatter = DateFormatter()
     formatter.dateFormat = "E, d MMM yyyy HH:mm:ss zzz"
-    formatter.timeZone = NSTimeZone(abbreviation: "GMT")
+    formatter.timeZone = TimeZone(abbreviation: "GMT")
     return formatter
   }()
 
-  public static func fromString (input: String) -> NSDate? {
-    return formatter.dateFromString(input)
+  public static func fromString (_ input: String) -> Date? {
+    return formatter.date(from: input)
   }
 
-  public static func toString (date: NSDate) -> String {
-    return formatter.stringFromDate(date)
+  public static func toString (_ date: Date) -> String {
+    return formatter.string(from: date)
   }
 }

@@ -1,29 +1,29 @@
 
 import Foundation
 
-public class SocketServer {
+open class SocketServer {
   // socket open to the port the server is listening on. Usually 80.
-  private var listenSocket: Socket = Socket(socketFileDescriptor: -1)
+  fileprivate var listenSocket: Socket = Socket(socketFileDescriptor: -1)
 
   // set of connected client sockets
-  private var clientSockets: Set<Socket> = []
+  fileprivate var clientSockets: Set<Socket> = []
 
   // shared lock for notifying new connections
-  private let clientSocketsLock = NSLock()
+  fileprivate let clientSocketsLock = NSLock()
 
-  private let handler: Handler
+  fileprivate let handler: Handler
 
-  init (_ handler: Handler) {
+  init (_ handler: @escaping Handler) {
     self.handler = handler
   }
 
-  public func boot(port: Int) throws {
+  open func boot(_ port: Int) throws {
     // stop server if it's already running
     self.halt()
 
     // open a socket, might fail
     self.listenSocket = try Socket.tcpSocketForListen(UInt16(port))
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
       // creates the infinite loop that will wait for client connections
       while let socket = try? self.listenSocket.acceptClientSocket() {
         // wait for lock to notify a new connection
@@ -32,7 +32,7 @@ public class SocketServer {
           self.clientSockets.insert(socket)
         }
         // handle connection in background thread
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
           self.handleConnection(socket)
           // set lock to wait for another connection
           self.lock(self.clientSocketsLock) {
@@ -45,7 +45,7 @@ public class SocketServer {
     }
   }
 
-  public func halt () {
+  open func halt () {
     // free the port
     self.listenSocket.release()
 
@@ -54,11 +54,11 @@ public class SocketServer {
       for socket in self.clientSockets {
         socket.shutdwn()
       }
-      self.clientSockets.removeAll(keepCapacity: true)
+      self.clientSockets.removeAll(keepingCapacity: true)
     }
   }
 
-  func handleConnection(socket: Socket) {
+  func handleConnection(_ socket: Socket) {
     defer {
       socket.release()
     }
@@ -77,14 +77,14 @@ public class SocketServer {
     }
   }
 
-  private func lock (handle: NSLock, closure: () -> ()) {
+  fileprivate func lock (_ handle: NSLock, closure: () -> ()) {
     handle.lock()
     closure()
     handle.unlock()
   }
 
   // TODO: KeepAlive
-  private func respond (socket: Socket, response: Response) throws -> Bool {
+  fileprivate func respond (_ socket: Socket, response: Response) throws -> Bool {
     // need it mutable so we can call mutable functions on response.body
     var response = response
 

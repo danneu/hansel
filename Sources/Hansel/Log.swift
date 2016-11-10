@@ -5,17 +5,17 @@ import Foundation
 //
 // This is stubbed out for experimentation
 
-let stderr = NSFileHandle.fileHandleWithStandardError()
+let stderr = FileHandle.withStandardError
 
 public struct Log {
   // write to stderr
   //
   // e.g. Log.error("uh oh", [1,2,3], User.init(42, "Murphy"))
-  public static func error (xs: CustomStringConvertible...) {
+  public static func error (_ xs: CustomStringConvertible...) {
     let msg = (["ERROR"] + xs + ["\n"])
       .map { $0.description }
-      .joinWithSeparator(" ")
-      .dataUsingEncoding(NSUTF8StringEncoding)!
-    stderr.writeData(msg)
+      .joined(separator: " ")
+      .data(using: String.Encoding.utf8)!
+    stderr.write(msg)
   }
 }

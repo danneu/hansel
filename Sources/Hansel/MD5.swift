@@ -21,8 +21,8 @@ public struct Hash {
 }
 
 // does nothing for now. returns 16 bytes of 'a'
-private func cc_md5 (input: [UInt8]) -> [UInt8] {
-  return [UInt8](count: 16, repeatedValue: 97)
+private func cc_md5 (_ input: [UInt8]) -> [UInt8] {
+  return [UInt8](repeating: 97, count: 16)
 }
 
 //  private func cc_md5 (input: [UInt8]) -> [UInt8] {

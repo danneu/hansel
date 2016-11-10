@@ -9,7 +9,7 @@ extension Batteries {
       if (hasSlash(request.path)) {
         let newPath = trimSlash(request.path)
           + (request.nsurl.query == nil ? "" : "?\(request.nsurl.query!)")
-        return Response().redirect(newPath, status: .MovedPermanently)
+        return Response().redirect(newPath, status: .movedPermanently)
       }
       return try handler(request)
     }
@@ -18,10 +18,10 @@ extension Batteries {
 
 private let slashRe = try! RegExp("([^/]+)\\/+$")
 
-private func hasSlash (url: String) -> Bool {
+private func hasSlash (_ url: String) -> Bool {
   return slashRe.test(url)
 }
 
-private func trimSlash (url: String) -> String {
+private func trimSlash (_ url: String) -> String {
   return slashRe.replace(url, template: "$1")
 }

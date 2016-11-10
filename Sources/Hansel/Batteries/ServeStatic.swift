@@ -4,7 +4,7 @@ import PathKit
 
 extension Batteries {
   // maxage is milliseconds
-  public static func serveStatic (root: String, maxAge: Milliseconds = Milliseconds(0)) -> Middleware {
+  public static func serveStatic (_ root: String, maxAge: Milliseconds = Milliseconds(0)) -> Middleware {
     return { handler in
       return { request in
         var rootPath = Path(root)
@@ -16,18 +16,18 @@ extension Batteries {
         }
 
         // containing NULL bytes is malicious
-        if Array(request.path.utf8).indexOf(0) != nil {
-          return Response(.BadRequest).text("Malicious path")
+        if Array(request.path.utf8).index(of: 0) != nil {
+          return Response(.badRequest).text("Malicious path")
         }
 
         // relative path should not be absolute
         if relativePath.isAbsolute {
-          return Response(.BadRequest).text("Malicious path")
+          return Response(.badRequest).text("Malicious path")
         }
 
         // relative path outside root
         if isUpPath(Path("./" + relativePath.description).normalize().description) {
-          return Response(.Forbidden)
+          return Response(.forbidden)
         }
 
         // resolve and noramlize the root
@@ -70,16 +70,16 @@ extension Batteries {
 // TODO: I tried using the sophisticated regex from resolve-path npm, but
 // something was lost in translation when I ported it to Swift and it
 // didn't protect the endpoint.
-func isUpPath (str: String) -> Bool {
+func isUpPath (_ str: String) -> Bool {
   return try! RegExp("\\.{2,}").test(str)
 }
 
 // FILESYSTEM STAT
 
-func stat (path: String) -> (fileSize: Int, modifiedAt: NSDate)? {
-  guard let attrs = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
-    let modifiedAt = attrs[NSFileModificationDate] as? NSDate,
-    let fileSize = attrs[NSFileSize] as? Int else {
+func stat (_ path: String) -> (fileSize: Int, modifiedAt: Date)? {
+  guard let attrs = try? FileManager.default.attributesOfItem(atPath: path),
+    let modifiedAt = attrs[FileAttributeKey.modificationDate] as? Date,
+    let fileSize = attrs[FileAttributeKey.size] as? Int else {
       return nil
   }
 

@@ -6,10 +6,10 @@ import Commander
   import Glibc
 #endif
 
-public class Server {
-  private let socketServer: SocketServer
+open class Server {
+  fileprivate let socketServer: SocketServer
 
-  public init (_ handler: Handler, trustProxy: Bool = false, headerSecurity: HeaderSecurity = .Site) {
+  public init (_ handler: Handler, trustProxy: Bool = false, headerSecurity: HeaderSecurity = .site) {
     // This is where hansel wraps the user's handler with its
     // own final outer middleware
     let middleware = compose(
@@ -25,7 +25,7 @@ public class Server {
   // running server in xcode fails on a commander
   // error "unknown argument" since xcode seems to pass an argument
   // in that i can't figure out how to catch.
-  public func embed (port: Int = 3000) {
+  open func embed (_ port: Int = 3000) {
     do {
       try self.socketServer.boot(port)
       print("Listening on \(port)")
@@ -35,27 +35,21 @@ public class Server {
     }
   }
   
-  @noreturn public func listen (port: Int = 3000) {
+  open func listen (_ port: Int = 3000) -> Never  {
     command(
       Option("port", port, description: "The server will bind to this port (Default: \(port))")
     ) { port in
-      do {
-        try self.socketServer.boot(port)
-        print("Listening on \(port)")
-        self.loop()
-      } catch {
-        print("Server failed to boot: \(error)")
-      }
+      self.embed(port)
     }.run()
   }
 
-  private func loop() {
+  fileprivate func loop() {
     #if os(Linux)
       while true {
         sleep(1)
       }
     #else
-      NSRunLoop.mainRunLoop().run()
+      RunLoop.main.run()
     #endif
   }
 }
@@ -69,7 +63,7 @@ private struct Builtin {}
 // Feeds any option dependencies into the
 // request so taht the request can access them.
 extension Builtin {
-  static func wrapOptions (trustProxy trustProxy: Bool) -> Middleware {
+  static func wrapOptions (trustProxy: Bool) -> Middleware {
     return { handler in
       return { request in
         var copy = request
@@ -91,7 +85,7 @@ extension Builtin {
   }
 }
 
-private func headRequest (request: Request) -> Request {
+private func headRequest (_ request: Request) -> Request {
   // Turn HEAD request into GET request
   if request.method == .Head {
     return request.setMethod(.Get)
@@ -99,7 +93,7 @@ private func headRequest (request: Request) -> Request {
   return request
 }
 
-private func headResponse (request: Request, response: Response) -> Response {
+private func headResponse (_ request: Request, response: Response) -> Response {
   if request.method == .Head {
     return response.none()
   } else {
@@ -114,11 +108,11 @@ extension Builtin {
     return { request in
       do {
         return try handler(request)
-      } catch RequestError.BadBody {
-        return Response(.BadRequest)
+      } catch RequestError.badBody {
+        return Response(.badRequest)
       } catch let err {
         print("Unhandled Error:", err)
-        return Response(.Error)
+        return Response(.error)
       }
     }
   }
@@ -130,22 +124,22 @@ extension Builtin {
 
 public enum HeaderSecurity {
   // Turn off feature
-  case None
+  case none
   // Secure headers for APIs
-  case Api
+  case api
   // Secure headers for end-user browser websites
-  case Site
+  case site
 }
 
 extension Builtin {
-  static func wrapHeaderSecurity (opt: HeaderSecurity) -> Middleware {
+  static func wrapHeaderSecurity (_ opt: HeaderSecurity) -> Middleware {
     return { handler in
       return { request in
         switch opt {
-        case .None: return try handler(request)
+        case .none: return try handler(request)
         // No api defaults implemented
-        case .Api: return try handler(request)
-        case .Site:
+        case .api: return try handler(request)
+        case .site:
           let response = try handler(request)
           return response
             .setHeader("X-Content-Type-Options", "nosniff")
@@ -157,7 +151,7 @@ extension Builtin {
   }
 }
 
-func determineXssProtection (userAgent: String?) -> String {
+func determineXssProtection (_ userAgent: String?) -> String {
   if userAgent == nil {
     return "1; mode=block"
   }

@@ -21,7 +21,7 @@ extension Request {
     return self.getStore("cookies") as! [String: String]
   }
 
-  public func setCookie (key: String, value: String) -> Request {
+  public func setCookie (_ key: String, value: String) -> Request {
     return self.updateStore("cookies") { cookies in
       if var dict = cookies as? [String: String] {
         dict[key] = Belt.urlEncode(value)
@@ -37,7 +37,7 @@ public struct ResponseCookie {
   var key: String
   var value: String
   var path: String? = nil
-  var expires: NSDate? = nil
+  var expires: Date? = nil
   var maxAge: Seconds? = nil
   var domain: String? = nil
   var secure: Bool? = nil
@@ -59,11 +59,11 @@ extension Response {
     }
   }
 
-  public func setCookie (key: String, value: String) -> Response {
+  public func setCookie (_ key: String, value: String) -> Response {
     return self.setCookie(key, opts: ResponseCookie(key, value: value))
   }
 
-  public func setCookie (key: String, opts: ResponseCookie) -> Response {
+  public func setCookie (_ key: String, opts: ResponseCookie) -> Response {
     return self.updateStore("cookies") { cookies in
       if var dict = cookies as? [String: ResponseCookie] {
         dict[key] = opts
@@ -79,7 +79,7 @@ extension Response {
 
 // TRANSFORMERS
 
-let cookieRequest: Request -> Request = { request in
+let cookieRequest: (Request) -> Request = { request in
   var cookies: [String: String] = [:]
   if let val = request.getHeader("cookie") {
     cookies = parse(val)
@@ -87,7 +87,7 @@ let cookieRequest: Request -> Request = { request in
   return request.setStore("cookies", cookies)
 }
 
-let cookieResponse: Response -> Response = { response in
+let cookieResponse: (Response) -> Response = { response in
   var res = response
   for (k, v) in response.cookies {
     res = res.appendHeader("set-cookie", serialize(v))
@@ -97,8 +97,8 @@ let cookieResponse: Response -> Response = { response in
 
 // PARSING
 
-func parse (str: String) -> [String: String] {
-  let pairs = str.characters.split(";")
+func parse (_ str: String) -> [String: String] {
+  let pairs = str.characters.split(separator: ";")
     .map(String.init)
     .map(Belt.trim)
     .map(parsePair)
@@ -118,8 +118,8 @@ func parse (str: String) -> [String: String] {
 // foo="bar" -> ("foo", "bar")
 //
 // Returns nil on bad pair
-func parsePair (s: String) -> (k: String, v: String)? {
-  let pair: [String] = s.characters.split("=").map(String.init).map(Belt.trim)
+func parsePair (_ s: String) -> (k: String, v: String)? {
+  let pair: [String] = s.characters.split(separator: "=").map(String.init).map(Belt.trim)
   if pair.count != 2 {
     return nil
   }
@@ -127,14 +127,14 @@ func parsePair (s: String) -> (k: String, v: String)? {
   return (k, v)
 }
 
-func unwrapQuotes (s: String) -> String {
+func unwrapQuotes (_ s: String) -> String {
   let regex = try! NSRegularExpression(pattern: "(^\"|\"$)", options: [])
-  return regex.stringByReplacingMatchesInString(s, options: .WithoutAnchoringBounds, range: NSMakeRange(0, s.characters.count), withTemplate: "")
+  return regex.stringByReplacingMatches(in: s, options: .withoutAnchoringBounds, range: NSMakeRange(0, s.characters.count), withTemplate: "")
 }
 
 // SERIALIZE
 
-func serialize (opts: ResponseCookie) -> String {
+func serialize (_ opts: ResponseCookie) -> String {
   var pairs = [opts.key + "=" + Belt.urlEncode(opts.value)]
 
   if let maxAge = opts.maxAge {
@@ -153,17 +153,17 @@ func serialize (opts: ResponseCookie) -> String {
     pairs.append("expires=\(HttpDate.toString(expires))")
   }
 
-  if let httpOnly = opts.httpOnly where httpOnly == true {
+  if let httpOnly = opts.httpOnly, httpOnly == true {
     pairs.append("HttpOnly")
   }
 
-  if let secure = opts.secure where secure == true {
+  if let secure = opts.secure, secure == true {
     pairs.append("Secure")
   }
 
-  if let firstPartyOnly = opts.firstPartyOnly where firstPartyOnly == true {
+  if let firstPartyOnly = opts.firstPartyOnly, firstPartyOnly == true {
     pairs.append("First-Party-Only")
   }
 
-  return pairs.joinWithSeparator("; ")
+  return pairs.joined(separator: "; ")
 }

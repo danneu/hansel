@@ -8,44 +8,44 @@ import Foundation
 public struct Belt {}
 
 extension Belt {
-  public static func escapeHtml (html: String) -> String {
-    return html.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
-      .stringByReplacingOccurrencesOfString("\"", withString: "&quot;")
-      .stringByReplacingOccurrencesOfString("'", withString: "&#39;")
-      .stringByReplacingOccurrencesOfString("<", withString: "&lt;")
-      .stringByReplacingOccurrencesOfString(">", withString: "&gt;")
+  public static func escapeHtml (_ html: String) -> String {
+    return html.replacingOccurrences(of: "&", with: "&amp;")
+      .replacingOccurrences(of: "\"", with: "&quot;")
+      .replacingOccurrences(of: "'", with: "&#39;")
+      .replacingOccurrences(of: "<", with: "&lt;")
+      .replacingOccurrences(of: ">", with: "&gt;")
   }
 
-  public static func trim (s: String) -> String {
-    return s.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+  public static func trim (_ s: String) -> String {
+    return s.trimmingCharacters(in: CharacterSet.whitespaces)
   }
 }
 
 // PERCENT ENCODING
 
 extension Belt {
-  public static func urlEncode (s: String) -> String {
-    return s.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? s
+  public static func urlEncode (_ s: String) -> String {
+    return s.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? s
   }
 
-  public static func urlDecode (s: String) -> String {
+  public static func urlDecode (_ s: String) -> String {
     return s.stringByRemovingPercentEncoding ?? s
   }
 }
 
 extension Belt {
-  public static func drop (n: Int, _ input: String) -> String {
+  public static func drop (_ n: Int, _ input: String) -> String {
     if input.isEmpty { return input }
     if n == 0 { return input }
     if n >= input.characters.count { return "" }
-    return input.substringFromIndex(input.startIndex.advancedBy(n))
+    return input.substring(from: input.characters.index(input.startIndex, offsetBy: n))
   }
 }
 
 // NSRANGE & RANGE
 
 extension Belt {
-  public static func rangeFromNSRange(s: String, _ nsRange: NSRange) -> Range<String.Index>? {
+  public static func rangeFromNSRange(_ s: String, _ nsRange: NSRange) -> Range<String.Index>? {
     let utf16 = s.utf16
     let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
     let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
@@ -113,7 +113,7 @@ public struct Seconds: CustomStringConvertible, TimeConvertible {
 //
 // Generic things things don't get namespaced behind Belt
 
-public func identity <T> (a: T) -> T { return a }
+public func identity <T> (_ a: T) -> T { return a }
 
 // Composition
 //
@@ -122,13 +122,13 @@ public func identity <T> (a: T) -> T { return a }
 
 // f >> g == g(f(x))
 infix operator >> { associativity left }
-public func >> <A, B, C> (f: A -> B, g: B -> C) -> A -> C {
+public func >> <A, B, C> (f: @escaping (A) -> B, g: @escaping (B) -> C) -> (A) -> C {
   return { x in g(f(x)) }
 }
 
 // f << g == f(g(x))
 infix operator << { associativity right }
-public func << <A, B, C> (f: B -> C, g: A -> B) -> A -> C {
+public func << <A, B, C> (f: @escaping (B) -> C, g: @escaping (A) -> B) -> (A) -> C {
   return { x in f(g(x)) }
 }
 
@@ -138,7 +138,7 @@ public func << <A, B, C> (f: B -> C, g: A -> B) -> A -> C {
 //
 // Ex: 8 |> toString << add42  //=> "50"
 infix operator |> { associativity left precedence 0 }
-public func |> <A, B> (x: A, f: A -> B) -> B {
+public func |> <A, B> (x: A, f: (A) -> B) -> B {
   return f(x)
 }
 
@@ -146,6 +146,6 @@ public func |> <A, B> (x: A, f: A -> B) -> B {
 //
 // Ex: toString << add42 <| 8  //=> "50"
 infix operator <| { associativity right precedence 0 }
-public func <| <A, B> (f: A -> B, x: A) -> B {
+public func <| <A, B> (f: (A) -> B, x: A) -> B {
   return f(x)
 }

@@ -11,12 +11,12 @@ import Foundation
 //
 
 public enum Router {
-  case Node (String, [Router])
-  case Route (Method, Handler)
-  case NodeM (String, [Middleware], [Router])
-  case RouteM (Method, [Middleware], Handler)
+  case node (String, [Router])
+  case route (Method, Handler)
+  case nodeM (String, [Middleware], [Router])
+  case routeM (Method, [Middleware], Handler)
 
-  private func find (method: Method, segments: [String], mws: [Middleware], params: [String: String], router: Router) -> (Handler, [String: String])? {
+  fileprivate func find (_ method: Method, segments: [String], mws: [Middleware], params: [String: String], router: Router) -> (Handler, [String: String])? {
     var params = params // need it mutable
 
     var restSegs: [String]
@@ -27,21 +27,21 @@ public enum Router {
     }
 
     switch router {
-    case let .Route (rMethod, rHandler):
+    case let .route (rMethod, rHandler):
       // fail if we hit a route but still have more segments left to crawl
       if (!segments.isEmpty) { return nil }
       // fail if we don't match
       if (method != rMethod) { return nil }
       let middleware = composeArr(mws)
       return (middleware(rHandler), params)
-    case let .RouteM (rMethod, rMws, rHandler):
+    case let .routeM (rMethod, rMws, rHandler):
       // fail if we hit a route but still have more segments left to crawl
       if (!segments.isEmpty) { return nil }
       // fail if we don't match
       if (method != rMethod) { return nil }
       let middleware = composeArr(mws + rMws)
       return (middleware(rHandler), params)
-    case let .Node (nSeg, branches):
+    case let .node (nSeg, branches):
       guard let currSeg = segments.first else { return nil }
       if isParamSegment(nSeg) {
         params[getParamKey(nSeg)] = Belt.drop(1, currSeg)
@@ -56,7 +56,7 @@ public enum Router {
         }
       }
       return found
-    case let .NodeM(nSeg, nMws, branches):
+    case let .nodeM(nSeg, nMws, branches):
       guard let currSeg = segments.first else { return nil }
       if isParamSegment(nSeg) {
         params[getParamKey(nSeg)] = Belt.drop(1, currSeg)
@@ -79,23 +79,23 @@ public enum Router {
       if let (h, params) = self.find(request.method, segments: toSegments(request.url), mws: [], params: [String: String](), router: self) {
         return try h(request.setParams(params))
       } else {
-        return Response(.NotFound)
+        return Response(.notFound)
       }
     }
   }
 }
 
-private func isParamSegment (input: String) -> Bool {
+private func isParamSegment (_ input: String) -> Bool {
   return try! RegExp("^/:").test(input)
 }
 
-private func getParamKey (segment: String) -> String {
+private func getParamKey (_ segment: String) -> String {
   return try! RegExp("^/:(.+)$").replace(segment, template: "$1")
 }
 
-private func toSegments (url: String) -> [String] {
-  var arr = url.characters.split("/").map({ s in "/" + String.init(s) })
-  arr.insert("/", atIndex: 0)
+private func toSegments (_ url: String) -> [String] {
+  var arr = url.characters.split(separator: "/").map({ s in "/" + String.init(s) })
+  arr.insert("/", at: 0)
   return arr
 }
 
@@ -104,9 +104,9 @@ private func toSegments (url: String) -> [String] {
 // it handles array args.
 //
 // I was getting fatal crash with `return compose(mws)`
-private func composeArr (mws: [Middleware]) -> Middleware {
+private func composeArr (_ mws: [Middleware]) -> Middleware {
   let noop: Middleware = identity // tell swift how to infer
-  return mws.reduce(noop, combine: { accum, next in accum << next })
+  return mws.reduce(noop, { accum, next in accum << next })
 }
 
 // REQUEST PARAM EXTENSION
@@ -118,7 +118,7 @@ extension Request {
 
   // this function is only used internally. params should
   // be read-only to the user.
-  private func setParams (params: [String: String]) -> Request {
+  fileprivate func setParams (_ params: [String: String]) -> Request {
     // url-decode the values
     // TODO: add tests for this
     var params = params

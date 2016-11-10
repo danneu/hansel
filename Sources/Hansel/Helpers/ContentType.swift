@@ -19,11 +19,11 @@ import Foundation
 // ERROR TYPES
 //
 
-public enum ContentTypeError: ErrorType {
-  case InvalidMediaType
-  case InvalidParamFormat
-  case InvalidParamKey
-  case InvalidParamValue
+public enum ContentTypeError: Error {
+  case invalidMediaType
+  case invalidParamFormat
+  case invalidParamKey
+  case invalidParamValue
 }
 
 //
@@ -90,13 +90,13 @@ public struct ContentType {
   // Serialize struct into string for the Content-Type header
   public func format () throws -> String {
     guard typeRe.test(self.type) else {
-      throw ContentTypeError.InvalidMediaType
+      throw ContentTypeError.invalidMediaType
     }
-    let sortedKeys = Array(self.params.keys).sort { $0 < $1 }
+    let sortedKeys = Array(self.params.keys).sorted { $0 < $1 }
     var output: String = self.type
     for key in sortedKeys {
       guard tokenRe.test(key) else {
-        throw ContentTypeError.InvalidParamKey
+        throw ContentTypeError.invalidParamKey
       }
       let quotedVal = try quoteValue(self.params[key]!)
       output += "; \(key)=\(quotedVal)"
@@ -105,25 +105,25 @@ public struct ContentType {
     return output
   }
 
-  public static func parse (input: String) throws -> ContentType {
+  public static func parse (_ input: String) throws -> ContentType {
     var type: String
 
     // the idx at which params start in the original string
     // if nil, then there are no params
     var paramsStart: Int? = nil
 
-    if let idx = input.characters.indexOf(";") {
-      let n = input.startIndex.distanceTo(idx)
+    if let idx = input.characters.index(of: ";") {
+      let n = input.characters.distance(from: input.startIndex, to: idx)
       paramsStart = n
       // Would not work on Linux:
       //type = Belt.trim((input as NSString).substringToIndex(n)).lowercaseString
-      type = Belt.trim(input.substringToIndex(idx)).lowercaseString
+      type = Belt.trim(input.substringToIndex(idx)).lowercased()
     } else {
-      type = Belt.trim(input).lowercaseString
+      type = Belt.trim(input).lowercased()
     }
 
     if !typeRe.test(type) {
-      throw ContentTypeError.InvalidMediaType
+      throw ContentTypeError.invalidMediaType
     }
 
     // type is valid, so now parse params
@@ -137,7 +137,7 @@ public struct ContentType {
     // Ensure there are no more characters after the final match
     if let finalMatch = matches.last {
       if input.characters.count != finalMatch.range.location + finalMatch.range.length {
-        throw ContentTypeError.InvalidParamFormat
+        throw ContentTypeError.invalidParamFormat
       }
     }
 
@@ -147,7 +147,7 @@ public struct ContentType {
     for (key, val) in pairs {
       // only consider params with valid values
       if (tokenRe.test(val)) {
-        params[key.lowercaseString] = val
+        params[key.lowercased()] = val
       }
     }
 
@@ -155,20 +155,20 @@ public struct ContentType {
   }
 }
 
-private func getCapturedPair (fullString: String) -> NSTextCheckingResult -> (String, String) {
+private func getCapturedPair (_ fullString: String) -> (NSTextCheckingResult) -> (String, String) {
   return { match in
     // This wouldn't work on linux because of NSString cast:
     //let key = (fullString as NSString).substringWithRange(match.rangeAtIndex(1))
     //var val = (fullString as NSString).substringWithRange(match.rangeAtIndex(2))
 
-    let key = fullString.substringWithRange(Belt.rangeFromNSRange(fullString, match.rangeAtIndex(1))!)
-    var val = fullString.substringWithRange(Belt.rangeFromNSRange(fullString, match.rangeAtIndex(2))!)
+    let key = fullString.substring(with: Belt.rangeFromNSRange(fullString, match.rangeAt(1))!)
+    var val = fullString.substring(with: Belt.rangeFromNSRange(fullString, match.rangeAt(2))!)
 
 
     // if starts with quote, remove quotes and escapes
     if (val[val.startIndex] == "\"") {
       // e.g. "\"foo\"" -> "foo"
-      val = val.substringWithRange(Range(start: val.startIndex.advancedBy(1), end: val.endIndex.advancedBy(-1)))
+      val = val.substring(with: (val.characters.index(val.startIndex, offsetBy: 1) ..< val.characters.index(val.endIndex, offsetBy: -1)))
       val = qescRe.replace(val, template: "$1")
     }
 
@@ -177,14 +177,14 @@ private func getCapturedPair (fullString: String) -> NSTextCheckingResult -> (St
 }
 
 // Quote a param value if necessary
-private func quoteValue (input: String) throws -> String {
+private func quoteValue (_ input: String) throws -> String {
   // no need
   if (tokenRe.test(input)) {
     return input
   }
 
   if (input.characters.count > 0 && !textRe.test(input)) {
-    throw ContentTypeError.InvalidParamValue
+    throw ContentTypeError.invalidParamValue
   }
 
   let quoted = quoteRe.replace(input, template: "\\\\$1")

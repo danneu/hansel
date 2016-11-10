@@ -15,11 +15,11 @@ import Foundation
 //
 
 public protocol Tappable {
-  func tap (f: Self -> Self) -> Self
+  func tap (_ f: (Self) -> Self) -> Self
 }
 
 extension Tappable {
-  public func tap (f: Self -> Self) -> Self {
+  public func tap (_ f: (Self) -> Self) -> Self {
     return f(self)
   }
 }

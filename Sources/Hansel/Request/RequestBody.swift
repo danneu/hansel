@@ -3,32 +3,32 @@ import Foundation
 import Jay
 
 // It's a class so that we aren't copying potentially large bodies
-public class RequestBody: CustomStringConvertible {
+open class RequestBody: CustomStringConvertible {
   let bytes: [UInt8]
 
   public init (_ bytes: [UInt8] = []) {
     self.bytes = bytes
   }
 
-  public func utf8 () throws -> String {
-    if let str = String(bytes: self.bytes, encoding: NSUTF8StringEncoding) {
+  open func utf8 () throws -> String {
+    if let str = String(bytes: self.bytes, encoding: String.Encoding.utf8) {
       return str
     } else {
-      throw RequestError.BadBody
+      throw RequestError.badBody
     }
   }
 
-  public func json () throws -> JsonValue {
+  open func json () throws -> JsonValue {
     do {
       return try Jay().typesafeJsonFromData(self.bytes)
     } catch {
-      throw RequestError.BadBody
+      throw RequestError.badBody
     }
   }
 
-  public func json <T> (decoder: Decoder<T>) throws -> T {
+  open func json <T> (_ decoder: Decoder<T>) throws -> T {
     switch JD.decode(decoder, try json()) {
-    case .Err (_): throw RequestError.BadBody
+    case .Err (_): throw RequestError.badBody
     case .Ok (let v): return v
     }
   }
@@ -39,7 +39,7 @@ public class RequestBody: CustomStringConvertible {
 //  func multipart () throws -> MultipartData {
 //  }
 
-  public var description: String {
+  open var description: String {
     return self.bytes.description
   }
 }

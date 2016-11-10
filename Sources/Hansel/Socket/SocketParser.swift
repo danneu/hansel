@@ -2,8 +2,8 @@
 import Foundation
 
 class SocketParser {
-  enum Error: ErrorType {
-    case InvalidRequest
+  enum Error: Error {
+    case invalidRequest
   }
 
   class RequestLine {
@@ -13,12 +13,12 @@ class SocketParser {
 
     init (str: String) throws {
       // e.g. ["GET", "/index.html", "HTTP/1.1"]
-      let parts = str.characters.split(" ").map(String.init)
+      let parts = str.characters.split(separator: " ").map(String.init)
       if parts.count < 3 {
         self.method = .Unknown
         self.path = ""
         self.version = ""
-        throw Error.InvalidRequest
+        throw Error.invalidRequest
       }
 
       self.method = Method(rawValue: parts[0]) ?? .Unknown
@@ -27,14 +27,14 @@ class SocketParser {
     }
   }
 
-  func readHttpRequest(socket: Socket) throws -> Request {
+  func readHttpRequest(_ socket: Socket) throws -> Request {
     let requestLine = try RequestLine(str: socket.readLine())
     let headers = try self.readHeaders(socket)
     let address = try? socket.peername()
 
     var bodyBytes: [UInt8] = []
     if
-      let lengthStr = (headers.filter { $0.0.lowercaseString == "content-length" }.first?.1),
+      let lengthStr = (headers.filter { $0.0.lowercased() == "content-length" }.first?.1),
       // ensure no spaces in val since Int(" 40") is nil
       let length = Int(lengthStr.trim()) {
         bodyBytes = try readBody(socket, size: length)
@@ -49,7 +49,7 @@ class SocketParser {
     )
   }
 
-  private func readBody (socket: Socket, size: Int) throws -> [UInt8] {
+  fileprivate func readBody (_ socket: Socket, size: Int) throws -> [UInt8] {
     var body = [UInt8]()
     var counter = 0
 
@@ -60,7 +60,7 @@ class SocketParser {
     return body
   }
 
-  private func readHeaders(socket: Socket) throws -> [(String, String)] {
+  fileprivate func readHeaders(_ socket: Socket) throws -> [(String, String)] {
     var headers: [(String, String)] = []
 
     while true {
@@ -70,10 +70,10 @@ class SocketParser {
       }
       let tokens = headerLine
         .characters
-        .split(":", maxSplit: 1, allowEmptySlices: true)
+        .split(separator: ":", maxSplits: 1, omittingEmptySubsequences: false)
         .map(String.init)
 
-      if let key = tokens.first, val = tokens.last {
+      if let key = tokens.first, let val = tokens.last {
         headers.append((key, Belt.trim(val)))
       }
     }

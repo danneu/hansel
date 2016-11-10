@@ -13,11 +13,11 @@ extension Batteries {
   }
 }
 
-func logRequest (request: Request) -> Void {
-  print("\(Color.Gray.wrap("-->")) \(String(request.method).uppercaseString) \(Color.Gray.wrap(request.url))")
+func logRequest (_ request: Request) -> Void {
+  print("\(Color.Gray.wrap("-->")) \(String(describing: request.method).uppercased()) \(Color.Gray.wrap(request.url))")
 }
 
-func logResponse (request: Request, response: Response, start: Int) -> Void {
+func logResponse (_ request: Request, response: Response, start: Int) -> Void {
   var color: Color
   switch response.status.rawValue {
   case 500..<600: color = .Red
@@ -29,15 +29,15 @@ func logResponse (request: Request, response: Response, start: Int) -> Void {
   }
 
   let upstream = Color.Gray.wrap("<--")
-  print("\(upstream) \(String(request.method).uppercaseString) \(Color.Gray.wrap(request.url)) \(color.wrap(String(response.status.rawValue))) \(time(start))")
+  print("\(upstream) \(String(describing: request.method).uppercased()) \(Color.Gray.wrap(request.url)) \(color.wrap(String(response.status.rawValue))) \(time(start))")
 }
 
-func time (start: Int) -> String {
+func time (_ start: Int) -> String {
   return String(getMillis() - start) + "ms"
 }
 
 func getMillis () -> Int {
-  return Int(NSDate().timeIntervalSince1970 * 1000)
+  return Int(Date().timeIntervalSince1970 * 1000)
 }
 
 enum Color: String {
@@ -51,7 +51,7 @@ enum Color: String {
   case White = "0;37m"
   case Gray = "0;90m"
 
-  func wrap (str: String) -> String {
+  func wrap (_ str: String) -> String {
     let escape = "\u{001B}["
     return "\(escape)\(self.rawValue)\(str)\(escape)\(Color.None.rawValue)"
   }

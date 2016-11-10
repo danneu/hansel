@@ -29,7 +29,7 @@ extension String: Streamable {
   }
 }
 
-extension NSInputStream: Streamable {
+extension InputStream: Streamable {
   public func next () -> [UInt8]? {
     // TODO: I suppose it's possible for the stream to be
     // opening yet have no bytes available yet. Need to make
@@ -38,7 +38,7 @@ extension NSInputStream: Streamable {
       return nil
     }
 
-    var buf = [UInt8](count: 16384, repeatedValue: 0)
+    var buf = [UInt8](repeating: 0, count: 16384)
 
     switch self.read(&buf, maxLength: buf.count) {
     case 0: // end of stream

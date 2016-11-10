@@ -4,10 +4,10 @@ import Jay
 
 // TODO: Consolidate errors and actually come up with a game
 // plan.
-public enum RequestError: ErrorType {
-  case InvalidUrl
+public enum RequestError: Error {
+  case invalidUrl
   // body doesn't convert to the expected format
-  case BadBody
+  case badBody
 }
 
 public struct Request: Storable, HeaderList, Tappable {
@@ -18,8 +18,8 @@ public struct Request: Storable, HeaderList, Tappable {
   public var body: RequestBody
   public var store: Store
   // remote connection ip address. use the #ip method.
-  private var address: String
-  public var nsurl: NSURL
+  fileprivate var address: String
+  public var nsurl: URL
 
   // options, not part of the request model
   var trustProxy: Bool
@@ -34,8 +34,8 @@ public struct Request: Storable, HeaderList, Tappable {
     // Opts
     trustProxy: Bool = false
   ) throws {
-      guard let nsurl = NSURL(string: url) else {
-        throw RequestError.InvalidUrl
+      guard let nsurl = URL(string: url) else {
+        throw RequestError.invalidUrl
       }
       self.method = method
       self.url = url
@@ -109,13 +109,9 @@ public struct Request: Storable, HeaderList, Tappable {
   // TODO: Handle "example.com//////" and malicious paths,
   // possible fail in initializer
   //
-  // Using CFURL over NSURL because CFURL's path:
   // - Includes trailing slash
   // - Does not decode percent-encoding
   public var path: String {
-    // Doesn't work on Linux:
-    // return CFURLCopyPath(nsurl as CFURL) as String
-
     return url.split(1, separator: "?").first ?? "/"
   }
 
@@ -139,13 +135,13 @@ public struct Request: Storable, HeaderList, Tappable {
     return try body.json()
   }
 
-  public func json <T> (decoder: Decoder<T>) throws -> T {
+  public func json <T> (_ decoder: Decoder<T>) throws -> T {
     return try body.json(decoder)
   }
 
   // UPDATING REQUEST
 
-  public func setMethod (method: Method) -> Request {
+  public func setMethod (_ method: Method) -> Request {
     var copy = self; copy.method = method; return copy
   }
 }

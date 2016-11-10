@@ -16,8 +16,8 @@ public typealias Attrs = [String: AttrConvertible]
 
 // HELPERS
 
-func indent (level: Int, tabWidth: Int = 2) -> String {
-  return String(count: level * tabWidth, repeatedValue: Character(" "))
+func indent (_ level: Int, tabWidth: Int = 2) -> String {
+  return String(repeating: " ", count: level * tabWidth)
 }
 
 // PROTOCOLS
@@ -30,10 +30,10 @@ public protocol AttrConvertible {
 
 // Strings wrapped in .Safe won't be escaped
 public enum SafeString: HtmlConvertible {
-  case Safe (String)
+  case safe (String)
   public func html () -> String {
     switch self {
-    case Safe (let str):
+    case .safe (let str):
       return str
     }
   }
@@ -54,7 +54,7 @@ extension String: AttrConvertible {
 extension Dictionary: AttrConvertible  {
   public func render () -> String {
     var output = ""
-    for (idx, (k, v)) in self.enumerate() {
+    for (idx, (k, v)) in self.enumerated() {
       output += (idx > 0 ? " " : "") + "\(k):\(v);"
     }
     return output
@@ -73,8 +73,8 @@ extension d {
 //     node("el", ["display": "block"], "Hello")
 //
 // TODO: Allow user to create void elements
-public class node: Element {
-  private init (_ tag: String, attrs: Attrs = [:], kids: [HtmlConvertible] = []) {
+open class node: Element {
+  fileprivate init (_ tag: String, attrs: Attrs = [:], kids: [HtmlConvertible] = []) {
     super.init(attrs, kids)
     self.tagName = tag
   }
@@ -102,10 +102,10 @@ public class node: Element {
 
 }
 
-public class Element: HtmlConvertible {
-  public var attrs: Attrs = [:]
+open class Element: HtmlConvertible {
+  open var attrs: Attrs = [:]
   // void elements have no kids or closing tag
-  public var void: Bool = false
+  open var void: Bool = false
   var tagName: String = ""
   var kids: [HtmlConvertible] = []
 
@@ -140,7 +140,7 @@ public class Element: HtmlConvertible {
 
   // CONFORMANCE
 
-  public func html () -> String {
+  open func html () -> String {
     var output = ""
     output += "<\(tagName)\(renderAttrs())>"
     for kid in kids {
@@ -338,668 +338,668 @@ extension d {
 // === BEGIN GENERATED CODE ===
 //
 
-public class a: Element {
+open class a: Element {
   override var tagName: String {
     get { return "a" } set { self.tagName = newValue }
   }
 }
 
-public class abbr: Element {
+open class abbr: Element {
   override var tagName: String {
     get { return "abbr" } set { self.tagName = newValue }
   }
 }
 
-public class address: Element {
+open class address: Element {
   override var tagName: String {
     get { return "address" } set { self.tagName = newValue }
   }
 }
 
-public class area: Element {
+open class area: Element {
   override var tagName: String {
     get { return "area" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class article: Element {
+open class article: Element {
   override var tagName: String {
     get { return "article" } set { self.tagName = newValue }
   }
 }
 
-public class audio: Element {
+open class audio: Element {
   override var tagName: String {
     get { return "audio" } set { self.tagName = newValue }
   }
 }
 
-public class base: Element {
+open class base: Element {
   override var tagName: String {
     get { return "base" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class blockquote: Element {
+open class blockquote: Element {
   override var tagName: String {
     get { return "blockquote" } set { self.tagName = newValue }
   }
 }
 
-public class body: Element {
+open class body: Element {
   override var tagName: String {
     get { return "body" } set { self.tagName = newValue }
   }
 }
 
-public class b: Element {
+open class b: Element {
   override var tagName: String {
     get { return "b" } set { self.tagName = newValue }
   }
 }
 
-public class bdi: Element {
+open class bdi: Element {
   override var tagName: String {
     get { return "bdi" } set { self.tagName = newValue }
   }
 }
 
-public class bdo: Element {
+open class bdo: Element {
   override var tagName: String {
     get { return "bdo" } set { self.tagName = newValue }
   }
 }
 
-public class br: Element {
+open class br: Element {
   override var tagName: String {
     get { return "br" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class button: Element {
+open class button: Element {
   override var tagName: String {
     get { return "button" } set { self.tagName = newValue }
   }
 }
 
-public class canvas: Element {
+open class canvas: Element {
   override var tagName: String {
     get { return "canvas" } set { self.tagName = newValue }
   }
 }
 
-public class caption: Element {
+open class caption: Element {
   override var tagName: String {
     get { return "caption" } set { self.tagName = newValue }
   }
 }
 
-public class cite: Element {
+open class cite: Element {
   override var tagName: String {
     get { return "cite" } set { self.tagName = newValue }
   }
 }
 
-public class code: Element {
+open class code: Element {
   override var tagName: String {
     get { return "code" } set { self.tagName = newValue }
   }
 }
 
-public class col: Element {
+open class col: Element {
   override var tagName: String {
     get { return "col" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class colgroup: Element {
+open class colgroup: Element {
   override var tagName: String {
     get { return "colgroup" } set { self.tagName = newValue }
   }
 }
 
-public class data: Element {
+open class data: Element {
   override var tagName: String {
     get { return "data" } set { self.tagName = newValue }
   }
 }
 
-public class datalist: Element {
+open class datalist: Element {
   override var tagName: String {
     get { return "datalist" } set { self.tagName = newValue }
   }
 }
 
-public class del: Element {
+open class del: Element {
   override var tagName: String {
     get { return "del" } set { self.tagName = newValue }
   }
 }
 
-public class dfn: Element {
+open class dfn: Element {
   override var tagName: String {
     get { return "dfn" } set { self.tagName = newValue }
   }
 }
 
-public class dd: Element {
+open class dd: Element {
   override var tagName: String {
     get { return "dd" } set { self.tagName = newValue }
   }
 }
 
-public class details: Element {
+open class details: Element {
   override var tagName: String {
     get { return "details" } set { self.tagName = newValue }
   }
 }
 
-public class dialog: Element {
+open class dialog: Element {
   override var tagName: String {
     get { return "dialog" } set { self.tagName = newValue }
   }
 }
 
-public class div: Element {
+open class div: Element {
   override var tagName: String {
     get { return "div" } set { self.tagName = newValue }
   }
 }
 
-public class dl: Element {
+open class dl: Element {
   override var tagName: String {
     get { return "dl" } set { self.tagName = newValue }
   }
 }
 
-public class dt: Element {
+open class dt: Element {
   override var tagName: String {
     get { return "dt" } set { self.tagName = newValue }
   }
 }
 
-public class element: Element {
+open class element: Element {
   override var tagName: String {
     get { return "element" } set { self.tagName = newValue }
   }
 }
 
-public class em: Element {
+open class em: Element {
   override var tagName: String {
     get { return "em" } set { self.tagName = newValue }
   }
 }
 
-public class embed: Element {
+open class embed: Element {
   override var tagName: String {
     get { return "embed" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class fieldset: Element {
+open class fieldset: Element {
   override var tagName: String {
     get { return "fieldset" } set { self.tagName = newValue }
   }
 }
 
-public class figcaption: Element {
+open class figcaption: Element {
   override var tagName: String {
     get { return "figcaption" } set { self.tagName = newValue }
   }
 }
 
-public class figure: Element {
+open class figure: Element {
   override var tagName: String {
     get { return "figure" } set { self.tagName = newValue }
   }
 }
 
-public class footer: Element {
+open class footer: Element {
   override var tagName: String {
     get { return "footer" } set { self.tagName = newValue }
   }
 }
 
-public class form: Element {
+open class form: Element {
   override var tagName: String {
     get { return "form" } set { self.tagName = newValue }
   }
 }
 
-public class h1: Element {
+open class h1: Element {
   override var tagName: String {
     get { return "h1" } set { self.tagName = newValue }
   }
 }
 
-public class h2: Element {
+open class h2: Element {
   override var tagName: String {
     get { return "h2" } set { self.tagName = newValue }
   }
 }
 
-public class h3: Element {
+open class h3: Element {
   override var tagName: String {
     get { return "h3" } set { self.tagName = newValue }
   }
 }
 
-public class h4: Element {
+open class h4: Element {
   override var tagName: String {
     get { return "h4" } set { self.tagName = newValue }
   }
 }
 
-public class h5: Element {
+open class h5: Element {
   override var tagName: String {
     get { return "h5" } set { self.tagName = newValue }
   }
 }
 
-public class h6: Element {
+open class h6: Element {
   override var tagName: String {
     get { return "h6" } set { self.tagName = newValue }
   }
 }
 
-public class head: Element {
+open class head: Element {
   override var tagName: String {
     get { return "head" } set { self.tagName = newValue }
   }
 }
 
-public class header: Element {
+open class header: Element {
   override var tagName: String {
     get { return "header" } set { self.tagName = newValue }
   }
 }
 
-public class hgroup: Element {
+open class hgroup: Element {
   override var tagName: String {
     get { return "hgroup" } set { self.tagName = newValue }
   }
 }
 
-public class hr: Element {
+open class hr: Element {
   override var tagName: String {
     get { return "hr" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class html: Element {
+open class html: Element {
   override var tagName: String {
     get { return "html" } set { self.tagName = newValue }
   }
 }
 
-public class i: Element {
+open class i: Element {
   override var tagName: String {
     get { return "i" } set { self.tagName = newValue }
   }
 }
 
-public class img: Element {
+open class img: Element {
   override var tagName: String {
     get { return "img" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class input: Element {
+open class input: Element {
   override var tagName: String {
     get { return "input" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class ins: Element {
+open class ins: Element {
   override var tagName: String {
     get { return "ins" } set { self.tagName = newValue }
   }
 }
 
-public class kbd: Element {
+open class kbd: Element {
   override var tagName: String {
     get { return "kbd" } set { self.tagName = newValue }
   }
 }
 
-public class label: Element {
+open class label: Element {
   override var tagName: String {
     get { return "label" } set { self.tagName = newValue }
   }
 }
 
-public class legend: Element {
+open class legend: Element {
   override var tagName: String {
     get { return "legend" } set { self.tagName = newValue }
   }
 }
 
-public class link: Element {
+open class link: Element {
   override var tagName: String {
     get { return "link" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class li: Element {
+open class li: Element {
   override var tagName: String {
     get { return "li" } set { self.tagName = newValue }
   }
 }
 
-public class map: Element {
+open class map: Element {
   override var tagName: String {
     get { return "map" } set { self.tagName = newValue }
   }
 }
 
-public class mark: Element {
+open class mark: Element {
   override var tagName: String {
     get { return "mark" } set { self.tagName = newValue }
   }
 }
 
-public class main: Element {
+open class main: Element {
   override var tagName: String {
     get { return "main" } set { self.tagName = newValue }
   }
 }
 
-public class menu: Element {
+open class menu: Element {
   override var tagName: String {
     get { return "menu" } set { self.tagName = newValue }
   }
 }
 
-public class menuitem: Element {
+open class menuitem: Element {
   override var tagName: String {
     get { return "menuitem" } set { self.tagName = newValue }
   }
 }
 
-public class meta: Element {
+open class meta: Element {
   override var tagName: String {
     get { return "meta" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class meter: Element {
+open class meter: Element {
   override var tagName: String {
     get { return "meter" } set { self.tagName = newValue }
   }
 }
 
-public class nav: Element {
+open class nav: Element {
   override var tagName: String {
     get { return "nav" } set { self.tagName = newValue }
   }
 }
 
-public class noscript: Element {
+open class noscript: Element {
   override var tagName: String {
     get { return "noscript" } set { self.tagName = newValue }
   }
 }
 
-public class object: Element {
+open class object: Element {
   override var tagName: String {
     get { return "object" } set { self.tagName = newValue }
   }
 }
 
-public class optgroup: Element {
+open class optgroup: Element {
   override var tagName: String {
     get { return "optgroup" } set { self.tagName = newValue }
   }
 }
 
-public class option: Element {
+open class option: Element {
   override var tagName: String {
     get { return "option" } set { self.tagName = newValue }
   }
 }
 
-public class output: Element {
+open class output: Element {
   override var tagName: String {
     get { return "output" } set { self.tagName = newValue }
   }
 }
 
-public class ol: Element {
+open class ol: Element {
   override var tagName: String {
     get { return "ol" } set { self.tagName = newValue }
   }
 }
 
-public class p: Element {
+open class p: Element {
   override var tagName: String {
     get { return "p" } set { self.tagName = newValue }
   }
 }
 
-public class param: Element {
+open class param: Element {
   override var tagName: String {
     get { return "param" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class pre: Element {
+open class pre: Element {
   override var tagName: String {
     get { return "pre" } set { self.tagName = newValue }
   }
 }
 
-public class progress: Element {
+open class progress: Element {
   override var tagName: String {
     get { return "progress" } set { self.tagName = newValue }
   }
 }
 
-public class q: Element {
+open class q: Element {
   override var tagName: String {
     get { return "q" } set { self.tagName = newValue }
   }
 }
 
-public class s: Element {
+open class s: Element {
   override var tagName: String {
     get { return "s" } set { self.tagName = newValue }
   }
 }
 
-public class script: Element {
+open class script: Element {
   override var tagName: String {
     get { return "script" } set { self.tagName = newValue }
   }
 }
 
-public class section: Element {
+open class section: Element {
   override var tagName: String {
     get { return "section" } set { self.tagName = newValue }
   }
 }
 
-public class select: Element {
+open class select: Element {
   override var tagName: String {
     get { return "select" } set { self.tagName = newValue }
   }
 }
 
-public class small: Element {
+open class small: Element {
   override var tagName: String {
     get { return "small" } set { self.tagName = newValue }
   }
 }
 
-public class source: Element {
+open class source: Element {
   override var tagName: String {
     get { return "source" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class span: Element {
+open class span: Element {
   override var tagName: String {
     get { return "span" } set { self.tagName = newValue }
   }
 }
 
-public class strong: Element {
+open class strong: Element {
   override var tagName: String {
     get { return "strong" } set { self.tagName = newValue }
   }
 }
 
-public class style: Element {
+open class style: Element {
   override var tagName: String {
     get { return "style" } set { self.tagName = newValue }
   }
 }
 
-public class sub: Element {
+open class sub: Element {
   override var tagName: String {
     get { return "sub" } set { self.tagName = newValue }
   }
 }
 
-public class summary: Element {
+open class summary: Element {
   override var tagName: String {
     get { return "summary" } set { self.tagName = newValue }
   }
 }
 
-public class sup: Element {
+open class sup: Element {
   override var tagName: String {
     get { return "sup" } set { self.tagName = newValue }
   }
 }
 
-public class table: Element {
+open class table: Element {
   override var tagName: String {
     get { return "table" } set { self.tagName = newValue }
   }
 }
 
-public class td: Element {
+open class td: Element {
   override var tagName: String {
     get { return "td" } set { self.tagName = newValue }
   }
 }
 
-public class template: Element {
+open class template: Element {
   override var tagName: String {
     get { return "template" } set { self.tagName = newValue }
   }
 }
 
-public class textarea: Element {
+open class textarea: Element {
   override var tagName: String {
     get { return "textarea" } set { self.tagName = newValue }
   }
 }
 
-public class th: Element {
+open class th: Element {
   override var tagName: String {
     get { return "th" } set { self.tagName = newValue }
   }
 }
 
-public class tbody: Element {
+open class tbody: Element {
   override var tagName: String {
     get { return "tbody" } set { self.tagName = newValue }
   }
 }
 
-public class thead: Element {
+open class thead: Element {
   override var tagName: String {
     get { return "thead" } set { self.tagName = newValue }
   }
 }
 
-public class tfoot: Element {
+open class tfoot: Element {
   override var tagName: String {
     get { return "tfoot" } set { self.tagName = newValue }
   }
 }
 
-public class title: Element {
+open class title: Element {
   override var tagName: String {
     get { return "title" } set { self.tagName = newValue }
   }
 }
 
-public class tr: Element {
+open class tr: Element {
   override var tagName: String {
     get { return "tr" } set { self.tagName = newValue }
   }
 }
 
-public class track: Element {
+open class track: Element {
   override var tagName: String {
     get { return "track" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }
 
-public class ul: Element {
+open class ul: Element {
   override var tagName: String {
     get { return "ul" } set { self.tagName = newValue }
   }
 }
 
-public class u: Element {
+open class u: Element {
   override var tagName: String {
     get { return "u" } set { self.tagName = newValue }
   }
 }
 
-public class video: Element {
+open class video: Element {
   override var tagName: String {
     get { return "video" } set { self.tagName = newValue }
   }
 }
 
-public class wbr: Element {
+open class wbr: Element {
   override var tagName: String {
     get { return "wbr" } set { self.tagName = newValue }
   }
-  public override var void: Bool {
+  open override var void: Bool {
     get { return true } set { self.void = newValue }
   }
 }

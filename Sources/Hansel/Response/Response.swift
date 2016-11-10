@@ -9,7 +9,7 @@ public protocol Payload: Streamable, ETaggable {}
 extension String: Payload {}
 
 public struct Response: Storable, HeaderList, Tappable {
-  public var status: Status = .Ok
+  public var status: Status = .ok
   public var headers: [Header] = []
   public var body: Payload = ByteArray()
   public var store: Store = [:]
@@ -25,11 +25,11 @@ public struct Response: Storable, HeaderList, Tappable {
 
   // UPDATE RESPONSE
 
-  public func setStatus (status: Status) -> Response {
+  public func setStatus (_ status: Status) -> Response {
     var copy = self; copy.status = status; return copy
   }
 
-  private func setBody (newBody: Payload = ByteArray()) -> Response {
+  fileprivate func setBody (_ newBody: Payload = ByteArray()) -> Response {
     var copy = self
     copy.body = newBody
     return copy
@@ -41,29 +41,29 @@ public struct Response: Storable, HeaderList, Tappable {
     return self.setBody().deleteHeader("Content-Type")
   }
 
-  public func text (str: String) -> Response {
+  public func text (_ str: String) -> Response {
     return self.setBody(str).setHeader("Content-Type", "text/plain")
   }
 
-  public func html (x: HtmlConvertible) -> Response {
+  public func html (_ x: HtmlConvertible) -> Response {
     return self.setBody(x.html()).setHeader("Content-Type", "text/html")
   }
 
-  public func json (body: JsonEncodable) throws -> Response {
-    let bytes = try Jay().dataFromJson(body.json())
+  public func json (_ body: JsonEncodable) throws -> Response {
+    let bytes = try Jay.dataFromJson(body.json())
     return self.setBody(ByteArray(bytes)).setHeader("Content-Type", "application/json")
   }
 
-  public func json (obj: Any) throws -> Response {
-    let bytes = try Jay().dataFromJson(obj)
+  public func json (_ obj: Any) throws -> Response {
+    let bytes = try Jay.dataFromJson(obj)
     return self.setBody(ByteArray(bytes)).setHeader("Content-Type", "application/json")
   }
 
-  public func bytes (bytes: ByteArray, type: String?) -> Response {
-    return self.setBody(bytes).setHeader("Content-Type", type)
+  public func bytes (_ bytes: [UInt8], type: String?) -> Response {
+    return self.setBody(ByteArray(bytes)).setHeader("Content-Type", type)
   }
 
-  public func stream (fileStream: FileStream, type: String?) -> Response {
+  public func stream (_ fileStream: FileStream, type: String?) -> Response {
     return self.setBody(fileStream).setHeader("Content-Type", type)
   }
 
@@ -98,15 +98,15 @@ public struct Response: Storable, HeaderList, Tappable {
 
   // 301: .MovedPermanently
   // 302: .Found
-  public func redirect (url: String, status: Status = .Found) -> Response {
+  public func redirect (_ url: String, status: Status = .found) -> Response {
     return self
       .setHeader("Location", url)
-      .setStatus(status.redirect() ? status : .Found)
+      .setStatus(status.redirect() ? status : .found)
   }
 
   // redirectBack(request)
   // redirectBack(request, "/login")
-  public func redirectBack (request: Request, altUrl: String = "/") -> Response {
+  public func redirectBack (_ request: Request, altUrl: String = "/") -> Response {
     let url = request.getHeader("Referer") ?? altUrl
     return self.redirect(url)
   }

@@ -5,11 +5,11 @@ public typealias Header = (String, String)
 
 public protocol HeaderList {
   var headers: [Header] { get set }
-  func getHeader (key: String) -> String?
-  func setHeader (key: String, _: String?) -> Self
-  func deleteHeader (key: String) -> Self
-  func appendHeader (key: String, _: String) -> Self
-  func updateHeader (key: String, _: String? -> String?) -> Self
+  func getHeader (_ key: String) -> String?
+  func setHeader (_ key: String, _: String?) -> Self
+  func deleteHeader (_ key: String) -> Self
+  func appendHeader (_ key: String, _: String) -> Self
+  func updateHeader (_ key: String, _: (String?) -> String?) -> Self
 }
 
 extension HeaderList {
@@ -18,29 +18,29 @@ extension HeaderList {
     set (newHeaders) { self.headers = newHeaders }
   }
 
-  public func getHeader (key: String) -> String? {
-    var key = key.lowercaseString
+  public func getHeader (_ key: String) -> String? {
+    var key = key.lowercased()
     if key == "referrer" {
       key = "referer"
     }
-    return self.headers.filter { $0.0.lowercaseString == key }.first?.1
+    return self.headers.filter { $0.0.lowercased() == key }.first?.1
   }
 
-  public func appendHeader (key: String, _ val: String) -> Self {
+  public func appendHeader (_ key: String, _ val: String) -> Self {
     var new = self
     new.headers.append((key, val))
     return new
   }
 
-  public func deleteHeader (key: String) -> Self {
+  public func deleteHeader (_ key: String) -> Self {
     var new = self
-    new.headers = new.headers.filter { $0.0.lowercaseString != key.lowercaseString }
+    new.headers = new.headers.filter { $0.0.lowercased() != key.lowercased() }
     return new
   }
 
   // No-ops if val is nil.
   // Must use deleteHeader to actually delete one.
-  public func setHeader (key: String, _ val: String?) -> Self {
+  public func setHeader (_ key: String, _ val: String?) -> Self {
     if val == nil {
       return self
     }
@@ -48,7 +48,7 @@ extension HeaderList {
   }
 
   // No-ops if fn(val) is nil.
-  public func updateHeader (key: String, _ fn: String? -> String?) -> Self {
+  public func updateHeader (_ key: String, _ fn: (String?) -> String?) -> Self {
     return self.setHeader(key, fn(self.getHeader(key)))
   }
 }

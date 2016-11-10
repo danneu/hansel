@@ -18,18 +18,32 @@ import Jay
 // A Swift version of Evan Czaplicki's work on Elm.
 
 public enum Result <ErrType, OkType> {
-  case Err (ErrType)
-  case Ok (OkType)
+  case err (ErrType)
+  case ok (OkType)
 
   func toOptional () -> OkType? {
     switch self {
-    case .Err (_): return nil
-    case .Ok (let v): return v
+    case .err (_): return nil
+    case .ok (let v): return v
+    }
+  }
+
+  func map <B> (_ f: (OkType) -> B) -> Result<ErrType, B> {
+    switch self {
+    case .err (let err): return .err(err)
+    case .ok (let val): return .ok(f(val))
+    }
+  }
+
+  func mapError <B> (_ f: (ErrType) -> B) -> Result<B, OkType> {
+    switch self {
+    case .err (let err): return .err(f(err))
+    case .ok (let val): return .ok(val)
     }
   }
 }
 
-public struct DecoderError: ErrorType {
+public struct DecoderError: Error {
   public let message: String
 
   init (_ message: String) {
@@ -51,7 +65,7 @@ public struct JD {
   // API ENTRYPOINT
   //
 
-  public static func decode <T> (decoder: Decoder<T>, _ value: JsonValue) -> Result<String, T> {
+  public static func decode <T> (_ decoder: Decoder<T>, _ value: JsonValue) -> Result<String, T> {
     do {
       return try .Ok(decoder.decode(value))
     } catch let err as DecoderError {
@@ -100,7 +114,7 @@ public struct JD {
     }
   }
 
-  public static func null <A> (resultWhenNull: A) -> Decoder<A> {
+  public static func null <A> (_ resultWhenNull: A) -> Decoder<A> {
     return Decoder { value in
       guard case .Null = value else {
         throw DecoderError("Expected Null but got \(value)")
@@ -118,9 +132,9 @@ public struct JD {
   //     JD.tuple2({ ($0, $1) }, JD.string, JD.int)
   //     JD.tuple2(JD.string, JD.int)
 
-  public static func tuple1 <A, Z> (f: A -> Z, _ d1: Decoder<A>) -> Decoder<Z> {
+  public static func tuple1 <A, Z> (_ f: @escaping (A) -> Z, _ d1: Decoder<A>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 1 else {
+      guard case let .Array(arr) = value, arr.count == 1 else {
         throw DecoderError("Expected Tuple of length 1 but got \(value)")
       }
       return f(
@@ -129,13 +143,13 @@ public struct JD {
     }
   }
 
-  public static func tuple1 <A> (d1: Decoder<A>) -> Decoder<(A)> {
+  public static func tuple1 <A> (_ d1: Decoder<A>) -> Decoder<(A)> {
     return tuple1({ ($0) }, d1)
   }
 
-  public static func tuple2 <A, B, Z> (f: (A, B) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<Z> {
+  public static func tuple2 <A, B, Z> (_ f: @escaping (A, B) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 2 else {
+      guard case let .Array(arr) = value, arr.count == 2 else {
         throw DecoderError("Expected Tuple of length 2 but got \(value)")
       }
       return f(
@@ -145,13 +159,13 @@ public struct JD {
     }
   }
 
-  public static func tuple2 <A, B> (d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<(A, B)> {
+  public static func tuple2 <A, B> (_ d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<(A, B)> {
     return tuple2({ ($0, $1) }, d1, d2)
   }
 
-  public static func tuple3 <A, B, C, Z> (f: (A, B, C) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<Z> {
+  public static func tuple3 <A, B, C, Z> (_ f: @escaping (A, B, C) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 3 else {
+      guard case let .Array(arr) = value, arr.count == 3 else {
         throw DecoderError("Expected Tuple of length 3 but got \(value)")
       }
       return f(
@@ -162,13 +176,13 @@ public struct JD {
     }
   }
 
-  public static func tuple3 <A, B, C> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<(A, B, C)> {
+  public static func tuple3 <A, B, C> (_ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<(A, B, C)> {
     return tuple3({ ($0, $1, $2) }, d1, d2, d3)
   }
 
-  public static func tuple4 <A, B, C, D, Z> (f: (A, B, C, D) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<Z> {
+  public static func tuple4 <A, B, C, D, Z> (_ f: @escaping (A, B, C, D) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 4 else {
+      guard case let .Array(arr) = value, arr.count == 4 else {
         throw DecoderError("Expected Tuple of length 4 but got \(value)")
       }
       return f(
@@ -180,13 +194,13 @@ public struct JD {
     }
   }
 
-  public static func tuple4 <A, B, C, D> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<(A, B, C, D)> {
+  public static func tuple4 <A, B, C, D> (_ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<(A, B, C, D)> {
     return tuple4({ ($0, $1, $2, $3) }, d1, d2, d3, d4)
   }
 
-  public static func tuple5 <A, B, C, D, E, Z> (f: (A, B, C, D, E) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<Z> {
+  public static func tuple5 <A, B, C, D, E, Z> (_ f: @escaping (A, B, C, D, E) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 5 else {
+      guard case let .Array(arr) = value, arr.count == 5 else {
         throw DecoderError("Expected Tuple of length 5 but got \(value)")
       }
       return f(
@@ -199,13 +213,13 @@ public struct JD {
     }
   }
 
-  public static func tuple5 <A, B, C, D, E> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<(A, B, C, D, E)> {
+  public static func tuple5 <A, B, C, D, E> (_ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<(A, B, C, D, E)> {
     return tuple5({ ($0, $1, $2, $3, $4) }, d1, d2, d3, d4, d5)
   }
 
-  public static func tuple6 <A, B, C, D, E, F, Z> (f: (A, B, C, D, E, F) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<Z> {
+  public static func tuple6 <A, B, C, D, E, F, Z> (_ f: @escaping (A, B, C, D, E, F) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 6 else {
+      guard case let .Array(arr) = value, arr.count == 6 else {
         throw DecoderError("Expected Tuple of length 6 but got \(value)")
       }
       return f(
@@ -219,13 +233,13 @@ public struct JD {
     }
   }
 
-  public static func tuple6 <A, B, C, D, E, F> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<(A, B, C, D, E, F)> {
+  public static func tuple6 <A, B, C, D, E, F> (_ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<(A, B, C, D, E, F)> {
     return tuple6({ ($0, $1, $2, $3, $4, $5) }, d1, d2, d3, d4, d5, d6)
   }
 
-  public static func tuple7 <A, B, C, D, E, F, G, Z> (f: (A, B, C, D, E, F, G) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<Z> {
+  public static func tuple7 <A, B, C, D, E, F, G, Z> (_ f: @escaping (A, B, C, D, E, F, G) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 7 else {
+      guard case let .Array(arr) = value, arr.count == 7 else {
         throw DecoderError("Expected Tuple of length 7 but got \(value)")
       }
       return f(
@@ -240,13 +254,13 @@ public struct JD {
     }
   }
 
-  public static func tuple7 <A, B, C, D, E, F, G> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<(A, B, C, D, E, F, G)> {
+  public static func tuple7 <A, B, C, D, E, F, G> (_ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<(A, B, C, D, E, F, G)> {
     return tuple7({ ($0, $1, $2, $3, $4, $5, $6) }, d1, d2, d3, d4, d5, d6, d7)
   }
 
-  public static func tuple8 <A, B, C, D, E, F, G, H, Z> (f: (A, B, C, D, E, F, G, H) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<Z> {
+  public static func tuple8 <A, B, C, D, E, F, G, H, Z> (_ f: @escaping (A, B, C, D, E, F, G, H) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<Z> {
     return Decoder { value in
-      guard case let .Array(arr) = value where arr.count == 8 else {
+      guard case let .Array(arr) = value, arr.count == 8 else {
         throw DecoderError("Expected Tuple of length 8 but got \(value)")
       }
       return f(
@@ -262,11 +276,11 @@ public struct JD {
     }
   }
 
-  public static func tuple8 <A, B, C, D, E, F, G, H> (d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<(A, B, C, D, E, F, G, H)> {
+  public static func tuple8 <A, B, C, D, E, F, G, H> (_ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<(A, B, C, D, E, F, G, H)> {
     return tuple8({ ($0, $1, $2, $3, $4, $5, $6, $7) }, d1, d2, d3, d4, d5, d6, d7, d8)
   }
 
-  public static func array <T> (decoder: Decoder<T>) -> Decoder<[T]> {
+  public static func array <T> (_ decoder: Decoder<T>) -> Decoder<[T]> {
     return Decoder { value in
       guard case let .Array(arr) = value else {
         throw DecoderError("Expected Array but got \(value)")
@@ -275,7 +289,7 @@ public struct JD {
     }
   }
 
-  public static func dict <T> (d1: Decoder<T>) -> Decoder<[String: T]> {
+  public static func dict <T> (_ d1: Decoder<T>) -> Decoder<[String: T]> {
     return Decoder { value in
       guard case let .Object(obj) = value else {
         throw DecoderError("Expected Object but got \(value)")
@@ -288,7 +302,7 @@ public struct JD {
     }
   }
 
-  public static func get <A> (key: String, _ d1: Decoder<A>) -> Decoder<A> {
+  public static func get <A> (_ key: String, _ d1: Decoder<A>) -> Decoder<A> {
     return Decoder { value in
       guard case let .Object(obj) = value,
         let keyVal = obj[key] else {
@@ -298,11 +312,11 @@ public struct JD {
     }
   }
 
-  public static func at <A> (keys: [String], _ d1: Decoder<A>) -> Decoder<A> {
-    return Array(keys.reverse()).reduce(d1, combine: { $1 => $0 })
+  public static func at <A> (_ keys: [String], _ d1: Decoder<A>) -> Decoder<A> {
+    return Array(keys.reversed()).reduce(d1, { $1 => $0 })
   }
 
-  public static func object1 <A, Z> (f: (_: A) -> Z, _ d1: Decoder<A>) -> Decoder<Z> {
+  public static func object1 <A, Z> (_ f: @escaping (_: A) -> Z, _ d1: Decoder<A>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value)
@@ -310,7 +324,7 @@ public struct JD {
     }
   }
 
-  public static func object2 <A, B, Z> (f: (_: A, _: B) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<Z> {
+  public static func object2 <A, B, Z> (_ f: @escaping (_: A, _: B) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value),
@@ -319,7 +333,7 @@ public struct JD {
     }
   }
 
-  public static func object3 <A, B, C, Z> (f: (_: A, _: B, _: C) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<Z> {
+  public static func object3 <A, B, C, Z> (_ f: @escaping (_: A, _: B, _: C) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value),
@@ -329,7 +343,7 @@ public struct JD {
     }
   }
 
-  public static func object4 <A, B, C, D, Z> (f: (_: A, _: B, _: C, _: D) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<Z> {
+  public static func object4 <A, B, C, D, Z> (_ f: @escaping (_: A, _: B, _: C, _: D) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value),
@@ -340,7 +354,7 @@ public struct JD {
     }
   }
 
-  public static func object5 <A, B, C, D, E, Z> (f: (_: A, _: B, _: C, _: D, _: E) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<Z> {
+  public static func object5 <A, B, C, D, E, Z> (_ f: @escaping (_: A, _: B, _: C, _: D, _: E) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value),
@@ -352,7 +366,7 @@ public struct JD {
     }
   }
 
-  public static func object6 <A, B, C, D, E, F, Z> (f: (_: A, _: B, _: C, _: D, _: E, _: F) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<Z> {
+  public static func object6 <A, B, C, D, E, F, Z> (_ f: @escaping (_: A, _: B, _: C, _: D, _: E, _: F) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value),
@@ -365,7 +379,7 @@ public struct JD {
     }
   }
 
-  public static func object7 <A, B, C, D, E, F, G, Z> (f: (_: A, _: B, _: C, _: D, _: E, _: F, _: G) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<Z> {
+  public static func object7 <A, B, C, D, E, F, G, Z> (_ f: @escaping (_: A, _: B, _: C, _: D, _: E, _: F, _: G) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value),
@@ -379,7 +393,7 @@ public struct JD {
     }
   }
 
-  public static func object8 <A, B, C, D, E, F, G, H, Z> (f: (_: A, _: B, _: C, _: D, _: E, _: F, _: G, _: H) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<Z> {
+  public static func object8 <A, B, C, D, E, F, G, H, Z> (_ f: @escaping (_: A, _: B, _: C, _: D, _: E, _: F, _: G, _: H) -> Z, _ d1: Decoder<A>, _ d2: Decoder<B>, _ d3: Decoder<C>, _ d4: Decoder<D>, _ d5: Decoder<E>, _ d6: Decoder<F>, _ d7: Decoder<G>, _ d8: Decoder<H>) -> Decoder<Z> {
     return Decoder { value in
       return f(
         try d1.decode(value),
@@ -394,7 +408,7 @@ public struct JD {
     }
   }
 
-  public static func optional <A> (d1: Decoder<A>) -> Decoder<A?> {
+  public static func optional <A> (_ d1: Decoder<A>) -> Decoder<A?> {
     return Decoder { value in
       do {
         return try d1.decode(value)
@@ -404,7 +418,7 @@ public struct JD {
     }
   }
 
-  public static func oneOf <A> (ds: [Decoder<A>]) -> Decoder<A> {
+  public static func oneOf <A> (_ ds: [Decoder<A>]) -> Decoder<A> {
     return Decoder { value in
       var errors: [ErrorType] = []
       for d in ds {
@@ -418,19 +432,19 @@ public struct JD {
     }
   }
 
-  public static func map <A, Z> (f: (_: A) -> Z, _ d1: Decoder<A>) -> Decoder<Z> {
+  public static func map <A, Z> (_ f: @escaping (_: A) -> Z, _ d1: Decoder<A>) -> Decoder<Z> {
     return object1(f, d1)
   }
 
-  public static func fail (message: String) -> Decoder<Any> {
+  public static func fail (_ message: String) -> Decoder<Any> {
     return Decoder { _ in throw DecoderError(message) }
   }
 
-  public static func succeed <A> (constant: A) -> Decoder<A> {
+  public static func succeed <A> (_ constant: A) -> Decoder<A> {
     return Decoder { _ in return constant }
   }
 
-  public static func andThen <A, B> (d1: Decoder<A>, _ f: A -> Decoder<B>) -> Decoder<B> {
+  public static func andThen <A, B> (_ d1: Decoder<A>, _ f: @escaping (A) -> Decoder<B>) -> Decoder<B> {
     return Decoder { value in
       let result = try d1.decode(value)
       return try f(result).decode(value)
@@ -439,7 +453,7 @@ public struct JD {
 
   public static let value = Decoder<JsonValue>.self
 
-  public static func custom <A, B> (d1: Decoder<A>, _ f: A -> Result<String, B>) -> Decoder<B> {
+  public static func custom <A, B> (_ d1: Decoder<A>, _ f: @escaping (A) -> Result<String, B>) -> Decoder<B> {
     return Decoder { value in
       let result = f(try d1.decode(value))
       switch result {

@@ -23,7 +23,7 @@ import POSIXRegex
 //   some functionality like ContentType.swift are just going
 //   to be disabled until Linux gets support
 
-public class RegExp {
+open class RegExp {
 #if os(Linux)
   let internalExpression: Regex
 #else
@@ -40,7 +40,7 @@ public class RegExp {
 #if os(Linux)
     self.internalExpression = try Regex(pattern: pattern, options: .CaseInsensitive)
 #else
-    self.internalExpression = try NSRegularExpression(pattern: pattern, options: .CaseInsensitive)
+    self.internalExpression = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
 #endif
   }
 
@@ -51,8 +51,8 @@ public class RegExp {
     return self.internalExpression.replace(input, withTemplate: template)
   }
 #else
-  public func replace (input: String, template: String) -> String {
-    return self.internalExpression.stringByReplacingMatchesInString(input, options: [], range: NSMakeRange(0, input.characters.count), withTemplate: template)
+  open func replace (_ input: String, template: String) -> String {
+    return self.internalExpression.stringByReplacingMatches(in: input, options: [], range: NSMakeRange(0, input.characters.count), withTemplate: template)
   }
 #endif
 
@@ -66,7 +66,7 @@ public class RegExp {
 
 #if os(OSX)
   // Simply check if regex matches a string at all
-  public func test (input: String) -> Bool {
+  open func test (_ input: String) -> Bool {
     return self.findFirst(input) != nil
   }
 
@@ -75,15 +75,60 @@ public class RegExp {
   // is to just wait til Linux gets NSRegularExpression support.
 
   // Returns first match (not implemented in Linux)
-  internal func findFirst (input: String, start: Int = 0) -> NSTextCheckingResult? {
+  internal func findFirst (_ input: String, start: Int = 0) -> NSTextCheckingResult? {
     let range = NSMakeRange(start, input.characters.count - start)
-    return self.internalExpression.firstMatchInString(input, options: [], range: range)
+    return self.internalExpression.firstMatch(in: input, options: [], range: range)
   }
 
   // Returns all matches
-  internal func findAll (input: String, start: Int = 0) -> [NSTextCheckingResult] {
+  internal func findAll (_ input: String, start: Int = 0) -> [NSTextCheckingResult] {
     let range = NSMakeRange(start, input.characters.count - start)
-    return self.internalExpression.matchesInString(input, options: [], range: range)
+    return self.internalExpression.matches(in: input, options: [], range: range)
   }
 #endif
+
+  // GET MATCH RANGE
+
+#if os(OSX)
+  // to keep this compatible with linux's findFirstRange, we'll just return
+  // a tuple of (start, end) positions
+  open func findFirstRange (_ input: String) -> Range<String.Index>? {
+    guard let match = findFirst(input) else {
+      return nil
+    }
+    let matchStart = input.characters.index(input.startIndex, offsetBy: match.range.location)
+    let matchEnd = <#T##String.CharacterView corresponding to `matchStart`##String.CharacterView#>.index(matchStart, offsetBy: match.range.length)
+    return (matchStart ..< matchEnd)
+  }
+#endif
+
+#if os(Linux)
+  public func findFirstRange (input: String) -> (Int, Int)? {
+    var string = input
+    let maxMatches = 1
+
+    var regexMatches = [regmatch_t](count: maxMatches, repeatedValue: regmatch_t())
+    let result = regexec(&preg, string, regexMatches.count, &regexMatches, options.rawValue)
+
+    if result == 1 { // returns 0 when match
+      return nil
+    }
+
+    let start = Int(regexMatches[1].rm_so)
+    let end = Int(regexMatches[1].rm_eo)
+
+    return (start, end)
+  }
+#endif
+
+  // UTILITY
+
+  // Escapes special regex chars in string so that they become a literal search.
+  //
+  // escape("(a)") => "\(a\)"
+  open static func escape (_ pattern: String) -> String {
+    let list = "[-\\(\\)^$*+?.\\/\\\\|\\[\\]\\{\\}]"
+    let escaped = try! RegExp("(\(list))").replace(pattern, template: "\\\\$1")
+    return escaped
+  }
 }

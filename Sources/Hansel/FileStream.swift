@@ -2,9 +2,9 @@
 import Foundation
 
 public struct FileStream: Payload {
-  var modifiedAt: NSDate
+  var modifiedAt: Date
   var fileSize: Int
-  var stream: NSInputStream
+  var stream: InputStream
 
   // seconds since epoch
   var mtime: Int {
@@ -12,8 +12,8 @@ public struct FileStream: Payload {
   }
 
   // TODO: Throw on fail
-  public init (_ path: String, fileSize: Int, modifiedAt: NSDate) {
-    let stream: NSInputStream = NSInputStream(fileAtPath: path)!
+  public init (_ path: String, fileSize: Int, modifiedAt: Date) {
+    let stream: InputStream = InputStream(fileAtPath: path)!
     self.stream = stream
     self.fileSize = fileSize
     self.modifiedAt = modifiedAt
