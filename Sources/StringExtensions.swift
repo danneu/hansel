@@ -2,36 +2,6 @@
 // Based on NSLinux (https://github.com/johnno1962/NSLinux) by johnno1962.
 //
 
-/**
- Copyright (c) 2014, Damian Kołakowski
- All rights reserved.
- 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
- 
- * Redistributions of source code must retain the above copyright notice, this
- list of conditions and the following disclaimer.
- 
- * Redistributions in binary form must reproduce the above copyright notice,
- this list of conditions and the following disclaimer in the documentation
- and/or other materials provided with the distribution.
- 
- * Neither the name of the {organization} nor the names of its
- contributors may be used to endorse or promote products derived from
- this software without specific prior written permission.
- 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import Foundation
 
 extension String {
@@ -59,7 +29,7 @@ extension String {
         }
         return self
     }
-    
+
     func trim() -> String {
         var scalars = self.unicodeScalars
         while let _ = unicodeScalarToUInt32Whitespace(scalars.first) { scalars.removeFirst() }
@@ -68,47 +38,7 @@ extension String {
     }
     
     static func fromUInt8(_ array: [UInt8]) -> String {
-        #if os(Linux)
-            return String(data: NSData(bytes: array, length: array.count), encoding: NSUTF8StringEncoding) ?? ""
-        #else
-            if let s = String(data: Data(bytes: UnsafePointer<UInt8>(array), count: array.count), encoding: String.Encoding.utf8) {
-                return s
-            }
-            return ""
-        #endif
-    }
-    
-    func removePercentEncoding() -> String {
-        var scalars = self.unicodeScalars
-        var output = ""
-        var bytesBuffer = [UInt8]()
-        while let scalar = scalars.popFirst() {
-            if scalar == "%" {
-                let first = scalars.popFirst()
-                let secon = scalars.popFirst()
-                if let first = unicodeScalarToUInt32Hex(first), let secon = unicodeScalarToUInt32Hex(secon) {
-                    bytesBuffer.append(first*16+secon)
-                } else {
-                    if !bytesBuffer.isEmpty {
-                        output.append(String.fromUInt8(bytesBuffer))
-                        bytesBuffer.removeAll()
-                    }
-                    if let first = first { output.append(Character(first)) }
-                    if let secon = secon { output.append(Character(secon)) }
-                }
-            } else {
-                if !bytesBuffer.isEmpty {
-                    output.append(String.fromUInt8(bytesBuffer))
-                    bytesBuffer.removeAll()
-                }
-                output.append(Character(scalar))
-            }
-        }
-        if !bytesBuffer.isEmpty {
-            output.append(String.fromUInt8(bytesBuffer))
-            bytesBuffer.removeAll()
-        }
-        return output
+        return String(data: Data(bytes: array), encoding: String.Encoding.utf8) ?? ""
     }
     
     fileprivate func unicodeScalarToUInt32Whitespace(_ x: UnicodeScalar?) -> UInt8? {
