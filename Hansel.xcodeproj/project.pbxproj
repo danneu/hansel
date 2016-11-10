@@ -77,7 +77,6 @@
 		OBJ_234 /* HtmlConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_81 /* HtmlConvertible.swift */; };
 		OBJ_235 /* HttpDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_82 /* HttpDate.swift */; };
 		OBJ_236 /* JD.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_83 /* JD.swift */; };
-		OBJ_237 /* LinuxFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_84 /* LinuxFixes.swift */; };
 		OBJ_238 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_85 /* Log.swift */; };
 		OBJ_239 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_86 /* Logger.swift */; };
 		OBJ_240 /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_87 /* MD5.swift */; };
@@ -323,7 +322,6 @@
 		OBJ_81 /* HtmlConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HtmlConvertible.swift; sourceTree = "<group>"; };
 		OBJ_82 /* HttpDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpDate.swift; sourceTree = "<group>"; };
 		OBJ_83 /* JD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JD.swift; sourceTree = "<group>"; };
-		OBJ_84 /* LinuxFixes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxFixes.swift; sourceTree = "<group>"; };
 		OBJ_85 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		OBJ_86 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		OBJ_87 /* MD5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
@@ -434,7 +432,6 @@
 		D914F2511DD4571D00C65837 /* Fixes */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_84 /* LinuxFixes.swift */,
 				OBJ_107 /* StringExtensions.swift */,
 			);
 			name = Fixes;
@@ -996,7 +993,6 @@
 				OBJ_234 /* HtmlConvertible.swift in Sources */,
 				OBJ_235 /* HttpDate.swift in Sources */,
 				OBJ_236 /* JD.swift in Sources */,
-				OBJ_237 /* LinuxFixes.swift in Sources */,
 				OBJ_238 /* Log.swift in Sources */,
 				D914F24F1DD44C8400C65837 /* main.swift in Sources */,
 				OBJ_239 /* Logger.swift in Sources */,
