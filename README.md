@@ -20,10 +20,6 @@ Manually tested on OSX 10.11 and Ubuntu 14.04.
 
 ## Quickstart
 
-**Note:** Currently broken on Linux since I'm trying to upgrade to Swift 3
-stable. Though the 0.0.1 tagged release does work on Linux with the 
-following instructions.
-
 Install the latest snapshot of [Swift 3.0](https://swift.org/download)
 and try this locally or on a Ubuntu VPS.
 
