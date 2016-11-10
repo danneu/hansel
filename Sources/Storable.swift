@@ -29,6 +29,6 @@ extension Storable {
   }
 
   public func updateStore (_ key: String, _ fn: (Any) -> Any) -> Self {
-    return self.setStore(key, fn(self.getStore(key)))
+    return self.setStore(key, fn(self.getStore(key) as Any))
   }
 }
