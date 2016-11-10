@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D914F24F1DD44C8400C65837 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D914F24E1DD44C8400C65837 /* main.swift */; };
 		OBJ_128 /* Case.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Case.swift */; };
 		OBJ_129 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Context.swift */; };
 		OBJ_130 /* Expectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Expectation.swift */; };
@@ -233,6 +234,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D914F24E1DD44C8400C65837 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		OBJ_100 /* ServeStatic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServeStatic.swift; sourceTree = "<group>"; };
 		OBJ_101 /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
@@ -416,6 +418,84 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D914F2501DD456FF00C65837 /* Batteries */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_71 /* Batteries.swift */,
+				OBJ_75 /* Cookie.swift */,
+				OBJ_86 /* Logger.swift */,
+				OBJ_91 /* NotModified.swift */,
+				OBJ_94 /* RemoveTrailingSlash.swift */,
+				OBJ_100 /* ServeStatic.swift */,
+			);
+			name = Batteries;
+			sourceTree = "<group>";
+		};
+		D914F2511DD4571D00C65837 /* Fixes */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_84 /* LinuxFixes.swift */,
+				OBJ_107 /* StringExtensions.swift */,
+			);
+			name = Fixes;
+			sourceTree = "<group>";
+		};
+		D914F2521DD4573400C65837 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_69 /* Base16.swift */,
+				OBJ_70 /* Base64.swift */,
+				OBJ_74 /* ContentType.swift */,
+				OBJ_76 /* ETag.swift */,
+				OBJ_82 /* HttpDate.swift */,
+				OBJ_90 /* Mime.swift */,
+				OBJ_92 /* Query.swift */,
+				OBJ_93 /* RegExp.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		D914F2531DD4575100C65837 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_79 /* HeaderList.swift */,
+				OBJ_81 /* HtmlConvertible.swift */,
+				OBJ_105 /* Storable.swift */,
+				OBJ_106 /* Streamable.swift */,
+				OBJ_108 /* Tappable.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		D914F2541DD4576900C65837 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_88 /* Method.swift */,
+				OBJ_95 /* Request.swift */,
+				OBJ_96 /* RequestBody.swift */,
+			);
+			name = Request;
+			sourceTree = "<group>";
+		};
+		D914F2551DD4577A00C65837 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_97 /* Response.swift */,
+				OBJ_104 /* Status.swift */,
+			);
+			name = Response;
+			sourceTree = "<group>";
+		};
+		D914F2561DD4578D00C65837 /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_101 /* Socket.swift */,
+				OBJ_102 /* SocketParser.swift */,
+				OBJ_103 /* SocketServer.swift */,
+			);
+			name = Socket;
+			sourceTree = "<group>";
+		};
 		OBJ_109 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -557,46 +637,25 @@
 		OBJ_68 /* Hansel */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_69 /* Base16.swift */,
-				OBJ_70 /* Base64.swift */,
-				OBJ_71 /* Batteries.swift */,
+				D914F2561DD4578D00C65837 /* Socket */,
+				D914F2551DD4577A00C65837 /* Response */,
+				D914F2541DD4576900C65837 /* Request */,
+				D914F2531DD4575100C65837 /* Protocols */,
+				D914F2521DD4573400C65837 /* Helpers */,
+				D914F2511DD4571D00C65837 /* Fixes */,
+				D914F2501DD456FF00C65837 /* Batteries */,
 				OBJ_72 /* Belt.swift */,
 				OBJ_73 /* ByteArray.swift */,
-				OBJ_74 /* ContentType.swift */,
-				OBJ_75 /* Cookie.swift */,
-				OBJ_76 /* ETag.swift */,
 				OBJ_77 /* FileStream.swift */,
 				OBJ_78 /* Handler.swift */,
-				OBJ_79 /* HeaderList.swift */,
 				OBJ_80 /* Html.swift */,
-				OBJ_81 /* HtmlConvertible.swift */,
-				OBJ_82 /* HttpDate.swift */,
 				OBJ_83 /* JD.swift */,
-				OBJ_84 /* LinuxFixes.swift */,
 				OBJ_85 /* Log.swift */,
-				OBJ_86 /* Logger.swift */,
 				OBJ_87 /* MD5.swift */,
-				OBJ_88 /* Method.swift */,
 				OBJ_89 /* Middleware.swift */,
-				OBJ_90 /* Mime.swift */,
-				OBJ_91 /* NotModified.swift */,
-				OBJ_92 /* Query.swift */,
-				OBJ_93 /* RegExp.swift */,
-				OBJ_94 /* RemoveTrailingSlash.swift */,
-				OBJ_95 /* Request.swift */,
-				OBJ_96 /* RequestBody.swift */,
-				OBJ_97 /* Response.swift */,
 				OBJ_98 /* Router.swift */,
 				OBJ_99 /* Server.swift */,
-				OBJ_100 /* ServeStatic.swift */,
-				OBJ_101 /* Socket.swift */,
-				OBJ_102 /* SocketParser.swift */,
-				OBJ_103 /* SocketServer.swift */,
-				OBJ_104 /* Status.swift */,
-				OBJ_105 /* Storable.swift */,
-				OBJ_106 /* Streamable.swift */,
-				OBJ_107 /* StringExtensions.swift */,
-				OBJ_108 /* Tappable.swift */,
+				D914F24E1DD44C8400C65837 /* main.swift */,
 			);
 			name = Hansel;
 			path = Sources;
@@ -939,6 +998,7 @@
 				OBJ_236 /* JD.swift in Sources */,
 				OBJ_237 /* LinuxFixes.swift in Sources */,
 				OBJ_238 /* Log.swift in Sources */,
+				D914F24F1DD44C8400C65837 /* main.swift in Sources */,
 				OBJ_239 /* Logger.swift in Sources */,
 				OBJ_240 /* MD5.swift in Sources */,
 				OBJ_241 /* Method.swift in Sources */,

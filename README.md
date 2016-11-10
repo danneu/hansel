@@ -20,11 +20,27 @@ Manually tested on OSX 10.11 and Ubuntu 14.04.
 
 ## Quickstart
 
-Install the latest snapshot of [Swift 3.0-DEVELOPMENT](https://swift.org/download)
+
+Install the latest snapshot of [Swift 3.0](https://swift.org/download)
 and try this locally or on a Ubuntu VPS.
+
+I had to install these deps on Ubuntu:
+
+    sudo apt-get install clang libicu-dev binutils git libcurl4-openssl-dev libpython2.7
+
+Then make a folder for the application:
 
     mkdir HelloWorld
     cd HelloWorld
+
+It'll look like this:
+
+    .
+    ├── Package.swift
+    └── Sources
+        └── main.swift
+
+Here's the contents of those two files:
 
 ``` swift
 // HelloWorld/Sources/main.swift
@@ -51,7 +67,7 @@ let package = Package(
 )
 ```
 
-    swift build; rm -rf Packages/*/Tests && swift build
+    swift build
     .build/debug/HelloWorld --port 3000
 
 Server listening on 3000.
@@ -88,13 +104,13 @@ Example usage junkdrawer:
 
 ``` swift
 Response()  //=> skeleton 200 response with empty body to build on top of
-Response(status: .Ok, headers: [])
+Response(status: .ok, headers: [])
 Response().text("Hello")                     //=> text/plain
 Response().html("<h1>Hello</h1>")            //=> text/html
 try Response().json(["favoriteNumber": 42])  //=> application/json
 Response().stream(FileStream("./video.mp4"), "video/mp4")
-Response(.NotFound)
-Response(.NotFound).text("File not found :(")
+Response(.notFound)
+Response(.notFound).text("File not found :(")
 ```
 
 ``` swift
@@ -102,7 +118,7 @@ Response(.NotFound).text("File not found :(")
 request.url                     //  "http://example.com/users?sort=created"
 request.query                   // ["sort": "created"]
 request.path                    // "/users"
-request.method                  // Method.Get
+request.method                  // Method.get
 try request.body.json()         // ["foo": "bar"]
 try request.body.json(decoder)  //
 try request.body.utf8()         // "{\"foo\":\"bar\"}"
@@ -273,34 +289,37 @@ The routing tree is implemented as a simple recursive enum:
 
 ``` swift
 enum Router {
-  case .Route (Method, Handler)
-  case .Node (String, [Router])
+  case .route (Method, Handler)
+  case .node (String, [Router])
   // The "M" (middleware) versions let you pass in an array of
   // middleware that will get applied if a downstream route matches
-  case .RouteM (Method, [Middleware], Handler)
-  case .NodeM (String, [Middleware], [Router])
+  case .routeM (Method, [Middleware], Handler)
+  case .nodeM (String, [Middleware], [Router])
 }
 ```
 
 Example:
 
 ``` swift
-let router: Router = .Node("/", [
-  .Route(.Get, homepageHandler),
-  .NodeM("/admin", [ensureAdmin], [
-    .Route(.Get, adminPanelHandler)
+let router: Router = .node("/", [
+  .route(.Get, homepageHandler),
+  .nodeM("/admin", [ensureAdmin], [
+    .route(.Get, adminPanelHandler)
   ])
-  .Node("/users", [
-    .Route(.Get, listUsersHandler)
-    .RouteM(.Post, [validateUser], createUserHandler)
-    .NodeM("/:user", [loadUser], [
-      .Route(.Get, showUserHandler)
+  .node("/users", [
+    .route(.Get, listUsersHandler)
+    .routeM(.Post, [validateUser], createUserHandler)
+    .nodeM("/:user", [loadUser], [
+      .route(.Get, showUserHandler)
     ])
   ])
 ])
 
 Server(router.handler()).listen(3000)
 ```
+
+Yeah, it's pretty lame but I quickly hacked it together since there's
+so much else to be working on.
 
 I'd like to eventually develop a less string-heavy router.
 
@@ -311,11 +330,11 @@ appears in the `request.params` dictionary (`[String: String]`) which
 you can access in downstream middleware and handlers.
 
 ``` swift
-let router: Router = .Node("/", [
-  .Node("/:a", [
-    .Node("/:b", [
-      .Node("/:c", [
-        .Route(.Get, { try Response().json($0.params) })
+let router: Router = .node("/", [
+  .node("/:a", [
+    .node("/:b", [
+      .node("/:c", [
+        .route(.Get, { try Response().json($0.params) })
       ])
     ])
   ])
@@ -468,11 +487,11 @@ the filesystem.
 
 ## Custom Response Body
 
-A `response.body` conforms to the `Payload` protocol which involves 
+A `response.body` conforms to the `ResponseBody` protocol which involves 
 implementing just a few methods from a couple protocols:
 
 ``` swift
-protocol Payload: Streamable, ETaggable {}
+protocol ResponseBody: Streamable, ETaggable {}
 
 protocol Streamable {
   mutating func next () -> [UInt8]?
@@ -486,7 +505,7 @@ protocol ETaggable {
 }
 ```
 
-Hansel comes with these `Payload` implementations:
+Hansel comes with these `ResponseBody` implementations:
 
 - `String`
 - `ByteArray` (struct wrapper around `[UInt8]` so that it can conform)
@@ -522,16 +541,20 @@ Full list: `init(ms: Int)`, `secs:`, `mins:`, `hrs:`, `days:`, `weeks:`, `months
 
 Figuring out how to use Xcode and package my project has been a 
 steep challenge, but I think I've finally arrived at some sanity.
+Update: Especially since the recent improvements in Swift's package
+manager since I started working on this project.
 
     git clone git@github.com:danneu/hansel.git
     cd hansel
-    swift build; rm -rf Packages/*/Tests && swift build
+    swift build
 
-`Sources/HanselDev/main.swift` is a coding sandbox. It comes populated
-with a small application. Just edit it, rebuild, and relaunch:
+`Sources/HanselDev/main.swift` is a coding sandbox (Note: currently
+missing while I try to rearrange the files without Xcode throwing errors).
+It comes populated with a small application.
+Just edit it, rebuild, and relaunch:
 
 ```
-swift build && .build/debug/HanselDev --port 4000
+swift build && .build/debug/HanselDev --port 3000
 ```
 
 ## Thanks
