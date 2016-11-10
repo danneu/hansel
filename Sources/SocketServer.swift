@@ -1,6 +1,10 @@
 
 import Foundation
 
+#if os(Linux)
+  import Dispatch
+#endif
+
 open class SocketServer {
   // socket open to the port the server is listening on. Usually 80.
   fileprivate var listenSocket: Socket = Socket(socketFileDescriptor: -1)
